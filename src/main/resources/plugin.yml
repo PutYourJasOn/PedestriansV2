@@ -1,0 +1,11 @@
+main: me.json.pedestrians.Main
+depend:
+  - ProtocolLib
+name: Pedestrians
+version: 1.0.0
+description: Pedestrians plugin
+api-version: 1.19
+author: ajasona
+commands:
+  pedestrians:
+    description: Main command

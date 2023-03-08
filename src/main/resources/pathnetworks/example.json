@@ -1,0 +1,30 @@
+{
+  "nodes": [
+    {
+      "id": 0,
+      "position": "1, 5, 10",
+      "direction": "0, 1, 0",
+      "width": 0.95,
+      "connections": [
+        {
+          "id": 1,
+          "probability": 50,
+          "connection_handler": "DIRECT_CONNECTION_HANDLER"
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "position": "10, 5, 10",
+      "direction": "0 1 0",
+      "width": 0.85,
+      "connections": [
+        {
+          "id": 0,
+          "probability": 50,
+          "connection_handler": "DIRECT_CONNECTION_HANDLER"
+        }
+      ]
+    }
+  ]
+}
