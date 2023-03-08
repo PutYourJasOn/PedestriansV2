@@ -133,14 +133,14 @@ public class EditorView extends BukkitRunnable {
 
     //Edit Functionality
     public Node addNode(Vector3 pos, Vector3 dir, double width) {
-        Node node = new Node(pathNetwork.nextID(), pos, width, dir);
+        Node node = new Node(pathNetwork.nextNodeID(), pos, width, dir);
         pathNetwork.addNode(node);
         spawnNodeArmorStand(node);
         return node;
     }
 
     public Node addNode(Vector3 pos, Vector3 dir, double width, Node selectedNode) {
-        Node node = new Node(pathNetwork.nextID(), pos, width, dir);
+        Node node = new Node(pathNetwork.nextNodeID(), pos, width, dir);
 
         pathNetwork.addNode(node);
         spawnNodeArmorStand(node);

@@ -7,15 +7,12 @@ import me.json.pedestrians.data.importing.ImportPathNetwork;
 import me.json.pedestrians.objects.Skin;
 import me.json.pedestrians.objects.framework.path.PathNetwork;
 import me.json.pedestrians.objects.framework.pedestrian.Pedestrian;
-import me.json.pedestrians.objects.framework.pedestrian.PedestrianGroup;
 import me.json.pedestrians.objects.pedestrian_entities.PlayerPedestrianEntity;
 import me.json.pedestrians.ui.EditorView;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.util.UUID;
 
 public class PathNetworkCommandHandler implements CommandExecutor {
 
@@ -34,8 +31,11 @@ public class PathNetworkCommandHandler implements CommandExecutor {
             sender.sendMessage("    loads a pathnetwork");
             sender.sendMessage("/pedestrians pathnetwork backup");
             sender.sendMessage("    backs up the currently editing pathnetwork");
+            sender.sendMessage("\n");
             sender.sendMessage("/pedestrians pathnetwork addPedestrians <name> <count>");
             sender.sendMessage("    adds a specific amount of pedestrian to a pathnetwork");
+            sender.sendMessage("/pedestrians pathnetwork removePedestrians <name> <count>");
+            sender.sendMessage("    removes a specific amount of pedestrian to a pathnetwork");
             sender.sendMessage("[{----}]");
 
             return true;
@@ -113,23 +113,29 @@ public class PathNetworkCommandHandler implements CommandExecutor {
             return true;
         }
 
-        //TODO: this should be way more nicer --> group should be a child of the pathnetwork, then add pedestrian via the pathnetwork.
         if(args[1].equalsIgnoreCase("addpedestrians")) {
 
             PathNetwork pathNetwork = PathNetwork.Registry.pathNetwork(args[2]);
             int count = Integer.parseInt(args[3]);
-            PedestrianGroup currentGroup = new PedestrianGroup(pathNetwork);
 
             for (int i = 0; i < count; i++) {
-
-                new Pedestrian(currentGroup, new PlayerPedestrianEntity(Skin.Registry.randomSkin()), pathNetwork.randomNode());
-
-                if(currentGroup.pedestrians().size() >= Preferences.PEDESTRIAN_GROUP_SIZE && i!=count-1) {
-                    currentGroup = new PedestrianGroup(pathNetwork);
-                }
+                new Pedestrian(pathNetwork, new PlayerPedestrianEntity(Skin.Registry.randomSkin()), pathNetwork.randomNode());
             }
 
             sender.sendMessage("[{Success}] "+"Pedestrians added.");
+            return true;
+        }
+
+        if(args[1].equalsIgnoreCase("removepedestrians")) {
+
+            PathNetwork pathNetwork = PathNetwork.Registry.pathNetwork(args[2]);
+            int count = Integer.parseInt(args[3]);
+
+            for (Pedestrian pedestrian : pathNetwork.pedestrians(count)) {
+                pedestrian.remove();
+            }
+
+            sender.sendMessage("[{Success}] "+"Pedestrians removed.");
             return true;
         }
 

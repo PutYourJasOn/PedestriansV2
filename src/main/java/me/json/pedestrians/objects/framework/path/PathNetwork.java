@@ -1,23 +1,28 @@
 package me.json.pedestrians.objects.framework.path;
 
+import me.json.pedestrians.Preferences;
+import me.json.pedestrians.objects.framework.pedestrian.Pedestrian;
+import me.json.pedestrians.objects.framework.pedestrian.PedestrianThread;
+
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class PathNetwork {
 
     private final String name;
     private final Set<Node> nodes = new HashSet<>();
+    private final Set<PedestrianThread> pedestrianThreads = new HashSet<>();
 
     public PathNetwork(String name) {
         this.name=name;
         Registry.register(name, this);
     }
 
-    //Registers
+    //Node registering
     public void addNode(Node node) {
         nodes.add(node);
     }
-
     public void removeNode(Node node) {
         nodes.remove(node);
         for (Node otherNode : nodes) {
@@ -26,7 +31,7 @@ public class PathNetwork {
         }
     }
 
-    //Getters
+    //Node Getters
     public Set<Node> nodes() {
         return new HashSet<>(nodes);
     }
@@ -41,13 +46,71 @@ public class PathNetwork {
     public Node node(int id) {
         return nodes.stream().filter(n -> n.id()==id).findFirst().orElse(null);
     }
-
-    public int nextID() {
+    public int nextNodeID() {
         int currentHighestID = -1;
         for (Node node : nodes) {
             currentHighestID = node.id() > currentHighestID ? node.id() : currentHighestID;
         }
         return currentHighestID+1;
+    }
+
+    //Pedestrians
+    //(Will be called by pedestrian)
+    public void addPedestrian(Pedestrian pedestrian) {
+
+        //If no threads add one
+        if(pedestrianThreads.isEmpty())
+            pedestrianThreads.add(new PedestrianThread());
+
+        List<PedestrianThread> threads = pedestrianThreads.stream().sorted(Comparator.comparing(t -> t.size())).collect(Collectors.toList());
+
+        //If smallest thread is at max capacity, create new one. Else: add to smallest thread
+        if(threads.get(0).size() >= Preferences.PEDESTRIAN_GROUP_SIZE){
+            pedestrianThreads.add(new PedestrianThread(pedestrian));
+        } else {
+            threads.get(0).add(pedestrian);
+        }
+
+    }
+
+    //(Will be called by pedestrian)
+    public void removePedestrian(Pedestrian pedestrian) {
+
+        for (PedestrianThread pedestrianThread : new HashSet<>(pedestrianThreads)) {
+
+            if(pedestrianThread.remove(pedestrian) && pedestrianThread.size() == 0) {
+                pedestrianThreads.remove(pedestrianThread);
+            }
+
+        }
+    }
+
+    public Set<Pedestrian> pedestrians(int count) {
+
+        Set<Pedestrian> pedestrians = new HashSet<>();
+        List<PedestrianThread> threads = pedestrianThreads.stream().sorted(Comparator.comparing(t -> t.size())).collect(Collectors.toList());
+
+        for (PedestrianThread thread : threads) {
+
+            for (Pedestrian pedestrian : thread.pedestrians()) {
+
+                if(pedestrians.size() == count) return pedestrians;
+                pedestrians.add(pedestrian);
+
+            }
+
+        }
+
+        return pedestrians;
+    }
+
+    public void removeAllPedestrians() {
+        pedestrians(Integer.MAX_VALUE).forEach(p -> p.remove());
+    }
+
+    //DEBUG!
+    public Set<PedestrianThread> pedestrianThreads() {
+        return pedestrianThreads;
     }
 
     //Registry
@@ -62,6 +125,10 @@ public class PathNetwork {
         @Nullable
         public static PathNetwork pathNetwork(String name) {
             return entries.getOrDefault(name, null);
+        }
+
+        public static Set<PathNetwork> pathNetworks() {
+            return new HashSet<>(entries.values());
         }
 
     }

@@ -3,6 +3,7 @@ package me.json.pedestrians.objects.framework.pedestrian;
 import me.json.pedestrians.Main;
 import me.json.pedestrians.Preferences;
 import me.json.pedestrians.objects.framework.path.Node;
+import me.json.pedestrians.objects.framework.path.PathNetwork;
 import me.json.pedestrians.objects.framework.path.connection.ConnectionHandler;
 import me.json.pedestrians.objects.framework.path.connection.ConnectionHandler.ConnectionHandlerEnum;
 import me.json.pedestrians.utils.InterpolationUtil;
@@ -21,31 +22,26 @@ public class Pedestrian {
     private Node targetNode1;
     private Node targetNode2;
 
-    private final PedestrianGroup pedestrianGroup;
+    private final PathNetwork pathNetwork;
     private final PedestrianEntity pedestrianEntity;
 
-    public Pedestrian(PedestrianGroup pedestrianGroup, PedestrianEntity pedestrianEntity, Node originNode) {
+    public Pedestrian(PathNetwork pathNetwork, PedestrianEntity pedestrianEntity, Node originNode) {
         this.pos=ConnectionHandlerEnum.DIRECT_CONNECTION_HANDLER.connectionHandler().targetPos(null, originNode, null, sideOffset);
-        this.pedestrianGroup = pedestrianGroup;
+        this.pathNetwork = pathNetwork;
         this.pedestrianEntity = pedestrianEntity.initialize(this).spawn(location());
 
-        pedestrianGroup.registerPedestrian(this);
+        pathNetwork.addPedestrian(this);
         Node targetNode1 = originNode.generateNextNode(originNode);
         updateNode(originNode, targetNode1, targetNode1.generateNextNode(originNode));
     }
 
-    public Pedestrian(PedestrianGroup pedestrianGroup, PedestrianEntity pedestrianEntity, Node originNode, Node targetedNode) {
+    public Pedestrian(PathNetwork pathNetwork, PedestrianEntity pedestrianEntity, Node originNode, Node targetedNode) {
         this.pos=ConnectionHandlerEnum.DIRECT_CONNECTION_HANDLER.connectionHandler().targetPos(null, originNode, null, sideOffset);
-        this.pedestrianGroup = pedestrianGroup;
+        this.pathNetwork = pathNetwork;
         this.pedestrianEntity = pedestrianEntity.initialize(this).spawn(location());
 
-        pedestrianGroup.registerPedestrian(this);
+        pathNetwork.addPedestrian(this);
         updateNode(originNode, targetedNode, targetedNode.generateNextNode(originNode));
-    }
-
-    //Getters
-    public int id() {
-        return pedestrianGroup.id(this);
     }
 
     private Location location() {
@@ -81,7 +77,7 @@ public class Pedestrian {
 
     public void remove() {
         pedestrianEntity.remove();
-        pedestrianGroup.removePedestrian(this);
+        pathNetwork.removePedestrian(this);
     }
 
     //When targetedNode gets reached

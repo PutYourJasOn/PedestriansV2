@@ -2,7 +2,7 @@ package me.json.pedestrians;
 
 import me.json.pedestrians.commands.MainCommandHandler;
 import me.json.pedestrians.objects.Skin;
-import me.json.pedestrians.objects.framework.pedestrian.PedestrianGroup;
+import me.json.pedestrians.objects.framework.path.PathNetwork;
 import me.json.pedestrians.ui.EditorView;
 import me.json.pedestrians.ui.EditorViewInventory;
 import me.json.pedestrians.ui.listeners.*;
@@ -35,7 +35,7 @@ public class Main extends JavaPlugin {
     @Override
     public void onDisable() {
         EditorView.Registry.editorViews().forEach(EditorView::stop);
-        PedestrianGroup.Registry.pedestrianGroups().forEach(PedestrianGroup::remove);
+        PathNetwork.Registry.pathNetworks().forEach(p -> p.removeAllPedestrians());
     }
 
     //Init

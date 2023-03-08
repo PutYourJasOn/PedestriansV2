@@ -17,31 +17,6 @@ public class PlayerPedestrianEntity implements PedestrianEntity {
 
     @Override
     public PedestrianEntity initialize(Pedestrian pedestrian) {
-
-        /*
-        Bukkit.getScheduler().runTaskAsynchronously(Main.plugin(), () -> {
-
-            try {
-
-                URL url = new URL("https://api.ashcon.app/mojang/v2/user/" + uuid.toString());
-                URLConnection connection = url.openConnection();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-
-                JsonObject jsonObject = JsonParser.parseReader(reader).getAsJsonObject();
-                jsonObject = jsonObject.get("textures").getAsJsonObject().get("raw").getAsJsonObject();
-                base64 = jsonObject.get("value").getAsString();
-                signature = jsonObject.get("signature").getAsString();
-
-                reader.close();
-
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-
-        });
-
-         */
-
         return this;
     }
 

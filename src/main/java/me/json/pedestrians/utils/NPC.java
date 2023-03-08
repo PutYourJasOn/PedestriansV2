@@ -171,7 +171,6 @@ public class NPC {
         packet.getIntLists().write(0, entityIDs);
 
         ProtocolLibrary.getProtocolManager().sendServerPacket(player, packet);
-
     }
 
     private void broadcastToViewers(PacketContainer... packets) {

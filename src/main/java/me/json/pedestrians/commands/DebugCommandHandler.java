@@ -1,6 +1,7 @@
 package me.json.pedestrians.commands;
 
-import me.json.pedestrians.objects.framework.pedestrian.PedestrianGroup;
+import me.json.pedestrians.objects.framework.path.PathNetwork;
+import me.json.pedestrians.objects.framework.pedestrian.PedestrianThread;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -8,10 +9,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.UUID;
@@ -40,12 +39,14 @@ public class DebugCommandHandler implements CommandExecutor {
 
         if(args[1].equalsIgnoreCase("groupInfo")) {
 
-            sender.sendMessage("[{Groups}]");
-            for (PedestrianGroup pedestrianGroup : PedestrianGroup.Registry.pedestrianGroups()) {
+            sender.sendMessage("[{Threads}]");
+            for (PathNetwork pathNetwork : PathNetwork.Registry.pathNetworks()) {
 
-                sender.sendMessage("Group: "+pedestrianGroup.id());
-                sender.sendMessage("    "+pedestrianGroup.pathNetwork().name());
-                sender.sendMessage("    "+pedestrianGroup.pedestrians().size());
+                for (PedestrianThread pedestrianThread : pathNetwork.pedestrianThreads()) {
+                    sender.sendMessage("Network: "+pathNetwork.name());
+                    sender.sendMessage("    "+pedestrianThread.size());
+                }
+
             }
             sender.sendMessage("[{------}]");
 

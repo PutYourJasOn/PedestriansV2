@@ -7,7 +7,6 @@ import org.bukkit.command.CommandSender;
 public class MainCommandHandler implements CommandExecutor {
 
     private static final PathNetworkCommandHandler pathNetworkCommandHandler = new PathNetworkCommandHandler();
-    private static final PedestrianGroupCommandHandler pedestrianGroupCommandHandler = new PedestrianGroupCommandHandler();
     private static final SkinCommandHandler skinCommandHandler = new SkinCommandHandler();
     private static final DebugCommandHandler debugCommandHandler = new DebugCommandHandler();
 
@@ -22,8 +21,6 @@ public class MainCommandHandler implements CommandExecutor {
             sender.sendMessage("[{Help}] ");
             sender.sendMessage("/pedestrians pathnetwork");
             sender.sendMessage("    opens up a help menu");
-            //sender.sendMessage("/pedestrians pedestriangroup");
-            //sender.sendMessage("    opens up a help menu");
             sender.sendMessage("/pedestrians skin");
             sender.sendMessage("    opens up a help menu");
             sender.sendMessage("/pedestrians debug");
@@ -37,11 +34,6 @@ public class MainCommandHandler implements CommandExecutor {
 
             if(args[0].equalsIgnoreCase("pathnetwork")) {
                 pathNetworkCommandHandler.onCommand(sender, command, s, args);
-                return true;
-            }
-
-            if(args[0].equalsIgnoreCase("pedestriangroup")) {
-                pedestrianGroupCommandHandler.onCommand(sender, command, s, args);
                 return true;
             }
 
