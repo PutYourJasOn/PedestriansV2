@@ -71,13 +71,42 @@ public class Pedestrian {
         rot.x(targetLocation.getYaw());
         rot.y(targetLocation.getPitch());
 
+        Location loc = location();
+        loc.setY(groundHeightLock(loc));
+
         //Update to entity
-        pedestrianEntity.asyncMove(location());
+        pedestrianEntity.asyncMove(loc);
     }
 
     public void remove() {
         pedestrianEntity.remove();
         pathNetwork.removePedestrian(this);
+    }
+
+    //Height
+    //TODO: slabs --> +/- 0.5
+    private int groundHeightLock(Location loc) {
+
+        int blockY = (int) Math.round(loc.getY());
+
+        if(loc.getWorld().getBlockAt(loc.getBlockX(), blockY, loc.getBlockZ()).isPassable()) {
+
+            if(loc.getWorld().getBlockAt(loc.getBlockX(), blockY-1, loc.getBlockZ()).isPassable()) {
+                return blockY-1;
+            } else {
+                return blockY;
+            }
+
+        } else {
+
+            if(loc.getWorld().getBlockAt(loc.getBlockX(), blockY+1, loc.getBlockZ()).isPassable()) {
+                return blockY+1;
+            } else {
+                return blockY;
+            }
+
+        }
+
     }
 
     //When targetedNode gets reached

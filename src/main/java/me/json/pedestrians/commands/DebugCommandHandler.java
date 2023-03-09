@@ -1,5 +1,6 @@
 package me.json.pedestrians.commands;
 
+import me.json.pedestrians.objects.framework.path.Node;
 import me.json.pedestrians.objects.framework.path.PathNetwork;
 import me.json.pedestrians.objects.framework.pedestrian.PedestrianThread;
 import org.bukkit.Bukkit;
@@ -73,6 +74,22 @@ public class DebugCommandHandler implements CommandExecutor {
 
             return true;
         }
+
+        //2 arg commands
+        if(args.length < 4) {
+            sender.sendMessage("[{Error}] Wrong command or arguments.");
+            return true;
+        }
+
+        if(args[1].equalsIgnoreCase("attractiveness")) {
+            PathNetwork pathNetwork = PathNetwork.Registry.pathNetwork(args[2]);
+
+            Node node = pathNetwork.node(Integer.parseInt(args[3]));
+            sender.sendMessage(node.attractiveness()+"");
+
+            return true;
+        }
+
 
         sender.sendMessage("[{Error}] Wrong command or arguments.");
         return true;

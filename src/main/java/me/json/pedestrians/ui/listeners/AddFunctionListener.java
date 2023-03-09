@@ -75,8 +75,11 @@ public class AddFunctionListener extends BukkitRunnable implements Listener {
         }else {
             newWidth = addTask.width+scrollDirection*2;
         }
-        addTask.width(newWidth);
-        
+
+        if(newWidth > 0) {
+            addTask.width(newWidth);
+        }
+
     }
 
     @EventHandler
@@ -104,13 +107,19 @@ public class AddFunctionListener extends BukkitRunnable implements Listener {
 
         if(currentStep == 1) {
 
-            if(noRounding.contains(e.getPlayer())) {
-                addTask.pos(new Vector3(RayTraceUtil.rayTraceResult(e.getPlayer())));
-            } else{
-                addTask.pos(new Vector3(RayTraceUtil.roundedRayTraceResult(e.getPlayer())));
+            Vector pos;
+
+            if (noRounding.contains(e.getPlayer())) {
+                pos = RayTraceUtil.rayTraceResult(e.getPlayer());
+            } else {
+                pos = RayTraceUtil.roundedRayTraceResult(e.getPlayer());
             }
 
-            e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("Position set."));
+            if(pos != null) {
+                addTask.pos(new Vector3(pos));
+                e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("Position set."));
+            }
+            
         }
 
         if(currentStep == 2) {

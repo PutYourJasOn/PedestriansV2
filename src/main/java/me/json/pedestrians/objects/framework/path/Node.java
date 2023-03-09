@@ -12,6 +12,7 @@ public class Node {
     private final Vector3 pos;
     private final double width;
     private final Vector3 direction; //Path direction
+    private Integer forcedAttractiveness;
 
     private final Map<Node, Connection> connectedNodes = new HashMap<>();
 
@@ -43,13 +44,21 @@ public class Node {
         return this.direction;
     }
 
-    //Registers
+    public int attractiveness() {
+        return forcedAttractiveness == null ? (int) width*10 : forcedAttractiveness;
+    }
+
+    //Registers Setters
     public void registerConnectedNode(Node node, Connection connection) {
         this.connectedNodes.put(node, connection);
     }
 
     public void removeConnection(Node connectedNode) {
         this.connectedNodes.remove(connectedNode);
+    }
+
+    public void forcedAttractiveness(Integer forcedAttractiveness) {
+        this.forcedAttractiveness=forcedAttractiveness;
     }
 
     //Functionality
@@ -69,7 +78,7 @@ public class Node {
 
         for (Node node : nodeCandidates.keySet()) {
 
-            for (int i = 0; i < nodeCandidates.get(node).probability(); i++) {
+            for (int i = 0; i < node.attractiveness(); i++) {
                 candidates.add(node);
             }
 

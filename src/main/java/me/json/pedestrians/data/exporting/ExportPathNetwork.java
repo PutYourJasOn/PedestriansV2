@@ -48,7 +48,7 @@ public class ExportPathNetwork extends BukkitRunnable {
 
                 JSONObject jsonConnection = new JSONObject();
                 jsonConnection.put("id",connectedNode.id());
-                jsonConnection.put("probability",connection.probability());
+                //jsonConnection.put("probability",connection.probability());
                 jsonConnection.put("connection_handler", ConnectionHandler.ConnectionHandlerEnum.connectionHandlerEnum(connection.connectionHandler()).name());
                 jsonConnections.add(jsonConnection);
             }

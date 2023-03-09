@@ -84,18 +84,6 @@ public class ConnectionFunctionListener implements Listener {
                 }
 
                 addTask.type(type);
-                e.getPlayer().sendMessage("Enter a probability (default: 50)");
-
-            } catch (NumberFormatException ex) {
-                e.getPlayer().sendMessage("Wrong input!");
-            }
-
-        }else {
-
-            try {
-
-                int probability = Integer.parseInt(e.getMessage());
-                addTask.probability(probability);
 
                 Bukkit.getScheduler().runTask(Main.plugin(), () -> {
                     addTask.add();
@@ -129,7 +117,6 @@ public class ConnectionFunctionListener implements Listener {
         private final Editor editor;
         private final Node targetNode;
         private Integer type;
-        private Integer probability;
 
         private AddTask(EditorView editorView, Editor editor, Node targetNode) {
             this.editorView = editorView;
@@ -146,12 +133,8 @@ public class ConnectionFunctionListener implements Listener {
             this.type=type;
         }
 
-        public void probability(int probability) {
-            this.probability=probability;
-        }
-
         public void add() {
-            editorView.addConnection(editor, targetNode, ConnectionHandler.ConnectionHandlerEnum.values()[type].connectionHandler(), probability);
+            editorView.addConnection(editor, targetNode, ConnectionHandler.ConnectionHandlerEnum.values()[type].connectionHandler());
         }
 
     }

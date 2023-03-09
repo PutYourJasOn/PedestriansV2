@@ -145,8 +145,8 @@ public class EditorView extends BukkitRunnable {
         pathNetwork.addNode(node);
         spawnNodeArmorStand(node);
 
-        node.registerConnectedNode(selectedNode, new Connection(50, ConnectionHandler.ConnectionHandlerEnum.DIRECT_CONNECTION_HANDLER.connectionHandler()));
-        selectedNode.registerConnectedNode(node, new Connection(50, ConnectionHandler.ConnectionHandlerEnum.DIRECT_CONNECTION_HANDLER.connectionHandler()));
+        node.registerConnectedNode(selectedNode, new Connection( ConnectionHandler.ConnectionHandlerEnum.DIRECT_CONNECTION_HANDLER.connectionHandler()));
+        selectedNode.registerConnectedNode(node, new Connection( ConnectionHandler.ConnectionHandlerEnum.DIRECT_CONNECTION_HANDLER.connectionHandler()));
 
         return node;
     }
@@ -168,9 +168,9 @@ public class EditorView extends BukkitRunnable {
         editor.selectedNode().removeConnection(targetNode);
     }
 
-    public void addConnection(Editor editor, Node targetNode, ConnectionHandler connectionHandler, int probability) {
+    public void addConnection(Editor editor, Node targetNode, ConnectionHandler connectionHandler) {
         if(editor.selectedNode().connectedNodes().contains(targetNode)) return;
-        editor.selectedNode().registerConnectedNode(targetNode, new Connection(probability, connectionHandler));
+        editor.selectedNode().registerConnectedNode(targetNode, new Connection(connectionHandler));
     }
 
     //Rendering

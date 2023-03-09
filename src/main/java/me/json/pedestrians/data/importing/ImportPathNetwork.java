@@ -64,12 +64,12 @@ public class ImportPathNetwork extends BukkitRunnable {
                     JSONObject jsonConnection = (JSONObject) objectConnection;
 
                     int connectedNodeID = (int) (long) jsonConnection.get("id");
-                    int probability = (int) (long) jsonConnection.get("probability");
+                    //int probability = (int) (long) jsonConnection.get("probability");
                     String connectionHandlerTitle = (String) jsonConnection.get("connection_handler");
 
                     ConnectionHandler connectionHandler = ConnectionHandlerEnum.valueOf(connectionHandlerTitle).connectionHandler();
                     Node connectedNode = pathNetwork.node(connectedNodeID);
-                    Connection connection = new Connection(probability, connectionHandler);
+                    Connection connection = new Connection(connectionHandler);
 
                     node.registerConnectedNode(connectedNode, connection);
                 }
