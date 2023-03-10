@@ -23,7 +23,7 @@ public class PlayerPedestrianEntity implements PedestrianEntity {
     @Override
     public PedestrianEntity spawn(Location location) {
 
-        npc = new NPC("", location, skin.base64(), skin.signature());
+        npc = new NPC(" ", location, skin.base64(), skin.signature());
         skin = null;
         return this;
     }

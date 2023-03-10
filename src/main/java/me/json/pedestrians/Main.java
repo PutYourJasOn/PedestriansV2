@@ -1,6 +1,7 @@
 package me.json.pedestrians;
 
 import me.json.pedestrians.commands.MainCommandHandler;
+import me.json.pedestrians.listeners.JoinListener;
 import me.json.pedestrians.objects.Skin;
 import me.json.pedestrians.objects.framework.path.PathNetwork;
 import me.json.pedestrians.ui.EditorView;
@@ -9,6 +10,8 @@ import me.json.pedestrians.ui.listeners.*;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.scoreboard.Team;
 
 public class Main extends JavaPlugin {
 
@@ -23,6 +26,7 @@ public class Main extends JavaPlugin {
 
         editorViewInventory = new EditorViewInventory();
         initListeners();
+        initHiddenNamesTeam();
 
         this.getCommand("pedestrians").setExecutor(new MainCommandHandler());
 
@@ -46,7 +50,18 @@ public class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new AddFunctionListener(), this);
         Bukkit.getPluginManager().registerEvents(new RemoveFunctionListener(), this);
         Bukkit.getPluginManager().registerEvents(new ConnectionFunctionListener(), this);
+        Bukkit.getPluginManager().registerEvents(new JoinListener(), this);
+    }
 
+    private void initHiddenNamesTeam() {
+
+        ScoreboardManager manager = Bukkit.getScoreboardManager();
+
+        Team team = manager.getMainScoreboard().getTeam("HIDDEN_NAMES");
+        if(team == null)
+            team = manager.getMainScoreboard().registerNewTeam("HIDDEN_NAMES");
+
+        team.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.NEVER);
     }
 
     //Getters

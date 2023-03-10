@@ -5,11 +5,11 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.*;
 import me.json.pedestrians.Main;
+import me.json.pedestrians.listeners.JoinListener;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class NPC {
@@ -48,6 +48,7 @@ public class NPC {
 
         //Are there nonViewers who should be viewing?
         List<Player> nonViewers = location.getWorld().getPlayers();
+        nonViewers.removeAll(JoinListener.justJoinedPlayers); //To decrease wrong skin bug, don't spawn npc's to just joined players
         nonViewers.removeAll(viewers);
 
         for (Player player : nonViewers) {
@@ -156,10 +157,18 @@ public class NPC {
         ProtocolLibrary.getProtocolManager().sendServerPacket(player, packet1);
         ProtocolLibrary.getProtocolManager().sendServerPacket(player, packet3);
 
-        //Late send
+        sendPacketLater(player, packet2, 10);
+
+    }
+
+    private void sendPacketLater(Player player, PacketContainer packet, long delay) {
+
         Bukkit.getScheduler().runTaskLaterAsynchronously(Main.plugin(), () -> {
-            ProtocolLibrary.getProtocolManager().sendServerPacket(player, packet2);
-        }, 5);
+
+            if(Main.plugin().isEnabled())
+                ProtocolLibrary.getProtocolManager().sendServerPacket(player, packet);
+
+        }, delay);
 
     }
 
@@ -185,7 +194,15 @@ public class NPC {
     }
 
     private boolean shouldBeSpawned(Player player) {
-        double distance = player.getLocation().distanceSquared(this.location);
+
+        double distance;
+
+        try {
+            distance = player.getLocation().distanceSquared(this.location);
+        } catch (IllegalArgumentException ex) {
+            return false;
+        }
+
         return distance <= npcSpawnRadiusSquared;
     }
 

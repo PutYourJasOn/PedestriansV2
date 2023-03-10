@@ -103,9 +103,7 @@ public class EditorView extends BukkitRunnable {
     @Nullable
     public ArmorStand stand(Node node) {
         if(node == null) return null;
-        System.out.println(1);
         if(!pathNetwork.nodes().contains(node)) return null;
-        System.out.println(2);
         return nodeStands.stream().filter(s -> Integer.parseInt(s.getCustomName().replace("Node: ",""))==node.id()).findAny().get();
     }
 

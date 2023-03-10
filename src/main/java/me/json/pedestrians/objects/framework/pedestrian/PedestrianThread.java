@@ -4,6 +4,7 @@ import me.json.pedestrians.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ConcurrentModificationException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -65,7 +66,13 @@ public class PedestrianThread extends BukkitRunnable {
     }
 
     private void tick() {
-        pedestrians.forEach(Pedestrian::move);
+
+        try {
+            pedestrians.forEach(Pedestrian::move);
+        } catch (ConcurrentModificationException ex) {
+            //This shouldn't happen too often, so if it does; just skip the tick.
+        }
+
     }
 
 }

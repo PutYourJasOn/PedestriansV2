@@ -9,6 +9,7 @@ import me.json.pedestrians.objects.framework.path.connection.ConnectionHandler.C
 import me.json.pedestrians.utils.InterpolationUtil;
 import me.json.pedestrians.utils.Vector3;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 
 public class Pedestrian {
 
@@ -85,22 +86,27 @@ public class Pedestrian {
 
     //Height
     //TODO: slabs --> +/- 0.5
-    private int groundHeightLock(Location loc) {
+    private double groundHeightLock(Location loc) {
 
         int blockY = (int) Math.round(loc.getY());
+        Block mainBlock = loc.getWorld().getBlockAt(loc.getBlockX(), blockY, loc.getBlockZ());
 
-        if(loc.getWorld().getBlockAt(loc.getBlockX(), blockY, loc.getBlockZ()).isPassable()) {
+        if(mainBlock.isPassable()) {
 
-            if(loc.getWorld().getBlockAt(loc.getBlockX(), blockY-1, loc.getBlockZ()).isPassable()) {
+            Block block = loc.getWorld().getBlockAt(loc.getBlockX(), blockY-1, loc.getBlockZ());
+
+            if(block.isPassable()) {
                 return blockY-1;
             } else {
-                return blockY;
+                return blockY - (1-block.getBoundingBox().getHeight());
             }
 
         } else {
 
-            if(loc.getWorld().getBlockAt(loc.getBlockX(), blockY+1, loc.getBlockZ()).isPassable()) {
-                return blockY+1;
+            Block block = loc.getWorld().getBlockAt(loc.getBlockX(), blockY+1, loc.getBlockZ());
+
+            if(block.isPassable()) {
+                return blockY + mainBlock.getBoundingBox().getHeight();
             } else {
                 return blockY;
             }

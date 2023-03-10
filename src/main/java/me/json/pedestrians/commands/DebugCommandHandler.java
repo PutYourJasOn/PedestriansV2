@@ -1,8 +1,14 @@
 package me.json.pedestrians.commands;
 
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.events.PacketContainer;
 import me.json.pedestrians.objects.framework.path.Node;
 import me.json.pedestrians.objects.framework.path.PathNetwork;
 import me.json.pedestrians.objects.framework.pedestrian.PedestrianThread;
+import net.minecraft.world.scores.Scoreboard;
+import net.minecraft.world.scores.ScoreboardTeam;
+import net.minecraft.world.scores.ScoreboardTeamBase;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -14,6 +20,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.UUID;
 
 public class DebugCommandHandler implements CommandExecutor {
@@ -52,6 +60,21 @@ public class DebugCommandHandler implements CommandExecutor {
             sender.sendMessage("[{------}]");
 
             return true;
+        }
+
+        if(args[1].equalsIgnoreCase("pig")) {
+
+            //TODO send to players on join
+            PacketContainer packet4 = new PacketContainer(PacketType.Play.Server.SCOREBOARD_TEAM);
+            packet4.getStrings().write(0, "HIDDEN_NAMES");
+            packet4.getIntegers().write(0, 3);
+
+            Collection<String> entityIDs = new ArrayList<>();
+            entityIDs.add(" ");
+            packet4.getSpecificModifier(Collection.class).write(0, entityIDs);
+
+            ProtocolLibrary.getProtocolManager().broadcastServerPacket(packet4);
+
         }
 
         //1 arg commands
