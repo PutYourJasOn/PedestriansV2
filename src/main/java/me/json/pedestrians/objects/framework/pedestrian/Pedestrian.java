@@ -85,7 +85,6 @@ public class Pedestrian {
     }
 
     //Height
-    //TODO: slabs --> +/- 0.5
     private double groundHeightLock(Location loc) {
 
         int blockY = (int) Math.round(loc.getY());

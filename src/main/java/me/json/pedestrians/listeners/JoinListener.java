@@ -17,8 +17,9 @@ import java.util.Set;
 
 public class JoinListener implements Listener {
 
-    //TODO: TESTING
+    //Static +++
     public static final Set<Player> justJoinedPlayers = new HashSet<>();
+    //Static ---
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
@@ -26,7 +27,7 @@ public class JoinListener implements Listener {
         //Send packet to add all players named " " to the HIDDEN_NAMES team
         sendAddToTeamPacket(e.getPlayer());
 
-        //Remove from just joined
+        //Handle just joined
         justJoinedPlayers.add(e.getPlayer());
         Bukkit.getScheduler().runTaskLater(Main.plugin(), () -> justJoinedPlayers.remove(e.getPlayer()), 20);
 

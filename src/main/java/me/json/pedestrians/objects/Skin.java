@@ -33,7 +33,7 @@ public class Skin {
         }
 
         public static Skin randomSkin() {
-            return skins.stream().skip(new Random().nextInt(skins.size())).findFirst().orElse(null);
+            return skins.isEmpty() ? null : skins.stream().skip(new Random().nextInt(skins.size())).findFirst().orElse(null);
         }
 
     }

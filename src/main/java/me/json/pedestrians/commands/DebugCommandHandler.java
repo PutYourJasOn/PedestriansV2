@@ -62,21 +62,6 @@ public class DebugCommandHandler implements CommandExecutor {
             return true;
         }
 
-        if(args[1].equalsIgnoreCase("pig")) {
-
-            //TODO send to players on join
-            PacketContainer packet4 = new PacketContainer(PacketType.Play.Server.SCOREBOARD_TEAM);
-            packet4.getStrings().write(0, "HIDDEN_NAMES");
-            packet4.getIntegers().write(0, 3);
-
-            Collection<String> entityIDs = new ArrayList<>();
-            entityIDs.add(" ");
-            packet4.getSpecificModifier(Collection.class).write(0, entityIDs);
-
-            ProtocolLibrary.getProtocolManager().broadcastServerPacket(packet4);
-
-        }
-
         //1 arg commands
         if(args.length < 3) {
             sender.sendMessage("[{Error}] Wrong command or arguments.");

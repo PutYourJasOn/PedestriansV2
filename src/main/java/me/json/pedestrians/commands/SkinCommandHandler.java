@@ -2,6 +2,7 @@ package me.json.pedestrians.commands;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import me.json.pedestrians.data.exporting.ExportSkin;
 import me.json.pedestrians.data.importing.ImportPathNetwork;
 import me.json.pedestrians.objects.Skin;
 import org.bukkit.command.Command;
@@ -22,7 +23,7 @@ public class SkinCommandHandler implements CommandExecutor {
 
         if(args.length == 1 || (args.length == 2 && args[1].equalsIgnoreCase("help"))){
             sender.sendMessage("[{Help}]");
-            sender.sendMessage("/pedestrians skin add <UUID>");
+            sender.sendMessage("/pedestrians skin add <UUID> (name)");
             sender.sendMessage("    adds a skin to the system");
             sender.sendMessage("[{----}]");
 
@@ -48,8 +49,13 @@ public class SkinCommandHandler implements CommandExecutor {
                 String base64 = jsonObject.get("value").getAsString();
                 String signature = jsonObject.get("signature").getAsString();
 
-                new Skin(base64, signature);
-                sender.sendMessage("[{Success}] "+"Skin added.");
+                String name = "?";
+                if(args.length > 3)
+                    name = args[3];
+
+                new ExportSkin(name, new Skin(base64, signature), v -> {
+                    sender.sendMessage("[{Success}] "+"Skin added.");
+                }).start();
 
                 reader.close();
 
