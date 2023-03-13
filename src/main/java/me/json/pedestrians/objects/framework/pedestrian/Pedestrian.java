@@ -10,21 +10,23 @@ import me.json.pedestrians.utils.InterpolationUtil;
 import me.json.pedestrians.utils.Vector3;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 
 public class Pedestrian {
+
+    private final PathNetwork pathNetwork;
+    private final PedestrianEntity pedestrianEntity;
 
     private Vector3 pos;
     private Vector3 rot = Vector3.ZERO();
     private Vector3 targetedPos; //Different from the pos of the targetedNode because of sideOffset
+    private Player targetedPlayer;
 
-    private final float velocity = generateRandomVelocity();
     private final float sideOffset = generateRandomSideOffset();
+    private float velocity = generateRandomVelocity();
 
     private Node targetNode1;
     private Node targetNode2;
-
-    private final PathNetwork pathNetwork;
-    private final PedestrianEntity pedestrianEntity;
 
     public Pedestrian(PathNetwork pathNetwork, PedestrianEntity pedestrianEntity, Node originNode) {
         this.pos=ConnectionHandlerEnum.DIRECT_CONNECTION_HANDLER.connectionHandler().targetPos(null, originNode, null, sideOffset);
@@ -45,6 +47,7 @@ public class Pedestrian {
         updateNode(originNode, targetedNode, targetedNode.generateNextNode(originNode));
     }
 
+    //Getters
     private Location location() {
         Location location = new Location(Main.world(), pos.x(), pos.y(), pos.z());
         location.setYaw((float) rot.x());
@@ -52,8 +55,36 @@ public class Pedestrian {
         return location;
     }
 
+    public float velocity() {
+        return velocity;
+    }
+
+    public Vector3 pos() {
+        return pos;
+    }
+
+    //Setters
+    public void velocity(float velocity) {
+        this.velocity = velocity;
+    }
+
+    public void targetedPlayer(Player player) {
+        this.targetedPlayer = player;
+    }
+
     //Functionality
-    public void move() {
+    public void tick() {
+
+        if(targetedPlayer != null && velocity == 0) {
+            targetPlayer();
+            return;
+        }
+
+        move();
+
+    }
+
+    private void move() {
 
         Vector3 directionToTarget = targetedPos.clone().subtract(pos);
         float distance = directionToTarget.magnitude();
@@ -63,11 +94,18 @@ public class Pedestrian {
             updateNode(targetNode1, targetNode2, targetNode2.generateNextNode(targetNode1));
         }
 
+        //
         Location targetLocation = new Location(Main.world(),targetedPos.x(),targetedPos.y(),targetedPos.z()).setDirection(directionToTarget.toBukkitVector());
-        targetLocation.setYaw(InterpolationUtil.floatAngleLerp((float) rot.x(), targetLocation.getYaw(), Preferences.PEDESTRIAN_ROTATION_VELOCITY));
 
+        float targetYaw = targetLocation.getYaw();
+        if(targetedPlayer != null) {
+            targetYaw = targetLocation.setDirection(targetedPlayer.getLocation().toVector().subtract(pos.toBukkitVector())).getYaw();
+        }
+
+        targetLocation.setYaw(InterpolationUtil.floatAngleLerp((float) rot.x(), targetYaw, Preferences.PEDESTRIAN_ROTATION_VELOCITY));
         Vector3 velocity = new Vector3(targetLocation.getDirection()).multiply(this.velocity);
 
+        //
         pos.add(velocity);
         rot.x(targetLocation.getYaw());
         rot.y(targetLocation.getPitch());
@@ -76,6 +114,20 @@ public class Pedestrian {
         loc.setY(groundHeightLock(loc));
 
         //Update to entity
+        pedestrianEntity.asyncMove(loc);
+    }
+
+    private void targetPlayer() {
+
+        Location loc = location();
+
+        float targetYaw = loc.setDirection(targetedPlayer.getLocation().toVector().subtract(pos.toBukkitVector())).getYaw();
+        loc.setYaw(InterpolationUtil.floatAngleLerp((float) rot.x(), targetYaw, Preferences.PEDESTRIAN_ROTATION_VELOCITY));
+
+        rot.x(loc.getYaw());
+        rot.y(loc.getPitch());
+
+        loc.setY(groundHeightLock(loc));
         pedestrianEntity.asyncMove(loc);
     }
 

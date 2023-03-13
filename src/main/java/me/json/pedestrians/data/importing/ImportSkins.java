@@ -30,10 +30,11 @@ public class ImportSkins extends BukkitRunnable {
 
             while (line != null) {
                 String[] args = line.split(" ");
+                String name = args[0];
                 String base64 = args[1];
                 String signature = args[2];
 
-                new Skin(base64, signature);
+                new Skin(name, base64, signature);
 
                 line = reader.readLine();
             }

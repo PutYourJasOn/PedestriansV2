@@ -1,8 +1,10 @@
 package me.json.pedestrians;
 
+import com.comphenix.protocol.ProtocolLibrary;
 import me.json.pedestrians.commands.MainCommandHandler;
 import me.json.pedestrians.data.importing.ImportSkins;
 import me.json.pedestrians.listeners.JoinListener;
+import me.json.pedestrians.listeners.packets.InteractListener;
 import me.json.pedestrians.objects.Skin;
 import me.json.pedestrians.objects.framework.path.PathNetwork;
 import me.json.pedestrians.ui.EditorView;
@@ -15,7 +17,6 @@ import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 
 import java.io.File;
-import java.io.IOException;
 
 public class Main extends JavaPlugin {
 
@@ -53,6 +54,8 @@ public class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new RemoveFunctionListener(), this);
         Bukkit.getPluginManager().registerEvents(new ConnectionFunctionListener(), this);
         Bukkit.getPluginManager().registerEvents(new JoinListener(), this);
+
+        ProtocolLibrary.getProtocolManager().addPacketListener(new InteractListener());
     }
 
     private void initHiddenNamesTeam() {

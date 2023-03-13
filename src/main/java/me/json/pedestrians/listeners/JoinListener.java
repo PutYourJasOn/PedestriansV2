@@ -29,7 +29,7 @@ public class JoinListener implements Listener {
 
         //Handle just joined
         justJoinedPlayers.add(e.getPlayer());
-        Bukkit.getScheduler().runTaskLater(Main.plugin(), () -> justJoinedPlayers.remove(e.getPlayer()), 20);
+        Bukkit.getScheduler().runTaskLater(Main.plugin(), () -> justJoinedPlayers.remove(e.getPlayer()), 20*3);
 
     }
 

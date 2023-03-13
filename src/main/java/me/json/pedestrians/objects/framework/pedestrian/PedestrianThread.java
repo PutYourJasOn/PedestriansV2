@@ -68,7 +68,7 @@ public class PedestrianThread extends BukkitRunnable {
     private void tick() {
 
         try {
-            pedestrians.forEach(Pedestrian::move);
+            pedestrians.forEach(Pedestrian::tick);
         } catch (ConcurrentModificationException ex) {
             //This shouldn't happen too often, so if it does; just skip the tick.
         }

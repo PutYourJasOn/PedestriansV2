@@ -6,10 +6,12 @@ import java.util.Set;
 
 public class Skin {
 
+    private final String name;
     private final String base64;
     private final String signature;
 
-    public Skin(String base64, String signature) {
+    public Skin(String name, String base64, String signature) {
+        this.name = name;
         this.base64 = base64;
         this.signature = signature;
 
@@ -22,6 +24,10 @@ public class Skin {
 
     public String signature() {
         return signature;
+    }
+
+    public String name() {
+        return name;
     }
 
     public static class Registry {

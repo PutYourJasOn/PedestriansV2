@@ -17,17 +17,18 @@ public class NPC {
     private static final int npcSpawnRadius = 35;
     private static final int npcSpawnRadiusSquared = npcSpawnRadius*npcSpawnRadius;
 
-    private final int entityID = new Random().nextInt();
+    private final int entityID;
     private final Set<Player> viewers = new HashSet<>();
     private final PlayerInfoData playerInfoData;
 
     private Location location;
 
-    public NPC(String name, Location location, String skinBase64, String skinSignature) {
+    public NPC(int entityID, Location location, String skinBase64, String skinSignature) {
 
+        this.entityID = entityID;
         this.location = location;
 
-        WrappedGameProfile gameProfile = new WrappedGameProfile(UUID.randomUUID(), name);
+        WrappedGameProfile gameProfile = new WrappedGameProfile(UUID.randomUUID(), " ");
         gameProfile.getProperties().put("textures", new WrappedSignedProperty("textures", skinBase64, skinSignature));
 
         playerInfoData = new PlayerInfoData(
@@ -161,6 +162,16 @@ public class NPC {
 
     }
 
+    private void despawn(Player player) {
+
+        PacketContainer packet = new PacketContainer(PacketType.Play.Server.ENTITY_DESTROY);
+        List<Integer> entityIDs = new ArrayList<>();
+        entityIDs.add(entityID);
+        packet.getIntLists().write(0, entityIDs);
+
+        ProtocolLibrary.getProtocolManager().sendServerPacket(player, packet);
+    }
+
     private void sendPacketLater(Player player, PacketContainer packet, long delay) {
 
         Bukkit.getScheduler().runTaskLaterAsynchronously(Main.plugin(), () -> {
@@ -170,16 +181,6 @@ public class NPC {
 
         }, delay);
 
-    }
-
-    private void despawn(Player player) {
-
-        PacketContainer packet = new PacketContainer(PacketType.Play.Server.ENTITY_DESTROY);
-        List<Integer> entityIDs = new ArrayList<>();
-        entityIDs.add(entityID);
-        packet.getIntLists().write(0, entityIDs);
-
-        ProtocolLibrary.getProtocolManager().sendServerPacket(player, packet);
     }
 
     private void broadcastToViewers(PacketContainer... packets) {
@@ -205,5 +206,6 @@ public class NPC {
 
         return distance <= npcSpawnRadiusSquared;
     }
+
 
 }
