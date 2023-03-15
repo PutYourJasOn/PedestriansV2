@@ -1,12 +1,12 @@
-package me.json.pedestrians.ui.listeners;
+package me.json.pedestrians.uiOLD.listeners;
 
 import me.json.pedestrians.Main;
 import me.json.pedestrians.objects.framework.path.Node;
 import me.json.pedestrians.objects.framework.path.connection.ConnectionHandler;
-import me.json.pedestrians.ui.Editor;
-import me.json.pedestrians.ui.EditorView;
-import me.json.pedestrians.ui.EditorViewInventory;
-import me.json.pedestrians.ui.StickFunction;
+import me.json.pedestrians.uiOLD.Editor;
+import me.json.pedestrians.uiOLD.EditorView;
+import me.json.pedestrians.uiOLD.EditorViewInventory;
+import me.json.pedestrians.uiOLD.StickFunction;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;

@@ -1,9 +1,9 @@
-package me.json.pedestrians.ui.listeners;
+package me.json.pedestrians.uiOLD.listeners;
 
 import me.json.pedestrians.Main;
-import me.json.pedestrians.ui.Editor;
-import me.json.pedestrians.ui.EditorView;
-import me.json.pedestrians.ui.EditorViewInventory;
+import me.json.pedestrians.uiOLD.Editor;
+import me.json.pedestrians.uiOLD.EditorView;
+import me.json.pedestrians.uiOLD.EditorViewInventory;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;

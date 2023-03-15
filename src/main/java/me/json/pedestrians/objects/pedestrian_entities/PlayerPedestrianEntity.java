@@ -87,7 +87,7 @@ public class PlayerPedestrianEntity implements PedestrianEntity {
             }, 20*2);
 
             //Skin details
-            if(player.isOp()) {
+            if(player.hasPermission(Preferences.MAIN_PERMISSION)) {
                 player.sendMessage("Skin: "+skin.name());
             }
 

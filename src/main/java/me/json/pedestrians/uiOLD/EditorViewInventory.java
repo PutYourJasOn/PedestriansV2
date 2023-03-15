@@ -1,6 +1,5 @@
-package me.json.pedestrians.ui;
+package me.json.pedestrians.uiOLD;
 
-import me.json.pedestrians.ui.tasks.Task;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -9,9 +8,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
 
 public class EditorViewInventory {
 
@@ -23,34 +20,27 @@ public class EditorViewInventory {
     private static final String crossSkin = "{SkullOwner:{Id:[I;-357038652,-1170846806,-2078329597,496329811],Properties:{textures:[{Value:\"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTljZGI5YWYzOGNmNDFkYWE1M2JjOGNkYTc2NjVjNTA5NjMyZDE0ZTY3OGYwZjE5ZjI2M2Y0NmU1NDFkOGEzMCJ9fX0=\"}]}}}";
     private static final String arrowSkin = "{SkullOwner:{Id:[I;1020901283,-927184379,-1934029971,1181990057],Properties:{textures:[{Value:\"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzFjMGVkZWRkNzExNWZjMWIyM2Q1MWNlOTY2MzU4YjI3MTk1ZGFmMjZlYmI2ZTQ1YTY2YzM0YzY5YzM0MDkxIn19fQ==\"}]}}}";
 
-    private final Map<ItemStack, Task> taskItems = new HashMap<>();
     private final Inventory inventory;
 
     private final ItemStack nodeArrowHead;
+    private final ItemStack uploadHead;
+    private final ItemStack settingsHead;
+    private final ItemStack plusHead;
+    private final ItemStack minusHead;
+    private final ItemStack crossHead;
+    private final ItemStack arrowHead;
 
     public EditorViewInventory() {
 
         inventory = Bukkit.createInventory(null, InventoryType.PLAYER);
 
         //Items
-        ItemStack uploadHead = head(uploadSkin, "Export/Save PathNetwork");
-        inventory.setItem(7, uploadHead);
-
-        ItemStack settingsHead = head(settingsSkin, "Node Properties");
-        inventory.setItem(3, settingsHead);
-
-        ItemStack plusHead = head(plusSkin, "Add Node");
-        inventory.setItem(0, plusHead);
-        taskItems.put(plusHead, Task.ADD_TASK);
-
-        ItemStack minusHead = head(minusSkin, "Remove Node");
-        inventory.setItem(1, minusHead);
-
-        ItemStack crossHead = head(crossSkin, "Close Editor");
-        inventory.setItem(8, crossHead);
-
-        ItemStack arrowHead = head(arrowSkin, "Connect Nodes");
-        inventory.setItem(2, arrowHead);
+        uploadHead = head(uploadSkin, "Export/Save PathNetwork");
+        settingsHead = head(settingsSkin, "Node Properties");
+        plusHead = head(plusSkin, "Add Node");
+        minusHead = head(minusSkin, "Remove Node");
+        crossHead = head(crossSkin, "Close Editor");
+        arrowHead = head(arrowSkin, "Connect Nodes");
 
         //For the stands
         nodeArrowHead = head(nodeArrowSkin);
@@ -58,16 +48,42 @@ public class EditorViewInventory {
     }
 
     //Getters
-
-
-    @Nullable
-    public Task task(ItemStack itemStack) {
-        return taskItems.getOrDefault(itemStack, null);
+    public ItemStack nodeArrowHead() {
+        return this.nodeArrowHead;
+    }
+    public ItemStack uploadHead() {
+        return this.uploadHead;
+    }
+    public ItemStack settingsHead() {
+        return this.settingsHead;
+    }
+    public ItemStack plusHead() {
+        return this.plusHead;
+    }
+    public ItemStack minusHead() {
+        return this.minusHead;
+    }
+    public ItemStack crossHead() {
+        return this.crossHead;
+    }
+    public ItemStack arrowHead() {
+        return this.arrowHead;
     }
 
     //Functionality
     public void pushToPlayer(Player player) {
         player.getInventory().setContents(inventory.getContents());
+    }
+
+    private ItemStack createGuiItem(Material material, final String name, final String... lore) {
+        final ItemStack item = new ItemStack(material, 1);
+        final ItemMeta meta = item.getItemMeta();
+
+        meta.setDisplayName(name);
+        meta.setLore(Arrays.asList(lore));
+        item.setItemMeta(meta);
+
+        return item;
     }
 
     private ItemStack head(String metadata) {

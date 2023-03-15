@@ -1,5 +1,6 @@
 package me.json.pedestrians.commands;
 
+import me.json.pedestrians.Preferences;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,7 +14,7 @@ public class MainCommandHandler implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
 
-        if(!sender.hasPermission("Pedestrians")) return true;
+        if(!sender.hasPermission(Preferences.MAIN_PERMISSION)) return true;
 
 
         if(args.length == 0 || (args.length==1 && args[0].equalsIgnoreCase("help"))) {

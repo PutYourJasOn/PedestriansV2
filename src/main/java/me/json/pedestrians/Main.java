@@ -9,7 +9,7 @@ import me.json.pedestrians.objects.Skin;
 import me.json.pedestrians.objects.framework.path.PathNetwork;
 import me.json.pedestrians.ui.EditorView;
 import me.json.pedestrians.ui.EditorViewInventory;
-import me.json.pedestrians.ui.listeners.*;
+import me.json.pedestrians.ui.Listener;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -47,12 +47,7 @@ public class Main extends JavaPlugin {
 
     //Init
     private void initListeners() {
-        Bukkit.getPluginManager().registerEvents(new NodeStandManipulateListener(), this);
-        Bukkit.getPluginManager().registerEvents(new SelectFunctionListener(), this);
-        Bukkit.getPluginManager().registerEvents(new SwitchFunctionListener(), this);
-        Bukkit.getPluginManager().registerEvents(new AddFunctionListener(), this);
-        Bukkit.getPluginManager().registerEvents(new RemoveFunctionListener(), this);
-        Bukkit.getPluginManager().registerEvents(new ConnectionFunctionListener(), this);
+        Bukkit.getPluginManager().registerEvents(new Listener(), this);
         Bukkit.getPluginManager().registerEvents(new JoinListener(), this);
 
         ProtocolLibrary.getProtocolManager().addPacketListener(new InteractListener());

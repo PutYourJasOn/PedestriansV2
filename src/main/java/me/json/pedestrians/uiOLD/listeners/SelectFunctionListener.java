@@ -1,17 +1,16 @@
-package me.json.pedestrians.ui.listeners;
+package me.json.pedestrians.uiOLD.listeners;
 
 import me.json.pedestrians.Main;
-import me.json.pedestrians.ui.Editor;
-import me.json.pedestrians.ui.EditorView;
-import me.json.pedestrians.ui.EditorViewInventory;
-import me.json.pedestrians.ui.StickFunction;
+import me.json.pedestrians.uiOLD.Editor;
+import me.json.pedestrians.uiOLD.EditorView;
+import me.json.pedestrians.uiOLD.EditorViewInventory;
+import me.json.pedestrians.uiOLD.StickFunction;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 

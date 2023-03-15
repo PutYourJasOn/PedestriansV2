@@ -1,6 +1,6 @@
-package me.json.pedestrians.ui.listeners;
+package me.json.pedestrians.uiOLD.listeners;
 
-import me.json.pedestrians.ui.EditorView;
+import me.json.pedestrians.uiOLD.EditorView;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;

@@ -1,6 +1,5 @@
 package me.json.pedestrians.commands;
 
-import me.json.pedestrians.Preferences;
 import me.json.pedestrians.data.exporting.BackupPathNetwork;
 import me.json.pedestrians.data.exporting.ExportPathNetwork;
 import me.json.pedestrians.data.importing.ImportPathNetwork;
@@ -98,10 +97,11 @@ public class PathNetworkCommandHandler implements CommandExecutor {
             EditorView editorView = EditorView.Registry.editorView((Player) sender);
 
             if(editorView != null) {
-                editorView.removeEditor((Player) sender);
+                editorView.stop();
             }else{
                 PathNetwork pathNetwork = PathNetwork.Registry.pathNetwork(args[2]);
-                EditorView.Registry.editorView(pathNetwork).registerEditor((Player) sender);
+                new EditorView((Player) sender, pathNetwork);
+                //EditorView.Registry.editorView(pathNetwork).registerEditor((Player) sender);
             }
 
             return true;

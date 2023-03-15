@@ -1,4 +1,4 @@
-package me.json.pedestrians.ui.listeners;
+package me.json.pedestrians.uiOLD.listeners;
 
 import me.json.pedestrians.Main;
 import me.json.pedestrians.objects.framework.path.Node;
@@ -6,10 +6,10 @@ import me.json.pedestrians.objects.framework.path.connection.ConnectionHandler;
 import me.json.pedestrians.objects.framework.path.connection.DirectConnectionHandler;
 import me.json.pedestrians.utils.InterpolationUtil;
 import me.json.pedestrians.utils.Vector3;
-import me.json.pedestrians.ui.Editor;
-import me.json.pedestrians.ui.EditorView;
-import me.json.pedestrians.ui.EditorViewInventory;
-import me.json.pedestrians.ui.StickFunction;
+import me.json.pedestrians.uiOLD.Editor;
+import me.json.pedestrians.uiOLD.EditorView;
+import me.json.pedestrians.uiOLD.EditorViewInventory;
+import me.json.pedestrians.uiOLD.StickFunction;
 import me.json.pedestrians.utils.RayTraceUtil;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -20,12 +20,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
-import org.bukkit.inventory.InventoryView;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
