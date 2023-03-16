@@ -34,6 +34,11 @@ public class AddTask implements ITask {
     }
 
     @Override
+    public void onScroll(int scrollDirection) {
+
+    }
+
+    @Override
     public void render() {
 
     }

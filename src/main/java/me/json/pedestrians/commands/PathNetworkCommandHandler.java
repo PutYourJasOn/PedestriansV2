@@ -6,7 +6,7 @@ import me.json.pedestrians.data.importing.ImportPathNetwork;
 import me.json.pedestrians.objects.Skin;
 import me.json.pedestrians.objects.framework.path.PathNetwork;
 import me.json.pedestrians.objects.framework.pedestrian.Pedestrian;
-import me.json.pedestrians.objects.pedestrian_entities.PlayerPedestrianEntity;
+import me.json.pedestrians.objects.PlayerPedestrianEntity;
 import me.json.pedestrians.ui.EditorView;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

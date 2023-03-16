@@ -4,7 +4,7 @@ import me.json.pedestrians.Main;
 import me.json.pedestrians.objects.framework.path.Node;
 import me.json.pedestrians.objects.framework.path.PathNetwork;
 import me.json.pedestrians.ui.tasks.ITask;
-import me.json.pedestrians.ui.tasks.Task;
+import me.json.pedestrians.ui.tasks.TaskType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -45,20 +45,37 @@ public class EditorView {
         selectedNodes.add(node);
     }
 
-    public void task(Task task) {
+    public void task(TaskType taskType) {
 
-        if(task == null) {
+        if(taskType == null) {
             this.task = null;
             return;
         }
 
-        if(this.task != null && this.task.getClass() == task.iTaskClass()) return;
+        if(this.task != null && this.task.getClass() == taskType.iTaskClass()) return;
 
         selectedNodes.clear();
 
-        this.task = task.newInstance();
+        this.task = taskType.newInstance();
         this.task.init(this);
     }
+
+    //Clicks
+    public void leftClick() {
+        if(task != null)
+            task.onLeftClick();
+    }
+
+    public void rightClick() {
+        if(task != null)
+            task.onRightClick();
+    }
+
+    public void scroll(int scrollDirection) {
+        if(task != null)
+            task.onScroll(scrollDirection);
+    }
+
 
     //Getters
     public Player player() {

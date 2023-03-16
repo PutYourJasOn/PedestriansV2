@@ -13,6 +13,8 @@ public interface ITask {
     void onRightClick();
     void onLeftClick();
 
+    void onScroll(int scrollDirection);
+
     void render();
 
 }

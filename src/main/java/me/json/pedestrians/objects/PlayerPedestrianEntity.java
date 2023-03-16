@@ -1,13 +1,12 @@
-package me.json.pedestrians.objects.pedestrian_entities;
+package me.json.pedestrians.objects;
 
 import com.comphenix.protocol.wrappers.EnumWrappers;
 import com.comphenix.protocol.wrappers.WrappedEnumEntityUseAction;
 import me.json.pedestrians.Main;
 import me.json.pedestrians.Preferences;
-import me.json.pedestrians.objects.Skin;
+import me.json.pedestrians.entities.PlayerClientEntity;
 import me.json.pedestrians.objects.framework.pedestrian.Pedestrian;
 import me.json.pedestrians.objects.framework.pedestrian.PedestrianEntity;
-import me.json.pedestrians.utils.NPC;
 import me.json.pedestrians.utils.Vector3;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -18,13 +17,12 @@ import org.bukkit.entity.Player;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 public class PlayerPedestrianEntity implements PedestrianEntity {
 
     private Pedestrian pedestrian;
     private Skin skin;
-    private NPC npc;
+    private PlayerClientEntity npc;
     private boolean isInsideInteraction = false;
 
     public PlayerPedestrianEntity(Skin skin) {
@@ -40,9 +38,8 @@ public class PlayerPedestrianEntity implements PedestrianEntity {
     @Override
     public PedestrianEntity spawn(Location location) {
 
-        int id = Registry.newEntityID();
-        Registry.register(id, this);
-        npc = new NPC(id, location, skin.base64(), skin.signature());
+        npc = new PlayerClientEntity(location, skin.base64(), skin.signature());
+        Registry.register(npc.entityID(), this);
 
         return this;
     }
@@ -115,17 +112,9 @@ public class PlayerPedestrianEntity implements PedestrianEntity {
 
     }
 
-    public Pedestrian pedestrian() {
-        return this.pedestrian;
-    }
-
     public static class Registry {
 
         private final static Map<Integer, PlayerPedestrianEntity> pedestrianEntities = new HashMap<>();
-
-        private static boolean exists(Integer id) {
-            return pedestrianEntities.containsKey(id);
-        }
 
         private static void register(Integer entityID, PlayerPedestrianEntity pedestrianEntity) {
             pedestrianEntities.put(entityID, pedestrianEntity);
@@ -134,18 +123,6 @@ public class PlayerPedestrianEntity implements PedestrianEntity {
         @Nullable
         public static PlayerPedestrianEntity pedestrianEntity(Integer id) {
             return pedestrianEntities.getOrDefault(id, null);
-        }
-
-        public static int newEntityID() {
-            int id = new Random().nextInt();
-            while(Registry.exists(id) || entityExists(id)) {
-                id = new Random().nextInt();
-            }
-            return id;
-        }
-
-        private static boolean entityExists(int id) {
-            return Main.world().getEntities().stream().filter(e -> e.getEntityId() == id).findFirst().isPresent();
         }
 
     }

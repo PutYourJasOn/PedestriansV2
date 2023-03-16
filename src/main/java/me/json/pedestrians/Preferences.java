@@ -9,5 +9,5 @@ public class Preferences {
     public final static float   PEDESTRIAN_REACHING_DISTANCE    = 0.5f;
     public final static int     PEDESTRIAN_GROUP_SIZE           = 50;
     public final static String  MAIN_PERMISSION                 = "Pedestrians";
-
+    public static final int     SPAWN_RADIUS                    = 40;
 }

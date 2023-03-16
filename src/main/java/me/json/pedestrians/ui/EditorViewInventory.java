@@ -1,6 +1,6 @@
 package me.json.pedestrians.ui;
 
-import me.json.pedestrians.ui.tasks.Task;
+import me.json.pedestrians.ui.tasks.TaskType;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -23,7 +23,7 @@ public class EditorViewInventory {
     private static final String crossSkin = "{SkullOwner:{Id:[I;-357038652,-1170846806,-2078329597,496329811],Properties:{textures:[{Value:\"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTljZGI5YWYzOGNmNDFkYWE1M2JjOGNkYTc2NjVjNTA5NjMyZDE0ZTY3OGYwZjE5ZjI2M2Y0NmU1NDFkOGEzMCJ9fX0=\"}]}}}";
     private static final String arrowSkin = "{SkullOwner:{Id:[I;1020901283,-927184379,-1934029971,1181990057],Properties:{textures:[{Value:\"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzFjMGVkZWRkNzExNWZjMWIyM2Q1MWNlOTY2MzU4YjI3MTk1ZGFmMjZlYmI2ZTQ1YTY2YzM0YzY5YzM0MDkxIn19fQ==\"}]}}}";
 
-    private final Map<ItemStack, Task> taskItems = new HashMap<>();
+    private final Map<ItemStack, TaskType> taskItems = new HashMap<>();
     private final Inventory inventory;
 
     private final ItemStack nodeArrowHead;
@@ -41,7 +41,7 @@ public class EditorViewInventory {
 
         ItemStack plusHead = head(plusSkin, "Add Node");
         inventory.setItem(0, plusHead);
-        taskItems.put(plusHead, Task.ADD_TASK);
+        taskItems.put(plusHead, TaskType.ADD_TASK);
 
         ItemStack minusHead = head(minusSkin, "Remove Node");
         inventory.setItem(1, minusHead);
@@ -61,7 +61,7 @@ public class EditorViewInventory {
 
 
     @Nullable
-    public Task task(ItemStack itemStack) {
+    public TaskType task(ItemStack itemStack) {
         return taskItems.getOrDefault(itemStack, null);
     }
 

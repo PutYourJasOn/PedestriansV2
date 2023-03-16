@@ -2,13 +2,13 @@ package me.json.pedestrians.ui.tasks;
 
 import java.lang.reflect.InvocationTargetException;
 
-public enum Task {
+public enum TaskType {
 
     ADD_TASK(AddTask.class);
 
     private final Class<? extends ITask> iTaskClass;
 
-    Task(Class<? extends ITask> iTaskClass) {
+    TaskType(Class<? extends ITask> iTaskClass) {
         this.iTaskClass = iTaskClass;
     }
 

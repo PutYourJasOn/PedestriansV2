@@ -9,7 +9,7 @@ import me.json.pedestrians.objects.Skin;
 import me.json.pedestrians.objects.framework.path.PathNetwork;
 import me.json.pedestrians.ui.EditorView;
 import me.json.pedestrians.ui.EditorViewInventory;
-import me.json.pedestrians.ui.Listener;
+import me.json.pedestrians.ui.listeners.Listener;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
