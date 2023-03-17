@@ -58,7 +58,9 @@ public class EditorViewInventory {
     }
 
     //Getters
-
+    public ItemStack nodeArrowHead() {
+        return nodeArrowHead;
+    }
 
     @Nullable
     public TaskType task(ItemStack itemStack) {

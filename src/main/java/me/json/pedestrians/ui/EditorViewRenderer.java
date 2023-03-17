@@ -1,27 +1,41 @@
 package me.json.pedestrians.ui;
 
 import me.json.pedestrians.Main;
+import me.json.pedestrians.entities.NodeClientEntity;
 import me.json.pedestrians.objects.framework.path.Node;
 import me.json.pedestrians.objects.framework.path.connection.ConnectionHandler;
 import me.json.pedestrians.objects.framework.path.connection.DirectConnectionHandler;
 import me.json.pedestrians.objects.framework.path.connection.JunctionConnectionHandler;
 import me.json.pedestrians.utils.InterpolationUtil;
 import me.json.pedestrians.utils.Vector3;
+import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class EditorViewRenderer extends BukkitRunnable {
+
+    private final Set<NodeClientEntity> nodeEntities = new HashSet<>();
 
     private final EditorView editorView;
 
     public EditorViewRenderer(EditorView editorView) {
         this.editorView = editorView;
 
+        spawnNodeStands();
         start();
+    }
+
+    //Functions
+    public void spawnNode(Node node) {
+        Location location = node.pos().toLocation().setDirection(node.direction().toBukkitVector());
+
+        nodeEntities.add(new NodeClientEntity(location, node, editorView.player()));
+    }
+
+    private void spawnNodeStands() {
+        editorView.pathNetwork().nodes().forEach(n -> spawnNode(n));
     }
 
     private void start() {
@@ -29,23 +43,29 @@ public class EditorViewRenderer extends BukkitRunnable {
     }
 
     public void stop() {
-        this.stop();
+
+        nodeEntities.forEach(e -> e.remove());
+        nodeEntities.clear();
+
+        this.cancel();
     }
 
+    //Timer
     @Override
     public void run() {
 
         Set<Vector3> greenVertices = new HashSet<>();
         Set<Vector3> yellowVertices = new HashSet<>();
 
-        for (Node node : editorView.pathNetwork().nodes()) {
-            renderConnections(node, greenVertices);
-        }
+        for (NodeClientEntity nodeEntity : nodeEntities) {
 
-        for (Node selectedNode : editorView.selectedNodes()) {
-            Vector3[] nodePositions = nodePositions(selectedNode);
+            if(!nodeEntity.isViewer(editorView.player())) continue;
+
+            renderConnections(nodeEntity.node(), greenVertices);
+
+            Vector3[] nodePositions = nodePositions(nodeEntity.node());
             yellowVertices.addAll(InterpolationUtil.lineVertices(nodePositions[0],nodePositions[1],15));
-            yellowVertices.addAll(Arrays.stream(nodePositions(selectedNode)).toList());
+            yellowVertices.addAll(Arrays.stream(nodePositions(nodeEntity.node())).toList());
         }
 
         //Render
@@ -59,6 +79,9 @@ public class EditorViewRenderer extends BukkitRunnable {
         //Task render
         if(editorView.task() != null)
             editorView.task().render();
+
+        //Entities
+        nodeEntities.forEach(e -> e.updateViewers());
 
     }
 
@@ -97,5 +120,8 @@ public class EditorViewRenderer extends BukkitRunnable {
 
         return vector3Array;
     }
+
+    //Registry
+
 
 }

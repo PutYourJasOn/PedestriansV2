@@ -16,11 +16,11 @@ import java.util.Set;
 
 public class EditorView {
 
+    private final Set<Node> selectedNodes = new HashSet<>();
+
     private final Player player;
     private final PathNetwork pathNetwork;
-
-    private final Set<Node> selectedNodes = new HashSet<>();
-    private final EditorViewRenderer editorViewRenderer = new EditorViewRenderer(this);
+    private final EditorViewRenderer editorViewRenderer;
 
     private ItemStack[] prevInventory;
     private ITask task;
@@ -28,6 +28,7 @@ public class EditorView {
     public EditorView(Player player, PathNetwork pathNetwork) {
         this.player = player;
         this.pathNetwork = pathNetwork;
+        this.editorViewRenderer = new EditorViewRenderer(this);
 
         this.prevInventory = player.getInventory().getContents();
         Main.editorViewInventory().pushToPlayer(player);
@@ -69,6 +70,14 @@ public class EditorView {
     public void rightClick() {
         if(task != null)
             task.onRightClick();
+    }
+
+    public void leftClickNode(Node node) {
+        task.onLeftClickNode(node);
+    }
+
+    public void rightClickNode(Node node) {
+        task.onRightClickNode(node);
     }
 
     public void scroll(int scrollDirection) {

@@ -3,6 +3,8 @@ package me.json.pedestrians.entities;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.*;
+import me.json.pedestrians.listeners.JoinListener;
+import me.json.pedestrians.objects.PlayerPedestrianEntity;
 import me.json.pedestrians.utils.RotationUtil;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -11,10 +13,13 @@ import java.util.*;
 
 public class PlayerClientEntity extends ClientEntity {
 
+    private final PlayerPedestrianEntity playerPedestrianEntity;
     private final PlayerInfoData playerInfoData;
 
-    public PlayerClientEntity(Location location, String skinBase64, String skinSignature) {
+    public PlayerClientEntity(Location location, PlayerPedestrianEntity playerPedestrianEntity, String skinBase64, String skinSignature) {
         super(location);
+
+        this.playerPedestrianEntity = playerPedestrianEntity;
 
         //
         WrappedGameProfile gameProfile = new WrappedGameProfile(UUID.randomUUID(), " ");
@@ -27,6 +32,10 @@ public class PlayerClientEntity extends ClientEntity {
                 WrappedChatComponent.fromText(gameProfile.getName())
         );
 
+    }
+
+    public PlayerPedestrianEntity playerPedestrianEntity() {
+        return playerPedestrianEntity;
     }
 
     @Override
@@ -101,6 +110,11 @@ public class PlayerClientEntity extends ClientEntity {
         packets[1].getBytes().write(0, RotationUtil.floatToByte(location.getYaw()));
 
         return packets;
+    }
+
+    @Override
+    protected boolean mayView(Player player) {
+        return !JoinListener.justJoinedPlayers.contains(player);
     }
 
 }

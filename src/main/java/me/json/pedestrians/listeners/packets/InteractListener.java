@@ -6,6 +6,8 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.events.PacketListener;
 import com.comphenix.protocol.wrappers.WrappedEnumEntityUseAction;
 import me.json.pedestrians.Main;
+import me.json.pedestrians.entities.ClientEntity;
+import me.json.pedestrians.entities.PlayerClientEntity;
 import me.json.pedestrians.objects.PlayerPedestrianEntity;
 import org.bukkit.plugin.Plugin;
 
@@ -20,11 +22,14 @@ public class InteractListener implements PacketListener {
     public void onPacketReceiving(PacketEvent e) {
 
         int id = e.getPacket().getIntegers().read(0);
-        PlayerPedestrianEntity pedestrianEntity = PlayerPedestrianEntity.Registry.pedestrianEntity(id);
-        if(pedestrianEntity == null) return;
+        ClientEntity clientEntity = ClientEntity.Registry.clientEntity(id);
+        if(clientEntity == null) return;
+
+        if(!(clientEntity instanceof PlayerClientEntity)) return;
+        PlayerClientEntity playerClientEntity = (PlayerClientEntity) clientEntity;
 
         WrappedEnumEntityUseAction use = e.getPacket().getEnumEntityUseActions().read(0);
-        pedestrianEntity.interact(e.getPlayer(), use);
+        playerClientEntity.playerPedestrianEntity().interact(e.getPlayer(), use);
 
     }
 

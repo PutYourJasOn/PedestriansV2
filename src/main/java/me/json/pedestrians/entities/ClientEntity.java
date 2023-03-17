@@ -5,12 +5,12 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketContainer;
 import me.json.pedestrians.Main;
 import me.json.pedestrians.Preferences;
-import me.json.pedestrians.listeners.JoinListener;
 import me.json.pedestrians.utils.EntityIDUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nullable;
 import java.util.*;
 
 public abstract class ClientEntity {
@@ -20,7 +20,6 @@ public abstract class ClientEntity {
 
     protected final int entityID = EntityIDUtil.newEntityID();
     protected final Set<Player> viewers = new HashSet<>();
-
     protected Location location;
 
     public ClientEntity(Location location) {
@@ -35,10 +34,11 @@ public abstract class ClientEntity {
 
         //Are there nonViewers who should be viewing?
         List<Player> nonViewers = location.getWorld().getPlayers();
-        nonViewers.removeAll(JoinListener.justJoinedPlayers); //To decrease wrong skin bug, don't spawn npc's to just joined players
         nonViewers.removeAll(viewers);
 
         for (Player player : nonViewers) {
+
+            if(!mayView(player)) continue;
 
             if(shouldBeSpawned(player)) {
                 spawn(player);
@@ -129,6 +129,7 @@ public abstract class ClientEntity {
         viewers.forEach(v -> {
 
             for (PacketContainer packet : packets) {
+                if(packet == null) continue;
                 ProtocolLibrary.getProtocolManager().sendServerPacket(v, packet);
             }
 
@@ -138,14 +139,20 @@ public abstract class ClientEntity {
     private void sendPacketsToViewer(Player v, PacketContainer... packets) {
 
         for (PacketContainer packet : packets) {
+            if(packet == null) continue;
             ProtocolLibrary.getProtocolManager().sendServerPacket(v, packet);
         }
 
     }
 
+    public boolean isViewer(Player player) {
+        return viewers.contains(player);
+    }
+
     //Abstract
-    public abstract PacketContainer[] spawnPackets(Player player);
-    public abstract PacketContainer[] movePackets(short dx, short dy, short dz);
+    protected abstract PacketContainer[] spawnPackets(Player player);
+    protected abstract PacketContainer[] movePackets(short dx, short dy, short dz);
+    protected abstract boolean mayView(Player player);
 
     //Getters
     public int entityID() {
@@ -167,6 +174,11 @@ public abstract class ClientEntity {
 
         public static void remove(Integer entityID) {
             entities.remove(entityID);
+        }
+
+        @Nullable
+        public static ClientEntity clientEntity(Integer entityID) {
+            return entities.getOrDefault(entityID, null);
         }
 
     }

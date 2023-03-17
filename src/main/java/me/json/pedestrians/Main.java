@@ -10,6 +10,7 @@ import me.json.pedestrians.objects.framework.path.PathNetwork;
 import me.json.pedestrians.ui.EditorView;
 import me.json.pedestrians.ui.EditorViewInventory;
 import me.json.pedestrians.ui.listeners.Listener;
+import me.json.pedestrians.ui.listeners.PacketListener;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -51,6 +52,8 @@ public class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new JoinListener(), this);
 
         ProtocolLibrary.getProtocolManager().addPacketListener(new InteractListener());
+        ProtocolLibrary.getProtocolManager().addPacketListener(new PacketListener());
+
     }
 
     private void initHiddenNamesTeam() {

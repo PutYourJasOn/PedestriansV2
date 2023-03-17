@@ -38,9 +38,7 @@ public class PlayerPedestrianEntity implements PedestrianEntity {
     @Override
     public PedestrianEntity spawn(Location location) {
 
-        npc = new PlayerClientEntity(location, skin.base64(), skin.signature());
-        Registry.register(npc.entityID(), this);
-
+        npc = new PlayerClientEntity(location, this, skin.base64(), skin.signature());
         return this;
     }
 
@@ -111,21 +109,5 @@ public class PlayerPedestrianEntity implements PedestrianEntity {
         }
 
     }
-
-    public static class Registry {
-
-        private final static Map<Integer, PlayerPedestrianEntity> pedestrianEntities = new HashMap<>();
-
-        private static void register(Integer entityID, PlayerPedestrianEntity pedestrianEntity) {
-            pedestrianEntities.put(entityID, pedestrianEntity);
-        }
-
-        @Nullable
-        public static PlayerPedestrianEntity pedestrianEntity(Integer id) {
-            return pedestrianEntities.getOrDefault(id, null);
-        }
-
-    }
-
 
 }
