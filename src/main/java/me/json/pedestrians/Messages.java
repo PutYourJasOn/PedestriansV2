@@ -10,7 +10,14 @@ public class Messages {
     public static final ChatColor RED                           = ChatColor.of("#DF7861");
     public static final ChatColor LIGHT_RED                     = ChatColor.of("#ECB390");
 
-    public static final String PRECISE_MODE_TOGGLE       = textComponent("Precise mode: %s", RED, true);
+    //Editor
+    public static final String PRECISE_MODE_TOGGLE      = textComponent("Precise mode: %s", RED, true);
+    public static final String NODE_SELECTED            = textComponent("Node: %s selected", RED, true);
+    public static final String FIELD_SET                = textComponent("%s set", RED, true);
+    public static final String NODE_CREATED             = textComponent("Node created", RED, true);
+    public static final String CLICK_AGAIN_REMOVE       = textComponent("Click again to remove this node", RED, true);
+    public static final String NODE_REMOVED             = textComponent("Node removed", RED, true);
+
 
     private static String textComponent(String string, ChatColor color, boolean italic) {
         TextComponent textComponent = new TextComponent(string);

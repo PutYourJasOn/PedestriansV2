@@ -1,8 +1,10 @@
 package me.json.pedestrians.ui;
 
 import me.json.pedestrians.Main;
+import me.json.pedestrians.entities.NodeClientEntity;
 import me.json.pedestrians.objects.framework.path.Node;
 import me.json.pedestrians.objects.framework.path.PathNetwork;
+import me.json.pedestrians.ui.tasks.AddTask;
 import me.json.pedestrians.ui.tasks.ITask;
 import me.json.pedestrians.ui.tasks.TaskType;
 import org.bukkit.entity.Player;
@@ -15,8 +17,6 @@ import java.util.Map;
 import java.util.Set;
 
 public class EditorView {
-
-    private final Set<Node> selectedNodes = new HashSet<>();
 
     private final Player player;
     private final PathNetwork pathNetwork;
@@ -42,20 +42,21 @@ public class EditorView {
         editorViewRenderer.stop();
     }
 
-    public void selectNode(Node node) {
-        selectedNodes.add(node);
-    }
-
     public void task(TaskType taskType) {
 
         if(taskType == null) {
+
+            if(this.task != null)
+                this.task.stop();
+
             this.task = null;
             return;
         }
 
         if(this.task != null && this.task.getClass() == taskType.iTaskClass()) return;
 
-        selectedNodes.clear();
+        if(this.task != null)
+            this.task.stop();
 
         this.task = taskType.newInstance();
         this.task.init(this);
@@ -72,17 +73,19 @@ public class EditorView {
             task.onRightClick();
     }
 
-    public void leftClickNode(Node node) {
-        task.onLeftClickNode(node);
-    }
-
-    public void rightClickNode(Node node) {
-        task.onRightClickNode(node);
-    }
-
-    public void scroll(int scrollDirection) {
+    public void leftClickNode(NodeClientEntity node) {
         if(task != null)
-            task.onScroll(scrollDirection);
+            task.onLeftClickNode(node);
+    }
+
+    public void rightClickNode(NodeClientEntity node) {
+        if(task != null)
+            task.onRightClickNode(node);
+    }
+
+    public void addTaskScroll(int scrollDirection) {
+        if(task != null && task instanceof AddTask)
+            ((AddTask) task).onScroll(scrollDirection);
     }
 
 
@@ -95,8 +98,8 @@ public class EditorView {
         return pathNetwork;
     }
 
-    public Set<Node> selectedNodes() {
-        return new HashSet<>(selectedNodes);
+    public EditorViewRenderer editorViewRenderer() {
+        return editorViewRenderer;
     }
 
     public ITask task() {

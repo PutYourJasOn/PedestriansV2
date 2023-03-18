@@ -244,23 +244,23 @@ public class AddFunctionListener extends BukkitRunnable implements Listener {
                 vertices.addAll(InterpolationUtil.lineVertices(positions[0],positions[1], 15));
 
                 vertices.forEach(v -> player.spawnParticle(Particle.COMPOSTER, v.toLocation(), 1));
-                player.spawnParticle(Particle.END_ROD, positions[0].toLocation(),1, 0, 0, 0, 0);
-                player.spawnParticle(Particle.END_ROD,  positions[1].toLocation(),1, 0, 0, 0, 0);
+                player.spawnParticle(Particle.ELECTRIC_SPARK, positions[0].toLocation(),1, 0, 0, 0, 0);
+                player.spawnParticle(Particle.ELECTRIC_SPARK,  positions[1].toLocation(),1, 0, 0, 0, 0);
 
                 return;
             }
 
             //3.
             if(true) {
-                player.spawnParticle(Particle.END_ROD, pos.toLocation(), 1, 0, 0, 0, 0);
+                player.spawnParticle(Particle.ELECTRIC_SPARK, pos.toLocation(), 1, 0, 0, 0, 0);
 
                 Set<Vector3> vertices = new HashSet<>();
                 Vector3[] positions = nodePositions(pos, dir, width);
                 vertices.addAll(InterpolationUtil.lineVertices(positions[0], positions[1], 15));
 
                 vertices.forEach(v -> player.spawnParticle(Particle.COMPOSTER, v.toLocation(), 1));
-                player.spawnParticle(Particle.END_ROD, positions[0].toLocation().add(0,0.5,0),1, 0, 0, 0, 0);
-                player.spawnParticle(Particle.END_ROD,  positions[1].toLocation().add(0,0.5,0),1, 0, 0, 0, 0);
+                player.spawnParticle(Particle.ELECTRIC_SPARK, positions[0].toLocation().add(0,0.5,0),1, 0, 0, 0, 0);
+                player.spawnParticle(Particle.ELECTRIC_SPARK,  positions[1].toLocation().add(0,0.5,0),1, 0, 0, 0, 0);
             }
 
         }

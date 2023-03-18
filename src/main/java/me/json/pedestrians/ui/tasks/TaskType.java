@@ -4,7 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 
 public enum TaskType {
 
-    ADD_TASK(AddTask.class);
+    ADD_TASK(AddTask.class), REMOVE_TASK(RemoveTask.class);
 
     private final Class<? extends ITask> iTaskClass;
 

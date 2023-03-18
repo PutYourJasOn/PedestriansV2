@@ -124,7 +124,7 @@ public abstract class ClientEntity {
         return new PacketContainer[]{packet};
     }
 
-    private void broadcastToViewers(PacketContainer... packets) {
+    protected void broadcastToViewers(PacketContainer... packets) {
 
         viewers.forEach(v -> {
 
@@ -136,7 +136,7 @@ public abstract class ClientEntity {
         });
     }
 
-    private void sendPacketsToViewer(Player v, PacketContainer... packets) {
+    protected void sendPacketsToViewer(Player v, PacketContainer... packets) {
 
         for (PacketContainer packet : packets) {
             if(packet == null) continue;

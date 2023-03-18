@@ -1,19 +1,20 @@
 package me.json.pedestrians.ui.tasks;
 
-import me.json.pedestrians.objects.framework.path.Node;
+import me.json.pedestrians.entities.NodeClientEntity;
 import me.json.pedestrians.ui.EditorView;
 
 public interface ITask {
 
     void init(EditorView editorView);
+    void stop();
 
-    void onRightClickNode(Node node);
-    void onLeftClickNode(Node node);
+    void onRightClickNode(NodeClientEntity node);
+    void onLeftClickNode(NodeClientEntity node);
 
     void onRightClick();
     void onLeftClick();
 
-    void onScroll(int scrollDirection);
+    boolean scrollLock();
 
     void render();
 

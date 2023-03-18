@@ -28,14 +28,21 @@ public class EditorViewRenderer extends BukkitRunnable {
     }
 
     //Functions
-    public void spawnNode(Node node) {
+    public NodeClientEntity spawnNodeEntity(Node node) {
         Location location = node.pos().toLocation().setDirection(node.direction().toBukkitVector());
 
-        nodeEntities.add(new NodeClientEntity(location, node, editorView.player()));
+        NodeClientEntity nodeClientEntity = new NodeClientEntity(location, node, editorView.player());
+        nodeEntities.add(nodeClientEntity);
+        return nodeClientEntity;
+    }
+
+    public void removeNodeEntity(NodeClientEntity nodeEntity) {
+        nodeEntities.remove(nodeEntity);
+        nodeEntity.remove();
     }
 
     private void spawnNodeStands() {
-        editorView.pathNetwork().nodes().forEach(n -> spawnNode(n));
+        editorView.pathNetwork().nodes().forEach(n -> spawnNodeEntity(n));
     }
 
     private void start() {

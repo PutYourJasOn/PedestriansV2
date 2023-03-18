@@ -20,6 +20,7 @@ public class NodeClientEntity extends ClientEntity{
 
     private final Node node;
     private final Player player;
+    private boolean glowing = false;
 
     public NodeClientEntity(Location location, Node node, Player player) {
         super(location);
@@ -30,6 +31,17 @@ public class NodeClientEntity extends ClientEntity{
 
     public Node node() {
         return node;
+    }
+
+    public void glowing(boolean glowing) {
+
+        if(this.glowing == glowing) return;
+        this.glowing = glowing;
+
+        //Packet
+        if(viewers.isEmpty()) return;
+        this.broadcastToViewers(metadataPacket());
+
     }
 
     @Override
@@ -49,26 +61,7 @@ public class NodeClientEntity extends ClientEntity{
         packets[0].getBytes().write(1, RotationUtil.floatToByte(location.getPitch()));
 
         //1.
-        packets[1] = new PacketContainer(PacketType.Play.Server.ENTITY_METADATA);
-
-        Optional<?> opt = Optional.of(WrappedChatComponent.fromChatMessage("Node: "+node.id())[0].getHandle());
-        WrappedDataWatcher dataWatcher = new WrappedDataWatcher();
-        dataWatcher.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(0, WrappedDataWatcher.Registry.get(Byte.class)), (byte) 0b00100000);
-        dataWatcher.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true)),opt);
-        dataWatcher.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(3, WrappedDataWatcher.Registry.get(Boolean.class)),true);
-
-        //(1.19.3 shit ugh)
-        List<WrappedDataValue> wrappedDataValues = new ArrayList<>();
-        for (WrappedWatchableObject watchableObject : dataWatcher.getWatchableObjects()) {
-
-            if (watchableObject == null) continue;
-
-            WrappedDataWatcher.WrappedDataWatcherObject watcherObject = watchableObject.getWatcherObject();
-            wrappedDataValues.add(new WrappedDataValue(watcherObject.getIndex(), watcherObject.getSerializer(), watchableObject.getRawValue()));
-        }
-
-        packets[1].getIntegers().write(0, entityID);
-        packets[1].getDataValueCollectionModifier().write(0, wrappedDataValues);
+        packets[1] = metadataPacket();
 
         //2.
         packets[2] = new PacketContainer(PacketType.Play.Server.ENTITY_EQUIPMENT);
@@ -101,6 +94,36 @@ public class NodeClientEntity extends ClientEntity{
     @Override
     protected boolean mayView(Player player) {
         return player.equals(this.player);
+    }
+
+    private PacketContainer metadataPacket() {
+
+        PacketContainer packet = new PacketContainer(PacketType.Play.Server.ENTITY_METADATA);
+        Optional<?> opt = Optional.of(WrappedChatComponent.fromChatMessage("Node: "+node.id())[0].getHandle());
+        WrappedDataWatcher dataWatcher = new WrappedDataWatcher();
+
+        if(glowing) {
+            dataWatcher.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(0, WrappedDataWatcher.Registry.get(Byte.class)), (byte) 0b01100000);
+        } else{
+            dataWatcher.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(0, WrappedDataWatcher.Registry.get(Byte.class)), (byte) 0b00100000);
+        }
+
+        dataWatcher.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true)),opt);
+        dataWatcher.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(3, WrappedDataWatcher.Registry.get(Boolean.class)),true);
+
+        //(1.19.3 shit ugh)
+        List<WrappedDataValue> wrappedDataValues = new ArrayList<>();
+        for (WrappedWatchableObject watchableObject : dataWatcher.getWatchableObjects()) {
+
+            if (watchableObject == null) continue;
+
+            WrappedDataWatcher.WrappedDataWatcherObject watcherObject = watchableObject.getWatcherObject();
+            wrappedDataValues.add(new WrappedDataValue(watcherObject.getIndex(), watcherObject.getSerializer(), watchableObject.getRawValue()));
+        }
+
+        packet.getIntegers().write(0, entityID);
+        packet.getDataValueCollectionModifier().write(0, wrappedDataValues);
+        return packet;
     }
 
 }

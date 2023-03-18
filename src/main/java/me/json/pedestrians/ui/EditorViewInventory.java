@@ -45,6 +45,7 @@ public class EditorViewInventory {
 
         ItemStack minusHead = head(minusSkin, "Remove Node");
         inventory.setItem(1, minusHead);
+        taskItems.put(minusHead, TaskType.REMOVE_TASK);
 
         ItemStack crossHead = head(crossSkin, "Close Editor");
         inventory.setItem(8, crossHead);
