@@ -69,6 +69,11 @@ public class RemoveTask implements ITask{
     }
 
     @Override
+    public void onScroll(int scrollDirection) {
+
+    }
+
+    @Override
     public void render() {
 
     }

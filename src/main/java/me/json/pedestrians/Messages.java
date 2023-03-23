@@ -17,7 +17,10 @@ public class Messages {
     public static final String NODE_CREATED             = textComponent("Node created", RED, true);
     public static final String CLICK_AGAIN_REMOVE       = textComponent("Click again to remove this node", RED, true);
     public static final String NODE_REMOVED             = textComponent("Node removed", RED, true);
-
+    public static final String CONNECTION_TYPE_SELECT   = textComponent("ConnectionType: %s", RED, true);
+    public static final String CONNECTION_CREATED       = textComponent("Connection created", RED, true);
+    public static final String PATHNETWORK_SAVED        = textComponent("PathNetwork has been saved", RED, true);
+    public static final String PATHNETWORK_BACKUP       = textComponent("PathNetwork's backup has been made", RED, true);
 
     private static String textComponent(String string, ChatColor color, boolean italic) {
         TextComponent textComponent = new TextComponent(string);

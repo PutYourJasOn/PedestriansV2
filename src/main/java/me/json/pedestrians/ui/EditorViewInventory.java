@@ -1,6 +1,8 @@
 package me.json.pedestrians.ui;
 
+import me.json.pedestrians.ui.tasks.ITask;
 import me.json.pedestrians.ui.tasks.TaskType;
+import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -10,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,9 +38,10 @@ public class EditorViewInventory {
         //Items
         ItemStack uploadHead = head(uploadSkin, "Export/Save PathNetwork");
         inventory.setItem(7, uploadHead);
+        taskItems.put(uploadHead, TaskType.EXPORT_TASK);
 
-        ItemStack settingsHead = head(settingsSkin, "Node Properties");
-        inventory.setItem(3, settingsHead);
+        //ItemStack settingsHead = head(settingsSkin, "Node Properties");
+        //inventory.setItem(3, settingsHead);
 
         ItemStack plusHead = head(plusSkin, "Add Node");
         inventory.setItem(0, plusHead);
@@ -49,9 +53,11 @@ public class EditorViewInventory {
 
         ItemStack crossHead = head(crossSkin, "Close Editor");
         inventory.setItem(8, crossHead);
+        taskItems.put(crossHead, TaskType.CLOSE_TASK);
 
         ItemStack arrowHead = head(arrowSkin, "Connect Nodes");
         inventory.setItem(2, arrowHead);
+        taskItems.put(arrowHead, TaskType.CONNECT_TASK);
 
         //For the stands
         nodeArrowHead = head(nodeArrowSkin);
@@ -66,6 +72,17 @@ public class EditorViewInventory {
     @Nullable
     public TaskType task(ItemStack itemStack) {
         return taskItems.getOrDefault(itemStack, null);
+    }
+
+    public Integer slot(Class<? extends ITask> taskClass) {
+
+        TaskType taskType = taskItems.values().stream().filter(t -> t.iTaskClass()== taskClass).findFirst().orElse(null);
+        if(taskType == null) return null;
+
+        ItemStack stack = taskItems.keySet().stream().filter(i -> task(i)==taskType).findFirst().orElse(null);
+        if(stack == null) return null;
+
+        return Arrays.asList(inventory.getContents()).indexOf(stack);
     }
 
     //Functionality

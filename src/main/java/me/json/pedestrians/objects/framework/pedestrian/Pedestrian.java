@@ -5,7 +5,7 @@ import me.json.pedestrians.Preferences;
 import me.json.pedestrians.objects.framework.path.Node;
 import me.json.pedestrians.objects.framework.path.PathNetwork;
 import me.json.pedestrians.objects.framework.path.connection.ConnectionHandler;
-import me.json.pedestrians.objects.framework.path.connection.ConnectionHandler.ConnectionHandlerEnum;
+import me.json.pedestrians.objects.framework.path.connection.ConnectionHandler.ConnectionHandlerType;
 import me.json.pedestrians.utils.InterpolationUtil;
 import me.json.pedestrians.utils.Vector3;
 import org.bukkit.Location;
@@ -29,7 +29,7 @@ public class Pedestrian {
     private Node targetNode2;
 
     public Pedestrian(PathNetwork pathNetwork, PedestrianEntity pedestrianEntity, Node originNode) {
-        this.pos=ConnectionHandlerEnum.DIRECT_CONNECTION_HANDLER.connectionHandler().targetPos(null, originNode, null, sideOffset);
+        this.pos= ConnectionHandlerType.DIRECT_CONNECTION_HANDLER.connectionHandler().targetPos(null, originNode, null, sideOffset);
         this.pathNetwork = pathNetwork;
         this.pedestrianEntity = pedestrianEntity.initialize(this).spawn(location());
 
@@ -39,7 +39,7 @@ public class Pedestrian {
     }
 
     public Pedestrian(PathNetwork pathNetwork, PedestrianEntity pedestrianEntity, Node originNode, Node targetedNode) {
-        this.pos=ConnectionHandlerEnum.DIRECT_CONNECTION_HANDLER.connectionHandler().targetPos(null, originNode, null, sideOffset);
+        this.pos= ConnectionHandlerType.DIRECT_CONNECTION_HANDLER.connectionHandler().targetPos(null, originNode, null, sideOffset);
         this.pathNetwork = pathNetwork;
         this.pedestrianEntity = pedestrianEntity.initialize(this).spawn(location());
 
@@ -181,7 +181,7 @@ public class Pedestrian {
         }
 
         if(originToTarget1.hasToPrepare()) {
-            ConnectionHandler directHandler = ConnectionHandler.ConnectionHandlerEnum.DIRECT_CONNECTION_HANDLER.connectionHandler();
+            ConnectionHandler directHandler = ConnectionHandlerType.DIRECT_CONNECTION_HANDLER.connectionHandler();
             targetedPos = directHandler.targetPos(originNode, targetNode1, targetNode2, sideOffset);
             return;
         }

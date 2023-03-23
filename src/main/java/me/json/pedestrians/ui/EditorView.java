@@ -40,6 +40,7 @@ public class EditorView {
     public void stop() {
         player.getInventory().setContents(prevInventory);
         editorViewRenderer.stop();
+        Registry.remove(player);
     }
 
     public void task(TaskType taskType) {
@@ -83,9 +84,9 @@ public class EditorView {
             task.onRightClickNode(node);
     }
 
-    public void addTaskScroll(int scrollDirection) {
-        if(task != null && task instanceof AddTask)
-            ((AddTask) task).onScroll(scrollDirection);
+    public void scroll(int scrollDirection) {
+        if(task != null)
+            task.onScroll(scrollDirection);
     }
 
 
@@ -113,6 +114,10 @@ public class EditorView {
 
         private static void register(Player player, EditorView editorView) {
             editorViews.put(player, editorView);
+        }
+
+        private static void remove(Player player) {
+            editorViews.remove(player);
         }
 
         @Nullable

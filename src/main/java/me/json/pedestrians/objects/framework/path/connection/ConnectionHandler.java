@@ -6,7 +6,7 @@ import me.json.pedestrians.utils.Vector3;
 public interface ConnectionHandler {
 
     //+ Static
-    enum ConnectionHandlerEnum {
+    enum ConnectionHandlerType {
 
         DIRECT_CONNECTION_HANDLER(new DirectConnectionHandler()),
         TO_JUNCTION_HANDLER(new JunctionConnectionHandler(false)),
@@ -14,12 +14,12 @@ public interface ConnectionHandler {
 
         private final ConnectionHandler connectionHandler;
 
-        ConnectionHandlerEnum(ConnectionHandler connectionHandler) {
+        ConnectionHandlerType(ConnectionHandler connectionHandler) {
             this.connectionHandler=connectionHandler;
         }
 
-        public static ConnectionHandlerEnum connectionHandlerEnum(ConnectionHandler connectionHandler) {
-            for (ConnectionHandlerEnum value : ConnectionHandlerEnum.values()) {
+        public static ConnectionHandlerType connectionHandlerEnum(ConnectionHandler connectionHandler) {
+            for (ConnectionHandlerType value : ConnectionHandlerType.values()) {
                 if (value.connectionHandler.equals(connectionHandler)) {
                     return value;
                 }

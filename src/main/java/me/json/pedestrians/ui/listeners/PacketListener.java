@@ -10,7 +10,6 @@ import me.json.pedestrians.Preferences;
 import me.json.pedestrians.entities.ClientEntity;
 import me.json.pedestrians.entities.NodeClientEntity;
 import me.json.pedestrians.ui.EditorView;
-import me.json.pedestrians.ui.tasks.AddTask;
 import org.bukkit.plugin.Plugin;
 
 public class PacketListener implements com.comphenix.protocol.events.PacketListener {
@@ -35,12 +34,21 @@ public class PacketListener implements com.comphenix.protocol.events.PacketListe
         EditorView editorView = EditorView.Registry.editorView(e.getPlayer());
         if(editorView == null) return;
 
-        if(editorView.task() == null || !(editorView.task() instanceof AddTask)) return;
+        if(editorView.task() == null || !editorView.task().scrollLock()) return;
 
-        int slot = e.getPacket().getIntegers().read(0);
-        switch (slot) {
-            case 1 -> editorView.addTaskScroll(1);
-            case 8 -> editorView.addTaskScroll(-1);
+        Integer prevSlot = Main.editorViewInventory().slot(editorView.task().getClass());
+        int newSlot = e.getPacket().getIntegers().read(0);
+        if(prevSlot == null || newSlot == prevSlot) return;
+
+        int expectedLeftSlot = prevSlot == 0 ? 8 : prevSlot-1;
+        int expectedRightSlot = prevSlot == 8 ? 0 : prevSlot+1;
+
+        if(newSlot == expectedLeftSlot) {
+            editorView.scroll(1);
+        }
+
+        if(newSlot == expectedRightSlot) {
+            editorView.scroll(-1);
         }
 
     }

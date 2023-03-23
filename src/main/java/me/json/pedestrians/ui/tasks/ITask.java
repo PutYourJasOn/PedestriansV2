@@ -15,6 +15,7 @@ public interface ITask {
     void onLeftClick();
 
     boolean scrollLock();
+    void onScroll(int scrollDirection);
 
     void render();
 

@@ -105,8 +105,8 @@ public class AddTask implements ITask {
 
         if(selectedNodeEntity != null) {
             Node connectedNode = selectedNodeEntity.node();
-            connectedNode.registerConnectedNode(node, new Connection(ConnectionHandler.ConnectionHandlerEnum.DIRECT_CONNECTION_HANDLER.connectionHandler()));
-            node.registerConnectedNode(connectedNode, new Connection(ConnectionHandler.ConnectionHandlerEnum.DIRECT_CONNECTION_HANDLER.connectionHandler()));
+            connectedNode.registerConnectedNode(node, new Connection(ConnectionHandler.ConnectionHandlerType.DIRECT_CONNECTION_HANDLER.connectionHandler()));
+            node.registerConnectedNode(connectedNode, new Connection(ConnectionHandler.ConnectionHandlerType.DIRECT_CONNECTION_HANDLER.connectionHandler()));
 
             selectedNodeEntity.glowing(false);
             selectedNodeEntity = nodeClientEntity;
@@ -128,6 +128,7 @@ public class AddTask implements ITask {
         editorView.player().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(String.format(Messages.PRECISE_MODE_TOGGLE, preciseMode)));
     }
 
+    @Override
     public void onScroll(int scrollDirection) {
 
         if(dir == null) return;
@@ -202,7 +203,7 @@ public class AddTask implements ITask {
 
         dir.y(0);
 
-        DirectConnectionHandler handler = (DirectConnectionHandler) ConnectionHandler.ConnectionHandlerEnum.DIRECT_CONNECTION_HANDLER.connectionHandler();
+        DirectConnectionHandler handler = (DirectConnectionHandler) ConnectionHandler.ConnectionHandlerType.DIRECT_CONNECTION_HANDLER.connectionHandler();
         vector3Array[0] = handler.targetPos(pos, dir, width, 0);
         vector3Array[1] = handler.targetPos(pos, dir, width, 1);
 
