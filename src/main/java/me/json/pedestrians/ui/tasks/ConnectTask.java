@@ -16,11 +16,17 @@ public class ConnectTask implements ITask{
 
     private final List<NodeClientEntity> selectedNodeEntities = new ArrayList<>();
     private EditorView editorView;
+    private List<ConnectionHandlerType> connectionHandlerTypes;
+
     private ConnectionHandlerType connectionHandlerType = ConnectionHandlerType.DIRECT_CONNECTION_HANDLER;
+
 
     @Override
     public void init(EditorView editorView) {
         this.editorView = editorView;
+
+        connectionHandlerTypes = new ArrayList<>(Arrays.asList(ConnectionHandlerType.values()));
+        connectionHandlerTypes.add(null);
     }
 
     @Override
@@ -56,12 +62,16 @@ public class ConnectTask implements ITask{
     @Override
     public void onScroll(int scrollDirection) {
 
-        List<ConnectionHandlerType> connectionHandlerTypes = Arrays.asList(ConnectionHandlerType.values());
         int index = connectionHandlerTypes.indexOf(connectionHandlerType);
         int nextI = index + 1 >= connectionHandlerTypes.size() ? 0 : index + 1;
         connectionHandlerType = connectionHandlerTypes.get(nextI);
 
-        editorView.player().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(String.format(Messages.CONNECTION_TYPE_SELECT,connectionHandlerType.name())));
+        if(connectionHandlerType == null) {
+            editorView.player().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(String.format(Messages.CONNECTION_TYPE_SELECT,"NONE")));
+        } else {
+            editorView.player().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(String.format(Messages.CONNECTION_TYPE_SELECT,connectionHandlerType.name())));
+        }
+
     }
 
     @Override
@@ -73,7 +83,12 @@ public class ConnectTask implements ITask{
 
         if(selectedNodeEntities.size() != 2) return;
 
-        selectedNodeEntities.get(0).node().registerConnectedNode(selectedNodeEntities.get(1).node(), new Connection(connectionHandlerType.connectionHandler()));
+        if(connectionHandlerType == null) {
+            selectedNodeEntities.get(0).node().removeConnection(selectedNodeEntities.get(1).node());
+        } else {
+            selectedNodeEntities.get(0).node().registerConnectedNode(selectedNodeEntities.get(1).node(), new Connection(connectionHandlerType.connectionHandler()));
+        }
+
         editorView.player().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(String.format(Messages.CONNECTION_CREATED)));
 
         //Reset

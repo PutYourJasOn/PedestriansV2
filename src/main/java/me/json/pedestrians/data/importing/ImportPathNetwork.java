@@ -39,6 +39,11 @@ public class ImportPathNetwork extends BukkitRunnable {
         PathNetwork pathNetwork = new PathNetwork(name);
         File path = new File(Main.plugin().getDataFolder(),"pathnetworks/"+name+".json");
 
+        if(!path.exists()) {
+            callback.accept(null);
+            return;
+        }
+
         try (Reader reader = new FileReader(path)) {
 
             JSONParser parser = new JSONParser();

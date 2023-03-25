@@ -1,7 +1,8 @@
 package me.json.pedestrians;
 
 import com.comphenix.protocol.ProtocolLibrary;
-import me.json.pedestrians.commands.MainCommandHandler;
+import me.json.pedestrians.commands.CommandHandler;
+import me.json.pedestrians.commands_old.MainCommandHandler;
 import me.json.pedestrians.data.importing.ImportSkins;
 import me.json.pedestrians.listeners.JoinListener;
 import me.json.pedestrians.listeners.packets.InteractListener;
@@ -36,7 +37,7 @@ public class Main extends JavaPlugin {
         initListeners();
         initHiddenNamesTeam();
 
-        this.getCommand("pedestrians").setExecutor(new MainCommandHandler());
+        this.getCommand("pedestrians").setExecutor(new CommandHandler());
 
     }
 

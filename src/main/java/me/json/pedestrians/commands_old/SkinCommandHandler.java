@@ -1,10 +1,9 @@
-package me.json.pedestrians.commands;
+package me.json.pedestrians.commands_old;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import me.json.pedestrians.Main;
 import me.json.pedestrians.data.exporting.ExportSkin;
-import me.json.pedestrians.data.importing.ImportPathNetwork;
 import me.json.pedestrians.objects.Skin;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;

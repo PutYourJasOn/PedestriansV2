@@ -1,4 +1,4 @@
-package me.json.pedestrians.commands;
+package me.json.pedestrians.commands_old;
 
 import me.json.pedestrians.Preferences;
 import org.bukkit.command.Command;
