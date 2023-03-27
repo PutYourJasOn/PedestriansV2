@@ -1,10 +1,8 @@
 package me.json.pedestrians.ui;
 
 import me.json.pedestrians.Main;
-import me.json.pedestrians.entities.NodeClientEntity;
-import me.json.pedestrians.objects.framework.path.Node;
+import me.json.pedestrians.objects.entities.NodeClientEntity;
 import me.json.pedestrians.objects.framework.path.PathNetwork;
-import me.json.pedestrians.ui.tasks.AddTask;
 import me.json.pedestrians.ui.tasks.ITask;
 import me.json.pedestrians.ui.tasks.TaskType;
 import org.bukkit.entity.Player;
@@ -120,14 +118,22 @@ public class EditorView {
             editorViews.remove(player);
         }
 
+        //Getters
         @Nullable
         public static EditorView editorView(Player player) {
             return editorViews.getOrDefault(player, null);
         }
 
+        @Nullable
+        public static EditorView editorView(String pathNetworkName) {
+            return editorViews.values().stream().filter(e -> e.pathNetwork().name().equalsIgnoreCase(pathNetworkName)).findFirst().orElse(null);
+        }
+
         public static Set<EditorView> editorViews() {
             return new HashSet<>(editorViews.values());
         }
+
+
 
     }
 

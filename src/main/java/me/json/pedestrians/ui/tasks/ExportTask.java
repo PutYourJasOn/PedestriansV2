@@ -2,10 +2,8 @@ package me.json.pedestrians.ui.tasks;
 
 import me.json.pedestrians.Messages;
 import me.json.pedestrians.data.exporting.ExportPathNetwork;
-import me.json.pedestrians.entities.NodeClientEntity;
+import me.json.pedestrians.objects.entities.NodeClientEntity;
 import me.json.pedestrians.ui.EditorView;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 
 public class ExportTask implements ITask{
 
@@ -63,9 +61,7 @@ public class ExportTask implements ITask{
 
         exportPathNetworkTask = new ExportPathNetwork(editorView.pathNetwork(), (v) -> {
 
-            editorView.player().spigot().sendMessage(ChatMessageType.ACTION_BAR,
-                    TextComponent.fromLegacyText(String.format(Messages.PATHNETWORK_SAVED)));
-
+            Messages.sendActionBar(editorView.player(), Messages.PATHNETWORK_SAVED);
             exportPathNetworkTask = null;
 
         });

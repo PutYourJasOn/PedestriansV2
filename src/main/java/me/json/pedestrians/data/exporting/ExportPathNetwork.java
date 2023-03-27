@@ -58,6 +58,7 @@ public class ExportPathNetwork extends BukkitRunnable {
         }
 
         json.put("nodes", jsonNodes);
+        json.put("defaultPedestrians", pathNetwork.defaultPedestrians());
 
         try (FileWriter writer = new FileWriter(path)) {
             writer.write(json.toJSONString());

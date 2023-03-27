@@ -7,6 +7,7 @@ import me.json.pedestrians.objects.framework.path.connection.Connection;
 import me.json.pedestrians.objects.framework.path.connection.ConnectionHandler;
 import me.json.pedestrians.objects.framework.path.connection.ConnectionHandler.ConnectionHandlerType;
 import me.json.pedestrians.utils.Vector3;
+import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -23,10 +24,18 @@ public class ImportPathNetwork extends BukkitRunnable {
 
     private final String name;
     private final Consumer<PathNetwork> callback;
+    private final boolean syncExit;
 
     public ImportPathNetwork(String name, Consumer<PathNetwork> callback) {
         this.name=name;
         this.callback=callback;
+        this.syncExit = false;
+    }
+
+    public ImportPathNetwork(String name, Consumer<PathNetwork> callback, boolean syncExit) {
+        this.name=name;
+        this.callback=callback;
+        this.syncExit=syncExit;
     }
 
     public void start() {
@@ -47,11 +56,16 @@ public class ImportPathNetwork extends BukkitRunnable {
         try (Reader reader = new FileReader(path)) {
 
             JSONParser parser = new JSONParser();
-
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
-            JSONArray jsonNodes = (JSONArray) jsonObject.get("nodes");
+
+            //Properties
+            if(jsonObject.containsKey("defaultPedestrians")) {
+                int defaultPedestrians = (int) jsonObject.get("defaultPedestrians");
+                pathNetwork.defaultPedestrians(defaultPedestrians);
+            }
 
             //Init the Nodes
+            JSONArray jsonNodes = (JSONArray) jsonObject.get("nodes");
             for (Object objectNode : jsonNodes) {
                 JSONObject jsonNode = (JSONObject) objectNode;
                 pathNetwork.addNode(createNode(jsonNode));
@@ -81,7 +95,12 @@ public class ImportPathNetwork extends BukkitRunnable {
             }
 
             //Done
-            callback.accept(pathNetwork);
+            if(!syncExit) {
+                callback.accept(pathNetwork);
+            } else {
+                Bukkit.getScheduler().runTask(Main.plugin(), () -> callback.accept(pathNetwork));
+            }
+
 
         } catch (IOException | ParseException ex) {
             ex.printStackTrace();

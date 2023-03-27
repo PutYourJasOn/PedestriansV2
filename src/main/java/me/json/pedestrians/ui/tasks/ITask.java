@@ -1,6 +1,6 @@
 package me.json.pedestrians.ui.tasks;
 
-import me.json.pedestrians.entities.NodeClientEntity;
+import me.json.pedestrians.objects.entities.NodeClientEntity;
 import me.json.pedestrians.ui.EditorView;
 
 public interface ITask {

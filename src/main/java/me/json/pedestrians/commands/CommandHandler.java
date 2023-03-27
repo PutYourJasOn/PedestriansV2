@@ -2,7 +2,7 @@ package me.json.pedestrians.commands;
 
 import me.json.pedestrians.Messages;
 import me.json.pedestrians.Preferences;
-import net.md_5.bungee.api.chat.TextComponent;
+import me.json.pedestrians.commands.subcommands.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -12,10 +12,14 @@ import java.util.*;
 
 public class CommandHandler implements CommandExecutor {
 
-    private final static Set<ISubCommand> subCommands = new HashSet<>();
+    private final static List<ISubCommand> subCommands = new ArrayList<>();
 
     static {
         subCommands.add(new CreateSubCommand());
+        subCommands.add(new EditSubCommand());
+        subCommands.add(new SetPedsSubCommand());
+        subCommands.add(new AddSkinSubCommand());
+        subCommands.add(new ThreadsSubCommand());
     }
 
     @Override
@@ -23,12 +27,12 @@ public class CommandHandler implements CommandExecutor {
 
         //Perm
         if(!commandSender.hasPermission(Preferences.MAIN_PERMISSION)) {
-            commandSender.spigot().sendMessage(TextComponent.fromLegacyText(String.format(Messages.CONNECTION_TYPE_SELECT)));
+            Messages.sendMessage(commandSender, Messages.NO_PERMISSION);
             return true;
         }
 
         if(args.length < 1) {
-            commandSender.spigot().sendMessage(TextComponent.fromLegacyText(String.format(Messages.WRONG_USAGE)));
+            sendHelpMenu(commandSender);
             return true;
         }
 
@@ -36,13 +40,20 @@ public class CommandHandler implements CommandExecutor {
             String name = subCommand.commandName();
 
             if(args[0].equalsIgnoreCase(name)) {
+
                 List<String> subArgs = new ArrayList<>(Arrays.asList(args));
                 subArgs.remove(0);
 
+                //Checks
                 if(subCommand.args().length > subArgs.size()) {
-                    commandSender.spigot().sendMessage(TextComponent.fromLegacyText(String.format(Messages.WRONG_USAGE)));
-                } else {
+                    Messages.sendMessage(commandSender, Messages.WRONG_USAGE);
+                    return true;
+                }
+
+                try {
                     subCommand.handle(commandSender, subArgs.toArray(new String[subArgs.size()]));
+                } catch (ClassCastException e) {
+                    Messages.sendMessage(commandSender, Messages.WRONG_COMMAND_SENDER);
                 }
 
                 return true;
@@ -50,8 +61,28 @@ public class CommandHandler implements CommandExecutor {
 
         }
 
-        commandSender.spigot().sendMessage(TextComponent.fromLegacyText(String.format(Messages.WRONG_USAGE)));
+        Messages.sendMessage(commandSender, Messages.WRONG_USAGE);
         return true;
+    }
+
+
+    private void sendHelpMenu(CommandSender sender) {
+
+        for (ISubCommand subCommand : subCommands) {
+            Messages.sendMessage(sender, Messages.COMMAND_INFO, commandInfo(subCommand));
+        }
+
+    }
+
+    private String commandInfo(ISubCommand subCommand) {
+
+        String info = subCommand.commandName();
+
+        for (String arg : subCommand.args()) {
+            info = info + " <"+arg+">";
+        }
+
+        return info;
     }
 
 }

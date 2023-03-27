@@ -1,7 +1,7 @@
 package me.json.pedestrians.ui.tasks;
 
 import me.json.pedestrians.Messages;
-import me.json.pedestrians.entities.NodeClientEntity;
+import me.json.pedestrians.objects.entities.NodeClientEntity;
 import me.json.pedestrians.objects.framework.path.connection.Connection;
 import me.json.pedestrians.objects.framework.path.connection.ConnectionHandler.ConnectionHandlerType;
 import me.json.pedestrians.ui.EditorView;

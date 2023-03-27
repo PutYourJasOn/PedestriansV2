@@ -12,11 +12,22 @@ public class PathNetwork {
 
     private final String name;
     private final Set<Node> nodes = new HashSet<>();
+
     private final Set<PedestrianThread> pedestrianThreads = new HashSet<>();
+    private Integer defaultPedestrians;
 
     public PathNetwork(String name) {
         this.name=name;
         Registry.register(name, this);
+    }
+
+    //properties
+    public int defaultPedestrians() {
+        return defaultPedestrians == null ? 0 : defaultPedestrians;
+    }
+
+    public void defaultPedestrians(int defaultPedestrians) {
+        this.defaultPedestrians = defaultPedestrians;
     }
 
     //Node registering
@@ -85,6 +96,11 @@ public class PathNetwork {
         }
     }
 
+    public void removeAllPedestrians() {
+        pedestrians(Integer.MAX_VALUE).forEach(p -> p.remove());
+    }
+
+    //Pedestrians getters
     public Set<Pedestrian> pedestrians(int count) {
 
         Set<Pedestrian> pedestrians = new HashSet<>();
@@ -104,11 +120,6 @@ public class PathNetwork {
         return pedestrians;
     }
 
-    public void removeAllPedestrians() {
-        pedestrians(Integer.MAX_VALUE).forEach(p -> p.remove());
-    }
-
-    //DEBUG!
     public Set<PedestrianThread> pedestrianThreads() {
         return pedestrianThreads;
     }

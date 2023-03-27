@@ -88,6 +88,7 @@ public class EditorViewInventory {
     //Functionality
     public void pushToPlayer(Player player) {
         player.getInventory().setContents(inventory.getContents());
+        player.getInventory().setHeldItemSlot(4);
     }
 
     private ItemStack head(String metadata) {

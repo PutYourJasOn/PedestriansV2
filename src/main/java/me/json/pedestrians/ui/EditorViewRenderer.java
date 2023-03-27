@@ -1,7 +1,7 @@
 package me.json.pedestrians.ui;
 
 import me.json.pedestrians.Main;
-import me.json.pedestrians.entities.NodeClientEntity;
+import me.json.pedestrians.objects.entities.NodeClientEntity;
 import me.json.pedestrians.objects.framework.path.Node;
 import me.json.pedestrians.objects.framework.path.connection.ConnectionHandler;
 import me.json.pedestrians.objects.framework.path.connection.DirectConnectionHandler;

@@ -7,8 +7,8 @@ import com.comphenix.protocol.wrappers.EnumWrappers;
 import com.comphenix.protocol.wrappers.WrappedEnumEntityUseAction;
 import me.json.pedestrians.Main;
 import me.json.pedestrians.Preferences;
-import me.json.pedestrians.entities.ClientEntity;
-import me.json.pedestrians.entities.NodeClientEntity;
+import me.json.pedestrians.objects.entities.ClientEntity;
+import me.json.pedestrians.objects.entities.NodeClientEntity;
 import me.json.pedestrians.ui.EditorView;
 import org.bukkit.plugin.Plugin;
 

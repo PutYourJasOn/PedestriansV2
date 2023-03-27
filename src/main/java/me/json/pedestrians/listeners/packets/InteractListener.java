@@ -6,9 +6,8 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.events.PacketListener;
 import com.comphenix.protocol.wrappers.WrappedEnumEntityUseAction;
 import me.json.pedestrians.Main;
-import me.json.pedestrians.entities.ClientEntity;
-import me.json.pedestrians.entities.PlayerClientEntity;
-import me.json.pedestrians.objects.PlayerPedestrianEntity;
+import me.json.pedestrians.objects.entities.ClientEntity;
+import me.json.pedestrians.objects.entities.PlayerClientEntity;
 import org.bukkit.plugin.Plugin;
 
 public class InteractListener implements PacketListener {

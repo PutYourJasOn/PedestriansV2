@@ -9,3 +9,4 @@ author: ajasona
 commands:
   pedestrians:
     description: Main command
+    aliases: [ped]

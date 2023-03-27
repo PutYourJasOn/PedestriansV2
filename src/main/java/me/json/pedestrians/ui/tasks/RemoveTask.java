@@ -1,10 +1,8 @@
 package me.json.pedestrians.ui.tasks;
 
 import me.json.pedestrians.Messages;
-import me.json.pedestrians.entities.NodeClientEntity;
+import me.json.pedestrians.objects.entities.NodeClientEntity;
 import me.json.pedestrians.ui.EditorView;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 
 public class RemoveTask implements ITask{
 
@@ -33,7 +31,7 @@ public class RemoveTask implements ITask{
             editorView.editorViewRenderer().removeNodeEntity(nodeEntity);
             this.nodeEntity = null;
 
-            editorView.player().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(String.format(Messages.NODE_REMOVED)));
+            Messages.sendActionBar(editorView.player(), Messages.NODE_REMOVED);
 
         } else {
 
@@ -42,8 +40,8 @@ public class RemoveTask implements ITask{
 
             this.nodeEntity = nodeEntity;
             this.nodeEntity.glowing(true);
-            editorView.player().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(String.format(Messages.CLICK_AGAIN_REMOVE)));
 
+            Messages.sendActionBar(editorView.player(), Messages.CLICK_AGAIN_REMOVE);
         }
 
     }

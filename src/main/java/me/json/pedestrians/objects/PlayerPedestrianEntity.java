@@ -4,7 +4,7 @@ import com.comphenix.protocol.wrappers.EnumWrappers;
 import com.comphenix.protocol.wrappers.WrappedEnumEntityUseAction;
 import me.json.pedestrians.Main;
 import me.json.pedestrians.Preferences;
-import me.json.pedestrians.entities.PlayerClientEntity;
+import me.json.pedestrians.objects.entities.PlayerClientEntity;
 import me.json.pedestrians.objects.framework.pedestrian.Pedestrian;
 import me.json.pedestrians.objects.framework.pedestrian.PedestrianEntity;
 import me.json.pedestrians.utils.Vector3;
@@ -13,10 +13,6 @@ import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-
-import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.Map;
 
 public class PlayerPedestrianEntity implements PedestrianEntity {
 

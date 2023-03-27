@@ -1,7 +1,7 @@
 package me.json.pedestrians.utils;
 
 import me.json.pedestrians.Main;
-import me.json.pedestrians.entities.ClientEntity;
+import me.json.pedestrians.objects.entities.ClientEntity;
 
 import java.util.Random;
 

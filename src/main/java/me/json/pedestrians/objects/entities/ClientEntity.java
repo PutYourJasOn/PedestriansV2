@@ -1,4 +1,4 @@
-package me.json.pedestrians.entities;
+package me.json.pedestrians.objects.entities;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
