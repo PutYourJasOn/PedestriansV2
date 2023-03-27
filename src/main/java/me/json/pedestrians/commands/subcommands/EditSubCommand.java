@@ -39,14 +39,14 @@ public class EditSubCommand implements ISubCommand<Player> {
         }
 
         PathNetwork pathNetwork = PathNetwork.Registry.pathNetwork(args[0]);
-        if(path == null) {
+        if(pathNetwork == null) {
 
             players.add(sender);
 
             new ImportPathNetwork(args[0], (p) -> {
                 players.remove(sender);
-                new EditorView(sender, pathNetwork);
-            }).start();
+                new EditorView(sender, p);
+            }, true).start();
 
         } else {
             new EditorView(sender, pathNetwork);

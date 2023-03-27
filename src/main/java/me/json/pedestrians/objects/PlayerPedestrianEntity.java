@@ -41,6 +41,7 @@ public class PlayerPedestrianEntity implements PedestrianEntity {
     @Override
     public void remove() {
         npc.remove();
+        npc = null;
     }
 
     @Override

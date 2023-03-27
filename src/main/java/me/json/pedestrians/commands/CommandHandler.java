@@ -68,10 +68,13 @@ public class CommandHandler implements CommandExecutor {
 
     private void sendHelpMenu(CommandSender sender) {
 
+        Messages.sendMessage(sender, Messages.HELP_MENU, "+", "+");
+
         for (ISubCommand subCommand : subCommands) {
-            Messages.sendMessage(sender, Messages.COMMAND_INFO, commandInfo(subCommand));
+            Messages.sendMessage(sender, Messages.COMMAND_INFO, false, commandInfo(subCommand));
         }
 
+        Messages.sendMessage(sender, Messages.HELP_MENU, "-", "-");
     }
 
     private String commandInfo(ISubCommand subCommand) {

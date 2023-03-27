@@ -38,15 +38,6 @@ public class Pedestrian {
         updateNode(originNode, targetNode1, targetNode1.generateNextNode(originNode));
     }
 
-    public Pedestrian(PathNetwork pathNetwork, PedestrianEntity pedestrianEntity, Node originNode, Node targetedNode) {
-        this.pos= ConnectionHandlerType.DIRECT_CONNECTION_HANDLER.connectionHandler().targetPos(null, originNode, null, sideOffset);
-        this.pathNetwork = pathNetwork;
-        this.pedestrianEntity = pedestrianEntity.initialize(this).spawn(location());
-
-        pathNetwork.addPedestrian(this);
-        updateNode(originNode, targetedNode, targetedNode.generateNextNode(originNode));
-    }
-
     //Getters
     private Location location() {
         Location location = new Location(Main.world(), pos.x(), pos.y(), pos.z());
@@ -132,8 +123,8 @@ public class Pedestrian {
     }
 
     public void remove() {
-        pedestrianEntity.remove();
         pathNetwork.removePedestrian(this);
+        pedestrianEntity.remove();
     }
 
     //Height

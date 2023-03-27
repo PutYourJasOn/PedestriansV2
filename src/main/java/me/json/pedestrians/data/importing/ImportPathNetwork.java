@@ -29,7 +29,7 @@ public class ImportPathNetwork extends BukkitRunnable {
     public ImportPathNetwork(String name, Consumer<PathNetwork> callback) {
         this.name=name;
         this.callback=callback;
-        this.syncExit = false;
+        this.syncExit=false;
     }
 
     public ImportPathNetwork(String name, Consumer<PathNetwork> callback, boolean syncExit) {

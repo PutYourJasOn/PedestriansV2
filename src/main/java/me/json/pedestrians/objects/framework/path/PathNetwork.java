@@ -77,9 +77,13 @@ public class PathNetwork {
 
         //If smallest thread is at max capacity, create new one. Else: add to smallest thread
         if(threads.get(0).size() >= Preferences.PEDESTRIAN_GROUP_SIZE){
-            pedestrianThreads.add(new PedestrianThread(pedestrian));
+
+            PedestrianThread thread = new PedestrianThread();
+            pedestrianThreads.add(thread);
+            thread.safeAdd(pedestrian);
+
         } else {
-            threads.get(0).add(pedestrian);
+            threads.get(0).safeAdd(pedestrian);
         }
 
     }
@@ -87,13 +91,16 @@ public class PathNetwork {
     //(Will be called by pedestrian)
     public void removePedestrian(Pedestrian pedestrian) {
 
-        for (PedestrianThread pedestrianThread : new HashSet<>(pedestrianThreads)) {
+        PedestrianThread thread = pedestrianThreads.stream().filter(t -> t.contains(pedestrian)).findFirst().orElse(null);
+        if(thread == null) return;
 
-            if(pedestrianThread.remove(pedestrian) && pedestrianThread.size() == 0) {
-                pedestrianThreads.remove(pedestrianThread);
-            }
+        thread.safeRemove(pedestrian);
 
+        if(thread.size() == 0) {
+            thread.safeStop();
+            pedestrianThreads.remove(thread);
         }
+
     }
 
     public void removeAllPedestrians() {

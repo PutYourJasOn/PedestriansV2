@@ -2,7 +2,6 @@ package me.json.pedestrians;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import me.json.pedestrians.commands.CommandHandler;
-import me.json.pedestrians.commands_old.MainCommandHandler;
 import me.json.pedestrians.data.importing.ImportSkins;
 import me.json.pedestrians.listeners.JoinListener;
 import me.json.pedestrians.listeners.packets.InteractListener;
@@ -19,6 +18,7 @@ import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 
 import java.io.File;
+import java.nio.file.Path;
 
 public class Main extends JavaPlugin {
 

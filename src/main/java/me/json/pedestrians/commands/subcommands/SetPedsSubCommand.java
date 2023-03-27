@@ -1,5 +1,6 @@
 package me.json.pedestrians.commands.subcommands;
 
+import me.json.pedestrians.Main;
 import me.json.pedestrians.Messages;
 import me.json.pedestrians.data.importing.ImportPathNetwork;
 import me.json.pedestrians.objects.PlayerPedestrianEntity;
@@ -8,6 +9,8 @@ import me.json.pedestrians.objects.framework.path.PathNetwork;
 import me.json.pedestrians.objects.framework.pedestrian.Pedestrian;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
+
+import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,6 +37,12 @@ public class SetPedsSubCommand implements ISubCommand<CommandSender> {
 
         } else {
 
+            File path = new File(Main.plugin().getDataFolder(),"pathnetworks/"+args[0]+".json");
+            if(!path.exists()) {
+                Messages.sendMessage(sender, Messages.PATHNETWORK_DOESNT_EXIST);
+                return;
+            }
+
             senders.add(sender);
 
             new ImportPathNetwork(args[0], p -> {
@@ -56,14 +65,14 @@ public class SetPedsSubCommand implements ISubCommand<CommandSender> {
 
         //Remove
         if(delta < 0) {
-            pathNetwork.pedestrians(delta).forEach(p -> p.remove());
+            pathNetwork.pedestrians(Math.abs(delta)).forEach(Pedestrian::remove);
         }
 
         //add
         if(delta > 0) {
 
             for (int i = 0; i < delta; i++) {
-                pathNetwork.addPedestrian(new Pedestrian(pathNetwork, new PlayerPedestrianEntity(Skin.Registry.randomSkin()), pathNetwork.randomNode()));
+                new Pedestrian(pathNetwork, new PlayerPedestrianEntity(Skin.Registry.randomSkin()), pathNetwork.randomNode());
             }
 
         }

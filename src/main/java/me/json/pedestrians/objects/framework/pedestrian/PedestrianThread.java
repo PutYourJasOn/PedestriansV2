@@ -4,46 +4,50 @@ import me.json.pedestrians.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ConcurrentModificationException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class PedestrianThread extends BukkitRunnable {
 
+    private final Queue<Pedestrian> toAdd = new ConcurrentLinkedQueue<>();
+    private final Queue<Pedestrian> toRemove = new ConcurrentLinkedQueue<>();
+
     private final Set<Pedestrian> pedestrians = new HashSet<>();
+
+    private boolean mayCancel = false;
     private boolean cancelled = false;
 
     public PedestrianThread() {
         this.runTaskAsynchronously(Main.plugin());
     }
 
-    public PedestrianThread(Pedestrian pedestrian) {
-        pedestrians.add(pedestrian);
-        this.runTaskAsynchronously(Main.plugin());
-    }
-
     //Functions
-    public void stop() {
-        if(!pedestrians.isEmpty()) throw new IllegalStateException("Tried to stop a PedestrianThread while there are still pedestrians in this thread");
-        this.cancelled = true;
+    public void safeStop() {
+        this.mayCancel = true;
     }
 
     //Registry
-    public void add(Pedestrian pedestrian) {
-        this.pedestrians.add(pedestrian);
+    public void safeAdd(Pedestrian pedestrian) {
+        toAdd.offer(pedestrian);
     }
 
-    public boolean remove(Pedestrian pedestrian) {
-        return pedestrians.remove(pedestrian);
+    public void safeRemove(Pedestrian pedestrian) {
+        toRemove.offer(pedestrian);
     }
 
     public Set<Pedestrian> pedestrians() {
-        return new HashSet<>(pedestrians);
+        Set<Pedestrian> set = new HashSet<>(pedestrians);
+        set.removeAll(toRemove);
+        return set;
+    }
+
+    public boolean contains(Pedestrian pedestrian) {
+        return pedestrians.contains(pedestrian);
     }
 
     //Getters
     public int size() {
-        return pedestrians.size();
+        return pedestrians.size() + toAdd.size() - toRemove.size();
     }
 
     //Timer
@@ -67,10 +71,19 @@ public class PedestrianThread extends BukkitRunnable {
 
     private void tick() {
 
-        try {
-            pedestrians.forEach(Pedestrian::tick);
-        } catch (ConcurrentModificationException ex) {
-            //This shouldn't happen too often, so if it does; just skip the tick.
+        pedestrians.forEach(Pedestrian::tick);
+
+        while(!toAdd.isEmpty()) {
+            pedestrians.add(toAdd.poll());
+        }
+
+        while(!toRemove.isEmpty()) {
+            Pedestrian p = toRemove.poll();
+            pedestrians.remove(p);
+        }
+
+        if(pedestrians.isEmpty() && toAdd.isEmpty() && toRemove.isEmpty() && mayCancel) {
+            cancelled = true;
         }
 
     }
