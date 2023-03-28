@@ -31,7 +31,6 @@ public class SetPedsSubCommand implements ISubCommand<CommandSender> {
 
         if(pathNetwork != null) {
 
-            pathNetwork.defaultPedestrians(pedestrians);
             updatePathNetwork(pathNetwork, pedestrians);
             Messages.sendMessage(sender, Messages.PEDESTRIANS_SET);
 
@@ -49,7 +48,6 @@ public class SetPedsSubCommand implements ISubCommand<CommandSender> {
 
                 senders.remove(sender);
 
-                p.defaultPedestrians(pedestrians);
                 updatePathNetwork(p, pedestrians);
                 Messages.sendMessage(sender, Messages.PEDESTRIANS_SET);
 

@@ -92,7 +92,7 @@ public class PlayerPedestrianEntity implements PedestrianEntity {
             player.spawnParticle(Particle.VILLAGER_ANGRY, pedestrian.pos().clone().add(new Vector3(0,1.5,0)).toLocation(), 1);
 
             float originalVel = pedestrian.velocity();
-            pedestrian.velocity(Preferences.PEDESTRIAN_MAX_RUN_VELOCITY);
+            pedestrian.velocity(Preferences.PEDESTRIAN_MAX_VELOCITY*4);
             pedestrian.targetedPlayer(null);
             isInsideInteraction = true;
 

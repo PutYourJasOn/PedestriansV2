@@ -2,6 +2,7 @@ package me.json.pedestrians;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import me.json.pedestrians.commands.CommandHandler;
+import me.json.pedestrians.data.importing.ImportConfig;
 import me.json.pedestrians.data.importing.ImportSkins;
 import me.json.pedestrians.listeners.JoinListener;
 import me.json.pedestrians.listeners.packets.InteractListener;
@@ -28,12 +29,14 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
         plugin = this;
         world = Bukkit.getWorlds().get(0);
-
         editorViewInventory = new EditorViewInventory();
+
         initFiles();
         initSkins();
+        initConfig();
         initListeners();
         initHiddenNamesTeam();
 
@@ -74,9 +77,11 @@ public class Main extends JavaPlugin {
         File path = new File(Main.plugin().getDataFolder(),"pathnetworks");
         path.mkdirs();
 
-        //Skins.yml
+        //skins.txt
         saveResource("skins.txt", false);
 
+        //config.yml
+        saveResource("config.yml", false);
     }
 
     private void initSkins() {
@@ -90,6 +95,10 @@ public class Main extends JavaPlugin {
 
         }).start();
 
+    }
+
+    private void initConfig() {
+        new ImportConfig().start();
     }
 
     //Getters

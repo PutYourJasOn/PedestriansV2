@@ -12,7 +12,7 @@ public class Node {
     private final Vector3 pos;
     private final double width;
     private final Vector3 direction; //Path direction
-    private Integer forcedAttractiveness;
+    private Integer forcedAttractiveness; //TODO:
 
     private final Map<Node, Connection> connectedNodes = new HashMap<>();
 
@@ -69,10 +69,10 @@ public class Node {
         nodeCandidates.remove(originNode);
         if(nodeCandidates.keySet().size() < 1) return originNode;
 
-        return getRandomNode(nodeCandidates);
+        return randomNode(nodeCandidates);
     }
 
-    private Node getRandomNode(Map<Node, Connection> nodeCandidates) {
+    private Node randomNode(Map<Node, Connection> nodeCandidates) {
 
         List<Node> candidates = new ArrayList<>();
 

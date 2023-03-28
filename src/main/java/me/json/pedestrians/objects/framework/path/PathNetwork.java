@@ -14,20 +14,10 @@ public class PathNetwork {
     private final Set<Node> nodes = new HashSet<>();
 
     private final Set<PedestrianThread> pedestrianThreads = new HashSet<>();
-    private Integer defaultPedestrians;
 
     public PathNetwork(String name) {
         this.name=name;
         Registry.register(name, this);
-    }
-
-    //properties
-    public int defaultPedestrians() {
-        return defaultPedestrians == null ? 0 : defaultPedestrians;
-    }
-
-    public void defaultPedestrians(int defaultPedestrians) {
-        this.defaultPedestrians = defaultPedestrians;
     }
 
     //Node registering
@@ -66,6 +56,9 @@ public class PathNetwork {
     }
 
     //Pedestrians
+
+    //TODO: centralize removing/adding to this class
+
     //(Will be called by pedestrian)
     public void addPedestrian(Pedestrian pedestrian) {
 

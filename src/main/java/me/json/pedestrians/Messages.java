@@ -27,7 +27,7 @@ public class Messages {
     public static final String PATHNETWORK_SAVED        = textComponent("PathNetwork has been saved", C, true);
 
     //Commands
-    public static final String COMMAND_INFO             = textComponent("- /ped %s", C, false);
+    public static final String COMMAND_INFO             = textComponent("- /peds %s", C, false);
     public static final String NO_PERMISSION            = textComponent("You don't have the sufficient permissions", B, true);
     public static final String WRONG_USAGE              = textComponent("Wrong usage", B, true);
     public static final String WRONG_COMMAND_SENDER     = textComponent("This command can't be executed as the current command sender", B, true);
@@ -41,6 +41,7 @@ public class Messages {
     public static final String HELP_MENU                = textComponent("%s Help menu %s", D, true);
     public static final String THREADS                  = textComponent("%s Threads %s", D, true);
     public static final String THREAD_INFO              = textComponent("- Network: %s, peds: %s", C, true);
+    public static final String AUTO_SPAWN_SET           = textComponent("This PathNetwork's autospawn has been set", D, true);
 
     private static String textComponent(String string, ChatColor color, boolean italic) {
         TextComponent textComponent = new TextComponent(string);

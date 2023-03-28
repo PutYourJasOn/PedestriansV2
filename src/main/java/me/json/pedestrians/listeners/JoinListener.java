@@ -4,6 +4,11 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketContainer;
 import me.json.pedestrians.Main;
+import me.json.pedestrians.data.importing.ImportAutoSpawns;
+import me.json.pedestrians.data.importing.ImportPathNetwork;
+import me.json.pedestrians.objects.PlayerPedestrianEntity;
+import me.json.pedestrians.objects.Skin;
+import me.json.pedestrians.objects.framework.pedestrian.Pedestrian;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,6 +24,7 @@ public class JoinListener implements Listener {
 
     //Static +++
     public static final Set<Player> justJoinedPlayers = new HashSet<>();
+    public static ImportAutoSpawns importAutoSpawns;
     //Static ---
 
     @EventHandler
@@ -30,6 +36,26 @@ public class JoinListener implements Listener {
         //Handle just joined
         justJoinedPlayers.add(e.getPlayer());
         Bukkit.getScheduler().runTaskLater(Main.plugin(), () -> justJoinedPlayers.remove(e.getPlayer()), 20*3);
+
+        //Spawn autospawn network on first join
+        if(importAutoSpawns == null) {
+
+            importAutoSpawns = new ImportAutoSpawns(map -> {
+
+                for (String name : map.keySet()) {
+
+                    new ImportPathNetwork(name, p -> {
+                        for (int i = 0; i < map.get(name); i++) {
+                            new Pedestrian(p, new PlayerPedestrianEntity(Skin.Registry.randomSkin()), p.randomNode());
+                        }
+                    }, true).start();
+
+                }
+
+            }, false);
+
+            importAutoSpawns.start();
+        }
 
     }
 

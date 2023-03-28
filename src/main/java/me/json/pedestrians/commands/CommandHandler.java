@@ -18,6 +18,7 @@ public class CommandHandler implements CommandExecutor {
         subCommands.add(new CreateSubCommand());
         subCommands.add(new EditSubCommand());
         subCommands.add(new SetPedsSubCommand());
+        subCommands.add(new AutoSpawnSubCommand());
         subCommands.add(new AddSkinSubCommand());
         subCommands.add(new ThreadsSubCommand());
     }

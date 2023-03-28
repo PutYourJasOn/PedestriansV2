@@ -58,12 +58,6 @@ public class ImportPathNetwork extends BukkitRunnable {
             JSONParser parser = new JSONParser();
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
 
-            //Properties
-            if(jsonObject.containsKey("defaultPedestrians")) {
-                int defaultPedestrians = (int) jsonObject.get("defaultPedestrians");
-                pathNetwork.defaultPedestrians(defaultPedestrians);
-            }
-
             //Init the Nodes
             JSONArray jsonNodes = (JSONArray) jsonObject.get("nodes");
             for (Object objectNode : jsonNodes) {
