@@ -29,11 +29,10 @@ public class Pedestrian {
     private Node targetNode2;
 
     public Pedestrian(PathNetwork pathNetwork, PedestrianEntity pedestrianEntity, Node originNode) {
-        this.pos= ConnectionHandlerType.DIRECT_CONNECTION_HANDLER.connectionHandler().targetPos(null, originNode, null, sideOffset);
+        this.pos= ConnectionHandlerType.DIRECT_CONNECTION_HANDLER.instance().targetPos(null, originNode, null, sideOffset);
         this.pathNetwork = pathNetwork;
         this.pedestrianEntity = pedestrianEntity.initialize(this).spawn(location());
 
-        pathNetwork.addPedestrian(this);
         Node targetNode1 = originNode.generateNextNode(originNode);
         updateNode(originNode, targetNode1, targetNode1.generateNextNode(originNode));
     }
@@ -123,7 +122,6 @@ public class Pedestrian {
     }
 
     public void remove() {
-        pathNetwork.removePedestrian(this);
         pedestrianEntity.remove();
     }
 
@@ -163,8 +161,8 @@ public class Pedestrian {
         this.targetNode2 = targetNode2;
 
         //Connection Handling
-        ConnectionHandler originToTarget1 = originNode.connection(targetNode1).connectionHandler();
-        ConnectionHandler target1ToTarget2 = targetNode1.connection(targetNode2).connectionHandler();
+        ConnectionHandler originToTarget1 = originNode.connection(targetNode1);
+        ConnectionHandler target1ToTarget2 = targetNode1.connection(targetNode2);
 
         if(target1ToTarget2.hasToPrepare()) {
             targetedPos = target1ToTarget2.targetPos(originNode, targetNode1, targetNode2, sideOffset);
@@ -172,7 +170,7 @@ public class Pedestrian {
         }
 
         if(originToTarget1.hasToPrepare()) {
-            ConnectionHandler directHandler = ConnectionHandlerType.DIRECT_CONNECTION_HANDLER.connectionHandler();
+            ConnectionHandler directHandler = ConnectionHandlerType.DIRECT_CONNECTION_HANDLER.instance();
             targetedPos = directHandler.targetPos(originNode, targetNode1, targetNode2, sideOffset);
             return;
         }

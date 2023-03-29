@@ -100,26 +100,16 @@ public class NodeClientEntity extends ClientEntity{
 
         PacketContainer packet = new PacketContainer(PacketType.Play.Server.ENTITY_METADATA);
         Optional<?> opt = Optional.of(WrappedChatComponent.fromChatMessage("Node: "+node.id())[0].getHandle());
-        WrappedDataWatcher dataWatcher = new WrappedDataWatcher();
 
-        if(glowing) {
-            dataWatcher.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(0, WrappedDataWatcher.Registry.get(Byte.class)), (byte) 0b01100000);
-        } else{
-            dataWatcher.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(0, WrappedDataWatcher.Registry.get(Byte.class)), (byte) 0b00100000);
-        }
-
-        dataWatcher.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true)),opt);
-        dataWatcher.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(3, WrappedDataWatcher.Registry.get(Boolean.class)),true);
-
-        //(1.19.3 shit ugh)
         List<WrappedDataValue> wrappedDataValues = new ArrayList<>();
-        for (WrappedWatchableObject watchableObject : dataWatcher.getWatchableObjects()) {
-
-            if (watchableObject == null) continue;
-
-            WrappedDataWatcher.WrappedDataWatcherObject watcherObject = watchableObject.getWatcherObject();
-            wrappedDataValues.add(new WrappedDataValue(watcherObject.getIndex(), watcherObject.getSerializer(), watchableObject.getRawValue()));
+        if(glowing) {
+            wrappedDataValues.add(new WrappedDataValue(0, WrappedDataWatcher.Registry.get(Byte.class), (byte) 0b01100000));
+        } else {
+            wrappedDataValues.add(new WrappedDataValue(0, WrappedDataWatcher.Registry.get(Byte.class), (byte) 0b00100000));
         }
+
+        wrappedDataValues.add(new WrappedDataValue(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true), opt));
+        wrappedDataValues.add(new WrappedDataValue(3, WrappedDataWatcher.Registry.get(Boolean.class), true));
 
         packet.getIntegers().write(0, entityID);
         packet.getDataValueCollectionModifier().write(0, wrappedDataValues);

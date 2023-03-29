@@ -1,6 +1,6 @@
 package me.json.pedestrians.objects.framework.path;
 
-import me.json.pedestrians.objects.framework.path.connection.Connection;
+import me.json.pedestrians.objects.framework.path.connection.ConnectionHandler;
 import me.json.pedestrians.utils.Vector3;
 
 import java.util.*;
@@ -14,7 +14,7 @@ public class Node {
     private final Vector3 direction; //Path direction
     private Integer forcedAttractiveness; //TODO:
 
-    private final Map<Node, Connection> connectedNodes = new HashMap<>();
+    private final Map<Node, ConnectionHandler> connectedNodes = new HashMap<>();
 
     public Node(int id, Vector3 pos, double width, Vector3 direction) {
         this.id=id; this.pos=pos; this.width=width; this.direction=direction;
@@ -33,7 +33,7 @@ public class Node {
         return new HashSet<>(connectedNodes.keySet());
     }
 
-    public Connection connection(Node node) {
+    public ConnectionHandler connection(Node node) {
         return connectedNodes.get(node);
     }
     public int id() {
@@ -49,7 +49,7 @@ public class Node {
     }
 
     //Registers Setters
-    public void registerConnectedNode(Node node, Connection connection) {
+    public void registerConnectedNode(Node node, ConnectionHandler connection) {
         this.connectedNodes.put(node, connection);
     }
 
@@ -64,7 +64,7 @@ public class Node {
     //Functionality
     public Node generateNextNode(Node originNode) {
 
-        Map<Node, Connection> nodeCandidates = new HashMap<>(connectedNodes);
+        Map<Node, ConnectionHandler> nodeCandidates = new HashMap<>(connectedNodes);
 
         nodeCandidates.remove(originNode);
         if(nodeCandidates.keySet().size() < 1) return originNode;
@@ -72,7 +72,7 @@ public class Node {
         return randomNode(nodeCandidates);
     }
 
-    private Node randomNode(Map<Node, Connection> nodeCandidates) {
+    private Node randomNode(Map<Node, ConnectionHandler> nodeCandidates) {
 
         List<Node> candidates = new ArrayList<>();
 

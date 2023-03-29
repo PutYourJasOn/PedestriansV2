@@ -63,14 +63,14 @@ public class SetPedsSubCommand implements ISubCommand<CommandSender> {
 
         //Remove
         if(delta < 0) {
-            pathNetwork.pedestrians(Math.abs(delta)).forEach(Pedestrian::remove);
+            pathNetwork.pedestrians(Math.abs(delta)).forEach(p -> pathNetwork.removePedestrian(p));
         }
 
         //add
         if(delta > 0) {
 
             for (int i = 0; i < delta; i++) {
-                new Pedestrian(pathNetwork, new PlayerPedestrianEntity(Skin.Registry.randomSkin()), pathNetwork.randomNode());
+                pathNetwork.createPedestrian(PlayerPedestrianEntity.class, Skin.Registry.randomSkin());
             }
 
         }

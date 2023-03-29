@@ -27,7 +27,7 @@ public interface ConnectionHandler {
             return null;
         }
 
-        public ConnectionHandler connectionHandler() {
+        public ConnectionHandler instance() {
             return this.connectionHandler;
         }
 

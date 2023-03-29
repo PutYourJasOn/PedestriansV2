@@ -3,7 +3,6 @@ package me.json.pedestrians.data.importing;
 import me.json.pedestrians.Main;
 import me.json.pedestrians.objects.framework.path.Node;
 import me.json.pedestrians.objects.framework.path.PathNetwork;
-import me.json.pedestrians.objects.framework.path.connection.Connection;
 import me.json.pedestrians.objects.framework.path.connection.ConnectionHandler;
 import me.json.pedestrians.objects.framework.path.connection.ConnectionHandler.ConnectionHandlerType;
 import me.json.pedestrians.utils.Vector3;
@@ -80,11 +79,10 @@ public class ImportPathNetwork extends BukkitRunnable {
                     //int probability = (int) (long) jsonConnection.get("probability");
                     String connectionHandlerTitle = (String) jsonConnection.get("connection_handler");
 
-                    ConnectionHandler connectionHandler = ConnectionHandlerType.valueOf(connectionHandlerTitle).connectionHandler();
+                    ConnectionHandler connectionHandler = ConnectionHandlerType.valueOf(connectionHandlerTitle).instance();
                     Node connectedNode = pathNetwork.node(connectedNodeID);
-                    Connection connection = new Connection(connectionHandler);
 
-                    node.registerConnectedNode(connectedNode, connection);
+                    node.registerConnectedNode(connectedNode, connectionHandler);
                 }
             }
 

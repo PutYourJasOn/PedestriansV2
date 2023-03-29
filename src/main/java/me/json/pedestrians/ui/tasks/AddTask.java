@@ -4,7 +4,6 @@ import me.json.pedestrians.Main;
 import me.json.pedestrians.Messages;
 import me.json.pedestrians.objects.entities.NodeClientEntity;
 import me.json.pedestrians.objects.framework.path.Node;
-import me.json.pedestrians.objects.framework.path.connection.Connection;
 import me.json.pedestrians.objects.framework.path.connection.ConnectionHandler;
 import me.json.pedestrians.objects.framework.path.connection.DirectConnectionHandler;
 import me.json.pedestrians.ui.EditorView;
@@ -105,8 +104,8 @@ public class AddTask implements ITask {
 
         if(selectedNodeEntity != null) {
             Node connectedNode = selectedNodeEntity.node();
-            connectedNode.registerConnectedNode(node, new Connection(ConnectionHandler.ConnectionHandlerType.DIRECT_CONNECTION_HANDLER.connectionHandler()));
-            node.registerConnectedNode(connectedNode, new Connection(ConnectionHandler.ConnectionHandlerType.DIRECT_CONNECTION_HANDLER.connectionHandler()));
+            connectedNode.registerConnectedNode(node, ConnectionHandler.ConnectionHandlerType.DIRECT_CONNECTION_HANDLER.instance());
+            node.registerConnectedNode(connectedNode, ConnectionHandler.ConnectionHandlerType.DIRECT_CONNECTION_HANDLER.instance());
 
             selectedNodeEntity.glowing(false);
             selectedNodeEntity = nodeClientEntity;
@@ -203,7 +202,7 @@ public class AddTask implements ITask {
 
         dir.y(0);
 
-        DirectConnectionHandler handler = (DirectConnectionHandler) ConnectionHandler.ConnectionHandlerType.DIRECT_CONNECTION_HANDLER.connectionHandler();
+        DirectConnectionHandler handler = (DirectConnectionHandler) ConnectionHandler.ConnectionHandlerType.DIRECT_CONNECTION_HANDLER.instance();
         vector3Array[0] = handler.targetPos(pos, dir, width, 0);
         vector3Array[1] = handler.targetPos(pos, dir, width, 1);
 

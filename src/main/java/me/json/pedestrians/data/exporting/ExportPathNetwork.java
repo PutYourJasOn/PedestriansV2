@@ -3,7 +3,6 @@ package me.json.pedestrians.data.exporting;
 import me.json.pedestrians.Main;
 import me.json.pedestrians.objects.framework.path.Node;
 import me.json.pedestrians.objects.framework.path.PathNetwork;
-import me.json.pedestrians.objects.framework.path.connection.Connection;
 import me.json.pedestrians.objects.framework.path.connection.ConnectionHandler;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.json.simple.JSONArray;
@@ -44,12 +43,11 @@ public class ExportPathNetwork extends BukkitRunnable {
 
             JSONArray jsonConnections = new JSONArray();
             for (Node connectedNode : node.connectedNodes()) {
-                Connection connection = node.connection(connectedNode);
+                ConnectionHandler connection = node.connection(connectedNode);
 
                 JSONObject jsonConnection = new JSONObject();
                 jsonConnection.put("id",connectedNode.id());
-                //jsonConnection.put("probability",connection.probability());
-                jsonConnection.put("connection_handler", ConnectionHandler.ConnectionHandlerType.connectionHandlerEnum(connection.connectionHandler()).name());
+                jsonConnection.put("connection_handler", ConnectionHandler.ConnectionHandlerType.connectionHandlerEnum(connection).name());
                 jsonConnections.add(jsonConnection);
             }
 

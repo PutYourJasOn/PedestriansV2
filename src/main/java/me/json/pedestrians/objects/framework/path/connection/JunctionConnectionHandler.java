@@ -19,7 +19,7 @@ public class JunctionConnectionHandler implements ConnectionHandler {
     @Override
     public Vector3 targetPos(Node originNode, Node targetNode1, Node targetNode2, float sideOffset) {
 
-        ConnectionHandler directHandler = ConnectionHandlerType.DIRECT_CONNECTION_HANDLER.connectionHandler();
+        ConnectionHandler directHandler = ConnectionHandlerType.DIRECT_CONNECTION_HANDLER.instance();
 
         //Origin --> Target1
         Vector3 originPos1 = directHandler.targetPos(null, originNode, null, sideOffset);

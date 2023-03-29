@@ -65,18 +65,8 @@ public class PlayerClientEntity extends ClientEntity {
         //3.
         packets[2] = new PacketContainer(PacketType.Play.Server.ENTITY_METADATA);
 
-        WrappedDataWatcher dataWatcher = new WrappedDataWatcher();
-        dataWatcher.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(17, WrappedDataWatcher.Registry.get(Byte.class)), (byte) 0b01111110);
-
-        //(1.19.3 shit ugh)
         List<WrappedDataValue> wrappedDataValues = new ArrayList<>();
-        for (WrappedWatchableObject watchableObject : dataWatcher.getWatchableObjects()) {
-
-            if (watchableObject == null) continue;
-
-            WrappedDataWatcher.WrappedDataWatcherObject watcherObject = watchableObject.getWatcherObject();
-            wrappedDataValues.add(new WrappedDataValue(watcherObject.getIndex(), watcherObject.getSerializer(), watchableObject.getRawValue()));
-        }
+        wrappedDataValues.add(new WrappedDataValue(17, WrappedDataWatcher.Registry.get(Byte.class), (byte)0b01111110));
 
         packets[2].getIntegers().write(0, entityID);
         packets[2].getDataValueCollectionModifier().write(0, wrappedDataValues);
@@ -84,7 +74,6 @@ public class PlayerClientEntity extends ClientEntity {
         //Send
         this.sendDelayedPacketToViewer(player, delayedPacket, 10);
         return packets;
-
 
     }
 

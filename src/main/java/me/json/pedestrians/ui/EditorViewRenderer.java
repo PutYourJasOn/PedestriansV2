@@ -97,7 +97,7 @@ public class EditorViewRenderer extends BukkitRunnable {
         Vector3[] originNodePosition = nodePositions(node);
 
         for (Node connectedNode : node.connectedNodes()) {
-            ConnectionHandler handler = node.connection(connectedNode).connectionHandler();
+            ConnectionHandler handler = node.connection(connectedNode);
 
             //Direct Connection
             if (handler instanceof DirectConnectionHandler) {
@@ -121,7 +121,7 @@ public class EditorViewRenderer extends BukkitRunnable {
 
         Vector3[] vector3Array = new Vector3[2];
 
-        ConnectionHandler handler = ConnectionHandler.ConnectionHandlerType.DIRECT_CONNECTION_HANDLER.connectionHandler();
+        ConnectionHandler handler = ConnectionHandler.ConnectionHandlerType.DIRECT_CONNECTION_HANDLER.instance();
         vector3Array[0] = handler.targetPos(null, node, null, 0);
         vector3Array[1] = handler.targetPos(null, node, null, 1);
 

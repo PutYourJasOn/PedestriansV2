@@ -2,7 +2,6 @@ package me.json.pedestrians.ui.tasks;
 
 import me.json.pedestrians.Messages;
 import me.json.pedestrians.objects.entities.NodeClientEntity;
-import me.json.pedestrians.objects.framework.path.connection.Connection;
 import me.json.pedestrians.objects.framework.path.connection.ConnectionHandler.ConnectionHandlerType;
 import me.json.pedestrians.ui.EditorView;
 import net.md_5.bungee.api.ChatMessageType;
@@ -86,7 +85,7 @@ public class ConnectTask implements ITask{
         if(connectionHandlerType == null) {
             selectedNodeEntities.get(0).node().removeConnection(selectedNodeEntities.get(1).node());
         } else {
-            selectedNodeEntities.get(0).node().registerConnectedNode(selectedNodeEntities.get(1).node(), new Connection(connectionHandlerType.connectionHandler()));
+            selectedNodeEntities.get(0).node().registerConnectedNode(selectedNodeEntities.get(1).node(), connectionHandlerType.instance());
         }
 
         editorView.player().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(String.format(Messages.CONNECTION_CREATED)));

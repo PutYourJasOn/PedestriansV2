@@ -2,9 +2,11 @@ package me.json.pedestrians.objects.framework.path;
 
 import me.json.pedestrians.Preferences;
 import me.json.pedestrians.objects.framework.pedestrian.Pedestrian;
+import me.json.pedestrians.objects.framework.pedestrian.PedestrianEntity;
 import me.json.pedestrians.objects.framework.pedestrian.PedestrianThread;
 
 import javax.annotation.Nullable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -56,11 +58,20 @@ public class PathNetwork {
     }
 
     //Pedestrians
+    public void createPedestrian(Class<? extends PedestrianEntity> entityClass, Object... args) {
 
-    //TODO: centralize removing/adding to this class
+        try {
 
-    //(Will be called by pedestrian)
-    public void addPedestrian(Pedestrian pedestrian) {
+            PedestrianEntity entity = (PedestrianEntity) entityClass.getConstructors()[0].newInstance(args);
+            addPedestrian(new Pedestrian(this, entity, randomNode()));
+
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void addPedestrian(Pedestrian pedestrian) {
 
         //If no threads add one
         if(pedestrianThreads.isEmpty())
@@ -81,12 +92,12 @@ public class PathNetwork {
 
     }
 
-    //(Will be called by pedestrian)
     public void removePedestrian(Pedestrian pedestrian) {
 
         PedestrianThread thread = pedestrianThreads.stream().filter(t -> t.contains(pedestrian)).findFirst().orElse(null);
         if(thread == null) return;
 
+        pedestrian.remove();
         thread.safeRemove(pedestrian);
 
         if(thread.size() == 0) {
