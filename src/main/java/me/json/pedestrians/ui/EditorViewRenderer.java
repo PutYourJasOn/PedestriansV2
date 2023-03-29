@@ -1,6 +1,7 @@
 package me.json.pedestrians.ui;
 
 import me.json.pedestrians.Main;
+import me.json.pedestrians.Messages;
 import me.json.pedestrians.objects.entities.NodeClientEntity;
 import me.json.pedestrians.objects.framework.path.Node;
 import me.json.pedestrians.objects.framework.path.connection.ConnectionHandler;
@@ -8,6 +9,10 @@ import me.json.pedestrians.objects.framework.path.connection.DirectConnectionHan
 import me.json.pedestrians.objects.framework.path.connection.JunctionConnectionHandler;
 import me.json.pedestrians.utils.InterpolationUtil;
 import me.json.pedestrians.utils.Vector3;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -38,15 +43,16 @@ public class EditorViewRenderer extends BukkitRunnable {
         return nodeClientEntity;
     }
 
+    //TODO: called on connection change/add/remove
     public void updateNodeText(NodeClientEntity nodeClientEntity) {
 
-        String text = "Connections:\n";
+        //TODO: not hardcoding the colors
+        String text = "§x§a§a§5§6§5§6§l§oNode: "+nodeClientEntity.node().id()+"§x§f§f§f§f§f§f";
 
         for (Node connectedNode : nodeClientEntity.node().connectedNodes()) {
 
             String connectionName = ConnectionHandler.ConnectionHandlerType.name(nodeClientEntity.node().connection(connectedNode));
-
-            text += connectedNode.id()+": "+connectionName+"\n";
+            text += "\n→"+connectedNode.id()+": "+connectionName;
         }
 
         nodeClientEntity.text(text);

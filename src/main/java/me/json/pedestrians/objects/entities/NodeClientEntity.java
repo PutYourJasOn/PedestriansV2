@@ -103,7 +103,7 @@ public class NodeClientEntity extends ClientEntity{
         packets[3] = new PacketContainer(PacketType.Play.Server.ENTITY_TELEPORT);
         packets[3].getIntegers().write(0, entityID);
         packets[3].getDoubles().write(0, location.getX());
-        packets[3].getDoubles().write(1, location.getY()-1.45);
+        packets[3].getDoubles().write(1, location.getY()-1.35);
         packets[3].getDoubles().write(2, location.getZ());
         packets[3].getBytes().write(0, RotationUtil.floatToByte(location.getYaw()));
         packets[3].getBytes().write(1, RotationUtil.floatToByte(location.getPitch()));
@@ -126,7 +126,7 @@ public class NodeClientEntity extends ClientEntity{
     private PacketContainer metadataPacket() {
 
         PacketContainer packet = new PacketContainer(PacketType.Play.Server.ENTITY_METADATA);
-        Optional<?> opt = Optional.of(WrappedChatComponent.fromChatMessage("Node: "+node.id())[0].getHandle());
+        //Optional<?> opt = Optional.of(WrappedChatComponent.fromChatMessage("Node: "+node.id())[0].getHandle());
 
         List<WrappedDataValue> wrappedDataValues = new ArrayList<>();
         if(glowing) {
@@ -135,8 +135,8 @@ public class NodeClientEntity extends ClientEntity{
             wrappedDataValues.add(new WrappedDataValue(0, WrappedDataWatcher.Registry.get(Byte.class), (byte) 0b00100000));
         }
 
-        wrappedDataValues.add(new WrappedDataValue(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true), opt));
-        wrappedDataValues.add(new WrappedDataValue(3, WrappedDataWatcher.Registry.get(Boolean.class), true));
+        //wrappedDataValues.add(new WrappedDataValue(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true), opt));
+        //wrappedDataValues.add(new WrappedDataValue(3, WrappedDataWatcher.Registry.get(Boolean.class), true));
 
         packet.getIntegers().write(0, entityID);
         packet.getDataValueCollectionModifier().write(0, wrappedDataValues);

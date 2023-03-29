@@ -40,7 +40,7 @@ public class NodeTextClientEntity extends ClientEntity {
         packets[0].getUUIDs().write(0, UUID.randomUUID());
         packets[0].getEntityTypeModifier().write(0, EntityType.TEXT_DISPLAY);
         packets[0].getDoubles().write(0, location.getX());
-        packets[0].getDoubles().write(1, location.getY()+1.5);
+        packets[0].getDoubles().write(1, location.getY()+1);
         packets[0].getDoubles().write(2, location.getZ());
         packets[0].getBytes().write(0, RotationUtil.floatToByte(location.getYaw()));
         packets[0].getBytes().write(1, RotationUtil.floatToByte(location.getPitch()));
@@ -66,11 +66,14 @@ public class NodeTextClientEntity extends ClientEntity {
     private PacketContainer metadataPacket(String text) {
 
         PacketContainer packet = new PacketContainer(PacketType.Play.Server.ENTITY_METADATA);
-        Object chat = WrappedChatComponent.fromText(text).getHandle();
+
+        Object chat = WrappedChatComponent.fromLegacyText(text).getHandle();
 
         List<WrappedDataValue> wrappedDataValues = new ArrayList<>();
         wrappedDataValues.add(new WrappedDataValue(14, WrappedDataWatcher.Registry.get(Byte.class), (byte) 3));
         wrappedDataValues.add(new WrappedDataValue(22, WrappedDataWatcher.Registry.getChatComponentSerializer(), chat));
+        wrappedDataValues.add(new WrappedDataValue(24, WrappedDataWatcher.Registry.get(Integer.class), 0));
+        wrappedDataValues.add(new WrappedDataValue(26, WrappedDataWatcher.Registry.get(Byte.class), (byte) 0b11000));
 
         packet.getIntegers().write(0, entityID);
         packet.getDataValueCollectionModifier().write(0, wrappedDataValues);

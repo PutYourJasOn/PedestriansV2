@@ -19,7 +19,7 @@ public interface ConnectionHandler {
         }
 
         public static String name(ConnectionHandler connectionHandler) {
-            return connectionHandlerEnum(connectionHandler).name().replace("_HANDLER","");
+            return connectionHandlerEnum(connectionHandler).name().replace("_HANDLER","").replace("_CONNECTION", "");
         }
 
         public static ConnectionHandlerType connectionHandlerEnum(ConnectionHandler connectionHandler) {

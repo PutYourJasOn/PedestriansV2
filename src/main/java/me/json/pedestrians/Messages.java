@@ -11,7 +11,7 @@ public class Messages {
     public static final ChatColor A                     = ChatColor.of("#4E6C50"); //prefix
     public static final ChatColor B                     = ChatColor.of("#AA5656"); //errors
     public static final ChatColor C                     = ChatColor.of("#ffffff"); //commands help menu
-    public static final ChatColor D                     = ChatColor.of("#F2DEBA"); //feedback
+    public static final ChatColor D                     = ChatColor.of("#ffffff"); //feedback
 
     public static final String PREFIX                   = textComponent("{Ped3str1ans} ", A, false);
 
