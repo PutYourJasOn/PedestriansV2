@@ -18,6 +18,10 @@ public interface ConnectionHandler {
             this.connectionHandler=connectionHandler;
         }
 
+        public static String name(ConnectionHandler connectionHandler) {
+            return connectionHandlerEnum(connectionHandler).name().replace("_HANDLER","");
+        }
+
         public static ConnectionHandlerType connectionHandlerEnum(ConnectionHandler connectionHandler) {
             for (ConnectionHandlerType value : ConnectionHandlerType.values()) {
                 if (value.connectionHandler.equals(connectionHandler)) {

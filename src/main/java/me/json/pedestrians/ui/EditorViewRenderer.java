@@ -32,8 +32,24 @@ public class EditorViewRenderer extends BukkitRunnable {
         Location location = node.pos().toLocation().setDirection(node.direction().toBukkitVector());
 
         NodeClientEntity nodeClientEntity = new NodeClientEntity(location, node, editorView.player());
+        updateNodeText(nodeClientEntity);
         nodeEntities.add(nodeClientEntity);
+
         return nodeClientEntity;
+    }
+
+    public void updateNodeText(NodeClientEntity nodeClientEntity) {
+
+        String text = "Connections:\n";
+
+        for (Node connectedNode : nodeClientEntity.node().connectedNodes()) {
+
+            String connectionName = ConnectionHandler.ConnectionHandlerType.name(nodeClientEntity.node().connection(connectedNode));
+
+            text += connectedNode.id()+": "+connectionName+"\n";
+        }
+
+        nodeClientEntity.text(text);
     }
 
     public void removeNodeEntity(NodeClientEntity nodeEntity) {

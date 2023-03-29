@@ -20,6 +20,8 @@ public class NodeClientEntity extends ClientEntity{
 
     private final Node node;
     private final Player player;
+
+    private NodeTextClientEntity nodeTextClientEntity;
     private boolean glowing = false;
 
     public NodeClientEntity(Location location, Node node, Player player) {
@@ -33,6 +35,19 @@ public class NodeClientEntity extends ClientEntity{
         return node;
     }
 
+    public Player player() {
+        return player;
+    }
+
+    public void text(String text) {
+
+        if(nodeTextClientEntity == null) {
+            this.nodeTextClientEntity = new NodeTextClientEntity(location, this);
+        }
+
+        this.nodeTextClientEntity.text(text);
+    }
+
     public void glowing(boolean glowing) {
 
         if(this.glowing == glowing) return;
@@ -42,6 +57,18 @@ public class NodeClientEntity extends ClientEntity{
         if(viewers.isEmpty()) return;
         this.broadcastToViewers(metadataPacket());
 
+    }
+
+    @Override
+    public void remove() {
+        super.remove();
+        nodeTextClientEntity.remove();
+    }
+
+    @Override
+    public void updateViewers() {
+        super.updateViewers();
+        nodeTextClientEntity.updateViewers();
     }
 
     @Override
