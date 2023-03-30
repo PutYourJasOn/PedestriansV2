@@ -18,8 +18,17 @@ public interface ConnectionHandler {
             this.connectionHandler=connectionHandler;
         }
 
-        public static String name(ConnectionHandler connectionHandler) {
-            return connectionHandlerEnum(connectionHandler).name().replace("_HANDLER","").replace("_CONNECTION", "");
+        public ConnectionHandler instance() {
+            return this.connectionHandler;
+        }
+
+        public String strippedName() {
+            return name().replace("_HANDLER","").replace("_CONNECTION", "");
+        }
+
+        //Static
+        public static String strippedName(ConnectionHandler connectionHandler) {
+            return connectionHandlerEnum(connectionHandler).strippedName();
         }
 
         public static ConnectionHandlerType connectionHandlerEnum(ConnectionHandler connectionHandler) {
@@ -29,10 +38,6 @@ public interface ConnectionHandler {
                 }
             }
             return null;
-        }
-
-        public ConnectionHandler instance() {
-            return this.connectionHandler;
         }
 
     }

@@ -29,6 +29,10 @@ public class NodeTextClientEntity extends ClientEntity {
         this.broadcastToViewers(metadataPacket(text));
     }
 
+    public String text() {
+        return text;
+    }
+
     @Override
     protected PacketContainer[] spawnPackets(Player player) {
 

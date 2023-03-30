@@ -31,6 +31,7 @@ public class RemoveTask implements ITask{
             editorView.editorViewRenderer().removeNodeEntity(nodeEntity);
             this.nodeEntity = null;
 
+            editorView.editorViewRenderer().updateNodeTexts();
             Messages.sendActionBar(editorView.player(), Messages.NODE_REMOVED);
 
         } else {

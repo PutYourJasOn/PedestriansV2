@@ -61,14 +61,14 @@ public class ConnectTask implements ITask{
     @Override
     public void onScroll(int scrollDirection) {
 
-        int index = connectionHandlerTypes.indexOf(connectionHandlerType);
-        int nextI = index + 1 >= connectionHandlerTypes.size() ? 0 : index + 1;
-        connectionHandlerType = connectionHandlerTypes.get(nextI);
+        int currentIndex = connectionHandlerTypes.indexOf(connectionHandlerType);
+        int nextIndex = currentIndex + 1 >= connectionHandlerTypes.size() ? 0 : currentIndex + 1;
+        connectionHandlerType = connectionHandlerTypes.get(nextIndex);
 
         if(connectionHandlerType == null) {
             editorView.player().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(String.format(Messages.CONNECTION_TYPE_SELECT,"NONE")));
         } else {
-            editorView.player().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(String.format(Messages.CONNECTION_TYPE_SELECT,connectionHandlerType.name())));
+            editorView.player().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(String.format(Messages.CONNECTION_TYPE_SELECT,connectionHandlerType.strippedName())));
         }
 
     }
@@ -88,6 +88,7 @@ public class ConnectTask implements ITask{
             selectedNodeEntities.get(0).node().registerConnectedNode(selectedNodeEntities.get(1).node(), connectionHandlerType.instance());
         }
 
+        editorView.editorViewRenderer().updateNodeTexts();
         editorView.player().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(String.format(Messages.CONNECTION_CREATED)));
 
         //Reset
@@ -103,8 +104,12 @@ public class ConnectTask implements ITask{
 
         selectedNodeEntities.add(nodeEntity);
         nodeEntity.glowing(true);
-        editorView.player().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(String.format(Messages.NODE_SELECTED,nodeEntity.node().id())));
 
+        if(selectedNodeEntities.size() > 0) {
+            editorView.player().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(String.format(Messages.CONNECTION_TYPE_SELECT,connectionHandlerType.strippedName())));
+        } else {
+            editorView.player().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(String.format(Messages.NODE_SELECTED, nodeEntity.node().id())));
+        }
     }
 
 }

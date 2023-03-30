@@ -29,6 +29,7 @@ public class NodeClientEntity extends ClientEntity{
 
         this.node = node;
         this.player = player;
+        this.nodeTextClientEntity = new NodeTextClientEntity(location, this);
     }
 
     public Node node() {
@@ -40,12 +41,11 @@ public class NodeClientEntity extends ClientEntity{
     }
 
     public void text(String text) {
-
-        if(nodeTextClientEntity == null) {
-            this.nodeTextClientEntity = new NodeTextClientEntity(location, this);
-        }
-
         this.nodeTextClientEntity.text(text);
+    }
+
+    public String text() {
+        return this.nodeTextClientEntity.text();
     }
 
     public void glowing(boolean glowing) {
@@ -82,7 +82,7 @@ public class NodeClientEntity extends ClientEntity{
         packets[0].getUUIDs().write(0, UUID.randomUUID());
         packets[0].getEntityTypeModifier().write(0, EntityType.ARMOR_STAND);
         packets[0].getDoubles().write(0, location.getX());
-        packets[0].getDoubles().write(1, location.getY()-1.45);
+        packets[0].getDoubles().write(1, location.getY()-1.4);
         packets[0].getDoubles().write(2, location.getZ());
         packets[0].getBytes().write(0, RotationUtil.floatToByte(location.getYaw()));
         packets[0].getBytes().write(1, RotationUtil.floatToByte(location.getPitch()));

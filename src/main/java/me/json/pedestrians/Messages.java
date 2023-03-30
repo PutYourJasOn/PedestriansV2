@@ -8,10 +8,9 @@ import org.bukkit.entity.Player;
 
 public class Messages {
 
-    public static final ChatColor A                     = ChatColor.of("#4E6C50"); //prefix
-    public static final ChatColor B                     = ChatColor.of("#AA5656"); //errors
+    public static final ChatColor A                     = ChatColor.of("#255f85"); //prefix
+    public static final ChatColor B                     = ChatColor.of("#ed6a5a"); //errors
     public static final ChatColor C                     = ChatColor.of("#ffffff"); //commands help menu
-    public static final ChatColor D                     = ChatColor.of("#ffffff"); //feedback
 
     public static final String PREFIX                   = textComponent("{Ped3str1ans} ", A, false);
 
@@ -33,15 +32,15 @@ public class Messages {
     public static final String WRONG_COMMAND_SENDER     = textComponent("This command can't be executed as the current command sender", B, true);
     public static final String PATHNETWORK_EXISTS       = textComponent("This PathNetwork already exists", B, true);
     public static final String PATHNETWORK_DOESNT_EXIST = textComponent("This PathNetwork doesn't exist", B, true);
-    public static final String PATHNETWORK_CREATED      = textComponent("PathNetwork created", D, true);
-    public static final String SKIN_ADDED               = textComponent("Skin added", D, true);
+    public static final String PATHNETWORK_CREATED      = textComponent("PathNetwork created", C, true);
+    public static final String SKIN_ADDED               = textComponent("Skin added", C, true);
     public static final String ALREADY_EDITING          = textComponent("You're already editing a PathNetwork", B, true);
     public static final String ALREADY_BEING_EDITED     = textComponent("This PathNetwork is already being edited", B, true);
-    public static final String PEDESTRIANS_SET          = textComponent("The pedestrian amount has been set", D, true);
-    public static final String HELP_MENU                = textComponent("%s Help menu %s", D, true);
-    public static final String THREADS                  = textComponent("%s Threads %s", D, true);
+    public static final String PEDESTRIANS_SET          = textComponent("The pedestrian amount has been set", C, true);
+    public static final String HELP_MENU                = textComponent("%s Help menu %s", C, true);
+    public static final String THREADS                  = textComponent("%s Threads %s", C, true);
     public static final String THREAD_INFO              = textComponent("- Network: %s, peds: %s", C, true);
-    public static final String AUTO_SPAWN_SET           = textComponent("This PathNetwork's autospawn has been set", D, true);
+    public static final String AUTO_SPAWN_SET           = textComponent("This PathNetwork's autospawn has been set", C, true);
 
     private static String textComponent(String string, ChatColor color, boolean italic) {
         TextComponent textComponent = new TextComponent(string);

@@ -112,6 +112,7 @@ public class AddTask implements ITask {
             selectedNodeEntity.glowing(true);
         }
 
+        editorView.editorViewRenderer().updateNodeTexts();
         editorView.player().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(String.format(Messages.NODE_CREATED)));
 
         //Reset

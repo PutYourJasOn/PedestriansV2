@@ -9,10 +9,6 @@ import me.json.pedestrians.objects.framework.path.connection.DirectConnectionHan
 import me.json.pedestrians.objects.framework.path.connection.JunctionConnectionHandler;
 import me.json.pedestrians.utils.InterpolationUtil;
 import me.json.pedestrians.utils.Vector3;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -29,6 +25,7 @@ public class EditorViewRenderer extends BukkitRunnable {
         this.editorView = editorView;
 
         spawnNodeStands();
+        updateNodeTexts();
         start();
     }
 
@@ -37,25 +34,27 @@ public class EditorViewRenderer extends BukkitRunnable {
         Location location = node.pos().toLocation().setDirection(node.direction().toBukkitVector());
 
         NodeClientEntity nodeClientEntity = new NodeClientEntity(location, node, editorView.player());
-        updateNodeText(nodeClientEntity);
         nodeEntities.add(nodeClientEntity);
 
         return nodeClientEntity;
     }
 
-    //TODO: called on connection change/add/remove
-    public void updateNodeText(NodeClientEntity nodeClientEntity) {
+    public void updateNodeTexts() {
+        nodeEntities.forEach(n -> updateNodeText(n));
+    }
 
-        //TODO: not hardcoding the colors
-        String text = "§x§a§a§5§6§5§6§l§oNode: "+nodeClientEntity.node().id()+"§x§f§f§f§f§f§f";
+    private void updateNodeText(NodeClientEntity nodeClientEntity) {
+
+        String text = Messages.A.toString()+"§l§oNode: "+nodeClientEntity.node().id()+"§x§f§f§f§f§f§f";
 
         for (Node connectedNode : nodeClientEntity.node().connectedNodes()) {
 
-            String connectionName = ConnectionHandler.ConnectionHandlerType.name(nodeClientEntity.node().connection(connectedNode));
+            String connectionName = ConnectionHandler.ConnectionHandlerType.strippedName(nodeClientEntity.node().connection(connectedNode));
             text += "\n→"+connectedNode.id()+": "+connectionName;
         }
 
-        nodeClientEntity.text(text);
+        if(!nodeClientEntity.text().equals(text))
+            nodeClientEntity.text(text);
     }
 
     public void removeNodeEntity(NodeClientEntity nodeEntity) {
