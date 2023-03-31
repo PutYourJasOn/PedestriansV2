@@ -3,7 +3,7 @@ package me.json.pedestrians.commands.subcommands;
 import me.json.pedestrians.Main;
 import me.json.pedestrians.Messages;
 import me.json.pedestrians.data.exporting.ExportAutoSpawn;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.CommandSender;
 
 import java.io.File;
@@ -24,9 +24,7 @@ public class AutoSpawnSubCommand implements ISubCommand<CommandSender> {
             return;
         }
 
-        new ExportAutoSpawn(args[0], Integer.parseInt(args[1]), (v) -> {
-            Messages.sendMessage(sender, Messages.AUTO_SPAWN_SET);
-        }).start();
+        new ExportAutoSpawn(args[0], Integer.parseInt(args[1]), (v) -> Messages.sendMessage(sender, Messages.AUTO_SPAWN_SET)).start();
 
     }
 

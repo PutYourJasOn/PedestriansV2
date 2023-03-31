@@ -24,8 +24,7 @@ public class InteractListener implements PacketListener {
         ClientEntity clientEntity = ClientEntity.Registry.clientEntity(id);
         if(clientEntity == null) return;
 
-        if(!(clientEntity instanceof PlayerClientEntity)) return;
-        PlayerClientEntity playerClientEntity = (PlayerClientEntity) clientEntity;
+        if(!(clientEntity instanceof PlayerClientEntity playerClientEntity)) return;
 
         WrappedEnumEntityUseAction use = e.getPacket().getEnumEntityUseActions().read(0);
         playerClientEntity.playerPedestrianEntity().interact(e.getPlayer(), use);

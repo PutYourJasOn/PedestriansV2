@@ -17,13 +17,10 @@ public enum TaskType {
     }
 
     public ITask newInstance() {
+
         try {
             return (ITask) iTaskClass.getConstructors()[0].newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
             e.printStackTrace();
         }
 

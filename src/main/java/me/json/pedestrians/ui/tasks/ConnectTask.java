@@ -89,7 +89,7 @@ public class ConnectTask implements ITask{
         }
 
         editorView.editorViewRenderer().updateNodeTexts();
-        editorView.player().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(String.format(Messages.CONNECTION_CREATED)));
+        editorView.player().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(Messages.CONNECTION_CREATED));
 
         //Reset
         selectedNodeEntities.forEach(e -> e.glowing(false));

@@ -2,8 +2,8 @@ package me.json.pedestrians.objects.framework.path;
 
 import me.json.pedestrians.Preferences;
 import me.json.pedestrians.objects.framework.pedestrian.Pedestrian;
-import me.json.pedestrians.objects.framework.pedestrian.PedestrianEntity;
 import me.json.pedestrians.objects.framework.pedestrian.PedestrianThread;
+import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
@@ -52,23 +52,25 @@ public class PathNetwork {
     public int nextNodeID() {
         int currentHighestID = -1;
         for (Node node : nodes) {
-            currentHighestID = node.id() > currentHighestID ? node.id() : currentHighestID;
+            currentHighestID = Math.max(node.id(), currentHighestID);
         }
         return currentHighestID+1;
     }
 
     //Pedestrians
-    public void createPedestrian(Class<? extends PedestrianEntity> entityClass, Object... args) {
+    public void createPedestrian(Class<? extends Pedestrian> pedestrianClass, Object... args) {
 
         try {
 
-            PedestrianEntity entity = (PedestrianEntity) entityClass.getConstructors()[0].newInstance(args);
-            addPedestrian(new Pedestrian(this, entity, randomNode()));
+            Object[] completeArgs = new Object[]{randomNode()};
+            completeArgs = ArrayUtils.addAll(completeArgs, args);
+
+            Pedestrian pedestrian = (Pedestrian) pedestrianClass.getConstructors()[0].newInstance(completeArgs);
+            addPedestrian(pedestrian);
 
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
-
     }
 
     private void addPedestrian(Pedestrian pedestrian) {
@@ -77,9 +79,9 @@ public class PathNetwork {
         if(pedestrianThreads.isEmpty())
             pedestrianThreads.add(new PedestrianThread());
 
-        List<PedestrianThread> threads = pedestrianThreads.stream().sorted(Comparator.comparing(t -> t.size())).collect(Collectors.toList());
+        List<PedestrianThread> threads = pedestrianThreads.stream().sorted(Comparator.comparing(PedestrianThread::size)).collect(Collectors.toList());
 
-        //If smallest thread is at max capacity, create new one. Else: add to smallest thread
+        //If smallest thread is at max capacity, create new one. Else: add to the smallest thread
         if(threads.get(0).size() >= Preferences.PEDESTRIAN_GROUP_SIZE){
 
             PedestrianThread thread = new PedestrianThread();
@@ -108,14 +110,14 @@ public class PathNetwork {
     }
 
     public void removeAllPedestrians() {
-        pedestrians(Integer.MAX_VALUE).forEach(p -> p.remove());
+        pedestrians(Integer.MAX_VALUE).forEach(Pedestrian::remove);
     }
 
     //Pedestrians getters
     public Set<Pedestrian> pedestrians(int count) {
 
         Set<Pedestrian> pedestrians = new HashSet<>();
-        List<PedestrianThread> threads = pedestrianThreads.stream().sorted(Comparator.comparing(t -> t.size())).collect(Collectors.toList());
+        List<PedestrianThread> threads = pedestrianThreads.stream().sorted(Comparator.comparing(PedestrianThread::size)).collect(Collectors.toList());
 
         for (PedestrianThread thread : threads) {
 

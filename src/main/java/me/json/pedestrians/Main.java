@@ -19,7 +19,6 @@ import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 
 import java.io.File;
-import java.nio.file.Path;
 
 public class Main extends JavaPlugin {
 
@@ -47,7 +46,7 @@ public class Main extends JavaPlugin {
     @Override
     public void onDisable() {
         EditorView.Registry.editorViews().forEach(EditorView::stop);
-        PathNetwork.Registry.pathNetworks().forEach(p -> p.removeAllPedestrians());
+        PathNetwork.Registry.pathNetworks().forEach(PathNetwork::removeAllPedestrians);
     }
 
     //Init

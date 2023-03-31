@@ -8,11 +8,11 @@ import org.bukkit.entity.Player;
 
 public class Messages {
 
-    public static final ChatColor A                     = ChatColor.of("#255f85"); //prefix
+    public static final ChatColor A                     = ChatColor.of("#755C48"); //prefix
     public static final ChatColor B                     = ChatColor.of("#ed6a5a"); //errors
     public static final ChatColor C                     = ChatColor.of("#ffffff"); //commands help menu
 
-    public static final String PREFIX                   = textComponent("{Ped3str1ans} ", A, false);
+    public static final String PREFIX                   = textComponent("{Pedestrians} ", A, false);
 
     //Editor
     public static final String PRECISE_MODE_TOGGLE      = textComponent("Precise mode: %s", C, true);

@@ -68,8 +68,7 @@ public class PacketListener implements com.comphenix.protocol.events.PacketListe
         ClientEntity clientEntity = ClientEntity.Registry.clientEntity(id);
         if(clientEntity == null) return;
 
-        if(!(clientEntity instanceof NodeClientEntity)) return;
-        NodeClientEntity nodeClientEntity = ((NodeClientEntity) clientEntity);
+        if(!(clientEntity instanceof NodeClientEntity nodeClientEntity)) return;
 
         if(!editorView.pathNetwork().nodes().contains(nodeClientEntity.node())) return;
 

@@ -19,8 +19,8 @@ public class EditorView {
     private final Player player;
     private final PathNetwork pathNetwork;
     private final EditorViewRenderer editorViewRenderer;
+    private final ItemStack[] prevInventory;
 
-    private ItemStack[] prevInventory;
     private ITask task;
 
     public EditorView(Player player, PathNetwork pathNetwork) {

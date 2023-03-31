@@ -41,8 +41,6 @@ public class ImportSkins extends BukkitRunnable {
 
             callback.accept(null);
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

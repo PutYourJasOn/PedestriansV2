@@ -2,7 +2,6 @@ package me.json.pedestrians.ui;
 
 import me.json.pedestrians.ui.tasks.ITask;
 import me.json.pedestrians.ui.tasks.TaskType;
-import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -16,6 +15,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("CommentedOutCode")
 public class EditorViewInventory {
 
     private static final String nodeArrowSkin = "{SkullOwner:{Id:[I;-1683800122,-617199414,-1319910397,1295179531],Properties:{textures:[{Value:\"ewogICJ0aW1lc3RhbXAiIDogMTY3MTEwNzY4NTA3NSwKICAicHJvZmlsZUlkIiA6ICI2ZTIyNjYxZmNlMTI0MGE0YWE4OTA0NDA0NTFiYjBiNSIsCiAgInByb2ZpbGVOYW1lIiA6ICJncnZleWFyZCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9mOGI1ZGNhM2IxMzRmYmNmZDBhZDQ4NmY5MDI4NjBkNzA4YzU0MzY1NTJmMmU2YWVlODEyYjNkZWJjMDYwYTI4IgogICAgfQogIH0KfQ==\",Signature:\"ZeTbJokwgcBpTeRb4tTua8VxzKROfZ3CKiggp8+FTixg/QHHFRdPv3sENw8OhD+CN4xicDGfAyq64NaptxE1Xh4tFBMqg8PgATu7Bx+2KH7kW96Hp1eG0KzFRxq3P5XWCdsGxYmRBpIaVOMp6SFzpGBxeuhknPbZ5hlvR5XCC3fNrqrUnc5Lj8Ewwbt02JKkmkcYEXFME/M1/AUcxsOTpHdTf3/ILsrLh2LT8uq/uqHzfLhBT8yu6pYQWWXHTGSPCJO+qNBwierjSHxaK5ajjS4gJoWTRxqDNXG9iLorH794s/HEXkGRVFWn2eneQYxTnGKD7mqxss8zkREWknhI3d+C4ZoxkB5v2BorxLUvX3gxpDb4ixGpm4C+qyB6slz3KAdsBxTbx6SJgNnHYg0xwvvhKdN3CHFxVLbnwlk8gVRMQeVIZ1p3Uv1yNCesqj60vpdk/7v9W8Cq06acRhVyKYCg3HiBkY4JQx7qKrt4d8zHUumakKBOqewnatV0VmmYO5gIwRHi/gJyRSWPOmKnuGR1SxqNIjikBWDcjwDaZFJeBelY4j6yCdofQT9MOHvxHd0SzuNh1j1s0fwbEPdGYVY2tnTonXwdIfXGvA9vXsXk7DelfhfaAgw+8daoW1TJIt/obYXolYnEyMfpc4iBiUzmGuORmy7NzxGdV+Ho63g=\"}]}}}";

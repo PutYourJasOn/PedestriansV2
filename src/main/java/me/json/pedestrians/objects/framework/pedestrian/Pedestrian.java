@@ -1,9 +1,9 @@
 package me.json.pedestrians.objects.framework.pedestrian;
 
+import com.comphenix.protocol.wrappers.WrappedEnumEntityUseAction;
 import me.json.pedestrians.Main;
 import me.json.pedestrians.Preferences;
 import me.json.pedestrians.objects.framework.path.Node;
-import me.json.pedestrians.objects.framework.path.PathNetwork;
 import me.json.pedestrians.objects.framework.path.connection.ConnectionHandler;
 import me.json.pedestrians.objects.framework.path.connection.ConnectionHandler.ConnectionHandlerType;
 import me.json.pedestrians.utils.InterpolationUtil;
@@ -12,10 +12,7 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-public class Pedestrian {
-
-    private final PathNetwork pathNetwork;
-    private final PedestrianEntity pedestrianEntity;
+public abstract class Pedestrian {
 
     private Vector3 pos;
     private Vector3 rot = Vector3.ZERO();
@@ -28,53 +25,58 @@ public class Pedestrian {
     private Node targetNode1;
     private Node targetNode2;
 
-    public Pedestrian(PathNetwork pathNetwork, PedestrianEntity pedestrianEntity, Node originNode) {
+    public Pedestrian(Node originNode) {
         this.pos= ConnectionHandlerType.DIRECT_CONNECTION_HANDLER.instance().targetPos(null, originNode, null, sideOffset);
-        this.pathNetwork = pathNetwork;
-        this.pedestrianEntity = pedestrianEntity.initialize(this).spawn(location());
 
         Node targetNode1 = originNode.generateNextNode(originNode);
         updateNode(originNode, targetNode1, targetNode1.generateNextNode(originNode));
     }
 
     //Getters
-    private Location location() {
+    protected Location location() {
         Location location = new Location(Main.world(), pos.x(), pos.y(), pos.z());
         location.setYaw((float) rot.x());
         location.setPitch((float) rot.y());
         return location;
     }
 
-    public float velocity() {
+    protected float velocity() {
         return velocity;
     }
 
-    public Vector3 pos() {
+    protected Vector3 pos() {
         return pos;
     }
 
     //Setters
-    public void velocity(float velocity) {
+    protected void velocity(float velocity) {
         this.velocity = velocity;
     }
 
-    public void targetedPlayer(Player player) {
+    protected void targetedPlayer(Player player) {
         this.targetedPlayer = player;
     }
+
+    //Abstract
+    protected abstract void move(Location location);
+    public abstract void remove();
+    public abstract void interact(Player player, WrappedEnumEntityUseAction entityUseAction);
 
     //Functionality
     public void tick() {
 
+        Location newLoc;
+
         if(targetedPlayer != null && velocity == 0) {
-            targetPlayer();
-            return;
+            newLoc = updateTargetDirection();
+        } else {
+            newLoc = updatePosition();
         }
 
-        move();
-
+        move(newLoc);
     }
 
-    private void move() {
+    private Location updatePosition() {
 
         Vector3 directionToTarget = targetedPos.clone().subtract(pos);
         float distance = directionToTarget.magnitude();
@@ -102,12 +104,10 @@ public class Pedestrian {
 
         Location loc = location();
         loc.setY(groundHeightLock(loc));
-
-        //Update to entity
-        pedestrianEntity.asyncMove(loc);
+        return loc;
     }
 
-    private void targetPlayer() {
+    private Location updateTargetDirection() {
 
         Location loc = location();
 
@@ -118,11 +118,7 @@ public class Pedestrian {
         rot.y(loc.getPitch());
 
         loc.setY(groundHeightLock(loc));
-        pedestrianEntity.asyncMove(loc);
-    }
-
-    public void remove() {
-        pedestrianEntity.remove();
+        return loc;
     }
 
     //Height

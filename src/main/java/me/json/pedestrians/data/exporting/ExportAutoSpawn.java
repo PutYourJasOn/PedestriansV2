@@ -7,7 +7,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -38,10 +37,7 @@ public class ExportAutoSpawn extends BukkitRunnable {
             config.load(file);
             List<String> list = config.getStringList("AUTO_SPAWNS");
 
-            for (String line : new ArrayList<>(list)) {
-                if(line.startsWith(pathNetwork))
-                    list.remove(line);
-            }
+            list.removeIf(line -> line.startsWith(pathNetwork));
 
             if(amount > 0) {
                 list.add(pathNetwork+" "+amount);

@@ -4,7 +4,7 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.*;
 import me.json.pedestrians.listeners.JoinListener;
-import me.json.pedestrians.objects.PlayerPedestrianEntity;
+import me.json.pedestrians.objects.PlayerPedestrian;
 import me.json.pedestrians.utils.RotationUtil;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -13,13 +13,13 @@ import java.util.*;
 
 public class PlayerClientEntity extends ClientEntity {
 
-    private final PlayerPedestrianEntity playerPedestrianEntity;
+    private final PlayerPedestrian playerPedestrian;
     private final PlayerInfoData playerInfoData;
 
-    public PlayerClientEntity(Location location, PlayerPedestrianEntity playerPedestrianEntity, String skinBase64, String skinSignature) {
+    public PlayerClientEntity(Location location, PlayerPedestrian playerPedestrian, String skinBase64, String skinSignature) {
         super(location);
 
-        this.playerPedestrianEntity = playerPedestrianEntity;
+        this.playerPedestrian = playerPedestrian;
 
         //
         WrappedGameProfile gameProfile = new WrappedGameProfile(UUID.randomUUID(), " ");
@@ -34,8 +34,8 @@ public class PlayerClientEntity extends ClientEntity {
 
     }
 
-    public PlayerPedestrianEntity playerPedestrianEntity() {
-        return playerPedestrianEntity;
+    public PlayerPedestrian playerPedestrianEntity() {
+        return playerPedestrian;
     }
 
     @Override

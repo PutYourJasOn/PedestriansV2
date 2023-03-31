@@ -16,7 +16,7 @@ public class EntityIDUtil {
     }
 
     private static boolean entityExists(int id) {
-        return Main.world().getEntities().stream().filter(e -> e.getEntityId() == id).findFirst().isPresent();
+        return Main.world().getEntities().stream().anyMatch(e -> e.getEntityId() == id);
     }
 
 }

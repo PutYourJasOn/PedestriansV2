@@ -40,21 +40,21 @@ public class EditorViewRenderer extends BukkitRunnable {
     }
 
     public void updateNodeTexts() {
-        nodeEntities.forEach(n -> updateNodeText(n));
+        nodeEntities.forEach(this::updateNodeText);
     }
 
     private void updateNodeText(NodeClientEntity nodeClientEntity) {
 
-        String text = Messages.A.toString()+"§l§oNode: "+nodeClientEntity.node().id()+"§x§f§f§f§f§f§f";
+        StringBuilder text = new StringBuilder(Messages.A.toString() + "§l§oNode: " + nodeClientEntity.node().id() + "§x§f§f§f§f§f§f");
 
         for (Node connectedNode : nodeClientEntity.node().connectedNodes()) {
 
             String connectionName = ConnectionHandler.ConnectionHandlerType.strippedName(nodeClientEntity.node().connection(connectedNode));
-            text += "\n→"+connectedNode.id()+": "+connectionName;
+            text.append("\n→").append(connectedNode.id()).append(": ").append(connectionName);
         }
 
-        if(!nodeClientEntity.text().equals(text))
-            nodeClientEntity.text(text);
+        if(!nodeClientEntity.text().equals(text.toString()))
+            nodeClientEntity.text(text.toString());
     }
 
     public void removeNodeEntity(NodeClientEntity nodeEntity) {
@@ -63,7 +63,7 @@ public class EditorViewRenderer extends BukkitRunnable {
     }
 
     private void spawnNodeStands() {
-        editorView.pathNetwork().nodes().forEach(n -> spawnNodeEntity(n));
+        editorView.pathNetwork().nodes().forEach(this::spawnNodeEntity);
     }
 
     private void start() {
@@ -72,7 +72,7 @@ public class EditorViewRenderer extends BukkitRunnable {
 
     public void stop() {
 
-        nodeEntities.forEach(e -> e.remove());
+        nodeEntities.forEach(NodeClientEntity::remove);
         nodeEntities.clear();
 
         this.cancel();
@@ -109,7 +109,7 @@ public class EditorViewRenderer extends BukkitRunnable {
             editorView.task().render();
 
         //Entities
-        nodeEntities.forEach(e -> e.updateViewers());
+        nodeEntities.forEach(NodeClientEntity::updateViewers);
 
     }
 

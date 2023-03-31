@@ -6,9 +6,8 @@ import com.comphenix.protocol.events.PacketContainer;
 import me.json.pedestrians.Main;
 import me.json.pedestrians.data.importing.ImportAutoSpawns;
 import me.json.pedestrians.data.importing.ImportPathNetwork;
-import me.json.pedestrians.objects.PlayerPedestrianEntity;
+import me.json.pedestrians.objects.PlayerPedestrian;
 import me.json.pedestrians.objects.Skin;
-import me.json.pedestrians.objects.framework.pedestrian.Pedestrian;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -46,7 +45,7 @@ public class JoinListener implements Listener {
 
                     new ImportPathNetwork(name, p -> {
                         for (int i = 0; i < map.get(name); i++) {
-                            new Pedestrian(p, new PlayerPedestrianEntity(Skin.Registry.randomSkin()), p.randomNode());
+                            p.createPedestrian(PlayerPedestrian.class, Skin.Registry.randomSkin());
                         }
                     }, true).start();
 

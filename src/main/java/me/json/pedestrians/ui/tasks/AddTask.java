@@ -82,6 +82,8 @@ public class AddTask implements ITask {
                 raytrace = RayTraceUtil.roundedRayTraceResult(editorView.player());
             }
 
+            if(raytrace == null) return;
+
             pos = new Vector3(raytrace);
             editorView.player().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(String.format(Messages.FIELD_SET, "Position")));
 
@@ -113,7 +115,7 @@ public class AddTask implements ITask {
         }
 
         editorView.editorViewRenderer().updateNodeTexts();
-        editorView.player().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(String.format(Messages.NODE_CREATED)));
+        editorView.player().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(Messages.NODE_CREATED));
 
         //Reset
         pos = null;
@@ -174,9 +176,8 @@ public class AddTask implements ITask {
         if(dir == null) {
             editorView.player().spawnParticle(Particle.ELECTRIC_SPARK, pos.toLocation(),1, 0, 0, 0, 0);
 
-            Set<Vector3> vertices = new HashSet<>();
             Vector3[] positions = nodePositions(pos, direction(editorView.player(), preciseMode), width);
-            vertices.addAll(InterpolationUtil.lineVertices(positions[0],positions[1], 15));
+            Set<Vector3> vertices = new HashSet<>(InterpolationUtil.lineVertices(positions[0], positions[1], 15));
 
             vertices.forEach(v -> editorView.player().spawnParticle(Particle.COMPOSTER, v.toLocation(), 1));
             return;
@@ -186,9 +187,8 @@ public class AddTask implements ITask {
         if(true) {
             editorView.player().spawnParticle(Particle.ELECTRIC_SPARK, pos.toLocation(), 1, 0, 0, 0, 0);
 
-            Set<Vector3> vertices = new HashSet<>();
             Vector3[] positions = nodePositions(pos, dir, width);
-            vertices.addAll(InterpolationUtil.lineVertices(positions[0], positions[1], 15));
+            Set<Vector3> vertices = new HashSet<>(InterpolationUtil.lineVertices(positions[0], positions[1], 15));
 
             vertices.forEach(v -> editorView.player().spawnParticle(Particle.COMPOSTER, v.toLocation(), 1));
             editorView.player().spawnParticle(Particle.ELECTRIC_SPARK, positions[0].toLocation().add(0,0.4,0),1, 0, 0, 0, 0);

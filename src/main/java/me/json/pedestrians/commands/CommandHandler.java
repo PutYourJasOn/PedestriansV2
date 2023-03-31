@@ -52,7 +52,7 @@ public class CommandHandler implements CommandExecutor {
                 }
 
                 try {
-                    subCommand.handle(commandSender, subArgs.toArray(new String[subArgs.size()]));
+                    subCommand.handle(commandSender, subArgs.toArray(new String[0]));
                 } catch (ClassCastException e) {
                     Messages.sendMessage(commandSender, Messages.WRONG_COMMAND_SENDER);
                 }
@@ -80,13 +80,13 @@ public class CommandHandler implements CommandExecutor {
 
     private String commandInfo(ISubCommand subCommand) {
 
-        String info = subCommand.commandName();
+        StringBuilder info = new StringBuilder(subCommand.commandName());
 
         for (String arg : subCommand.args()) {
-            info = info + " <"+arg+">";
+            info.append(" <").append(arg).append(">");
         }
 
-        return info;
+        return info.toString();
     }
 
 }

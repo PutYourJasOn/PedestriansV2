@@ -13,15 +13,14 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public class NodeClientEntity extends ClientEntity{
 
     private final Node node;
     private final Player player;
+    private final NodeTextClientEntity nodeTextClientEntity;
 
-    private NodeTextClientEntity nodeTextClientEntity;
     private boolean glowing = false;
 
     public NodeClientEntity(Location location, Node node, Player player) {
@@ -134,9 +133,6 @@ public class NodeClientEntity extends ClientEntity{
         } else {
             wrappedDataValues.add(new WrappedDataValue(0, WrappedDataWatcher.Registry.get(Byte.class), (byte) 0b00100000));
         }
-
-        //wrappedDataValues.add(new WrappedDataValue(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true), opt));
-        //wrappedDataValues.add(new WrappedDataValue(3, WrappedDataWatcher.Registry.get(Boolean.class), true));
 
         packet.getIntegers().write(0, entityID);
         packet.getDataValueCollectionModifier().write(0, wrappedDataValues);

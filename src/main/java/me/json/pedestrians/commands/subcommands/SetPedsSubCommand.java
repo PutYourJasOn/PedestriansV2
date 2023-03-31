@@ -3,11 +3,10 @@ package me.json.pedestrians.commands.subcommands;
 import me.json.pedestrians.Main;
 import me.json.pedestrians.Messages;
 import me.json.pedestrians.data.importing.ImportPathNetwork;
-import me.json.pedestrians.objects.PlayerPedestrianEntity;
+import me.json.pedestrians.objects.PlayerPedestrian;
 import me.json.pedestrians.objects.Skin;
 import me.json.pedestrians.objects.framework.path.PathNetwork;
-import me.json.pedestrians.objects.framework.pedestrian.Pedestrian;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.CommandSender;
 
 import java.io.File;
@@ -20,6 +19,8 @@ public class SetPedsSubCommand implements ISubCommand<CommandSender> {
 
     @Override
     public void handle(CommandSender sender, String[] args) {
+
+        if(senders.contains(sender)) return;
 
         if(!StringUtils.isNumeric(args[1])) {
             Messages.sendMessage(sender, Messages.WRONG_USAGE);
@@ -63,14 +64,14 @@ public class SetPedsSubCommand implements ISubCommand<CommandSender> {
 
         //Remove
         if(delta < 0) {
-            pathNetwork.pedestrians(Math.abs(delta)).forEach(p -> pathNetwork.removePedestrian(p));
+            pathNetwork.pedestrians(Math.abs(delta)).forEach(pathNetwork::removePedestrian);
         }
 
         //add
         if(delta > 0) {
 
             for (int i = 0; i < delta; i++) {
-                pathNetwork.createPedestrian(PlayerPedestrianEntity.class, Skin.Registry.randomSkin());
+                pathNetwork.createPedestrian(PlayerPedestrian.class, Skin.Registry.randomSkin());
             }
 
         }

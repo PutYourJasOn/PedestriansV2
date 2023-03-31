@@ -5,8 +5,8 @@ import com.comphenix.protocol.wrappers.WrappedEnumEntityUseAction;
 import me.json.pedestrians.Main;
 import me.json.pedestrians.Preferences;
 import me.json.pedestrians.objects.entities.PlayerClientEntity;
+import me.json.pedestrians.objects.framework.path.Node;
 import me.json.pedestrians.objects.framework.pedestrian.Pedestrian;
-import me.json.pedestrians.objects.framework.pedestrian.PedestrianEntity;
 import me.json.pedestrians.utils.Vector3;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -14,28 +14,18 @@ import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
-public class PlayerPedestrianEntity implements PedestrianEntity {
+public class PlayerPedestrian extends Pedestrian {
 
-    private Pedestrian pedestrian;
-    private Skin skin;
+    private final Skin skin;
+
     private PlayerClientEntity npc;
     private boolean isInsideInteraction = false;
 
-    public PlayerPedestrianEntity(Skin skin) {
+    public PlayerPedestrian(Node originNode, Skin skin) {
+        super(originNode);
+
         this.skin = skin;
-    }
-
-    @Override
-    public PedestrianEntity initialize(Pedestrian pedestrian) {
-        this.pedestrian = pedestrian;
-        return this;
-    }
-
-    @Override
-    public PedestrianEntity spawn(Location location) {
-
-        npc = new PlayerClientEntity(location, this, skin.base64(), skin.signature());
-        return this;
+        npc = new PlayerClientEntity(this.location(), this, skin.base64(), skin.signature());
     }
 
     @Override
@@ -45,7 +35,7 @@ public class PlayerPedestrianEntity implements PedestrianEntity {
     }
 
     @Override
-    public void asyncMove(Location location) {
+    public void move(Location location) {
 
         if(npc != null) {
             npc.move(location);
@@ -65,15 +55,15 @@ public class PlayerPedestrianEntity implements PedestrianEntity {
         if(entityUseAction.getAction() == EnumWrappers.EntityUseAction.INTERACT_AT) {
 
             player.playSound(player, Sound.ENTITY_VILLAGER_CELEBRATE, 1, 1);
-            float originalVel = pedestrian.velocity();
-            pedestrian.velocity(0);
-            pedestrian.targetedPlayer(player);
+            float originalVel = velocity();
+            velocity(0);
+            targetedPlayer(player);
             isInsideInteraction = true;
 
             Bukkit.getScheduler().runTaskLater(Main.plugin(), () -> {
 
-                pedestrian.velocity(originalVel);
-                pedestrian.targetedPlayer(null);
+                velocity(originalVel);
+                targetedPlayer(null);
                 isInsideInteraction = false;
 
             }, 20*2);
@@ -89,16 +79,16 @@ public class PlayerPedestrianEntity implements PedestrianEntity {
         if(entityUseAction.getAction() == EnumWrappers.EntityUseAction.ATTACK) {
 
             player.playSound(player, Sound.ENTITY_VILLAGER_HURT, 1, 1);
-            player.spawnParticle(Particle.VILLAGER_ANGRY, pedestrian.pos().clone().add(new Vector3(0,1.5,0)).toLocation(), 1);
+            player.spawnParticle(Particle.VILLAGER_ANGRY, pos().clone().add(new Vector3(0,1.5,0)).toLocation(), 1);
 
-            float originalVel = pedestrian.velocity();
-            pedestrian.velocity(Preferences.PEDESTRIAN_MAX_VELOCITY*2);
-            pedestrian.targetedPlayer(null);
+            float originalVel = velocity();
+            velocity(Preferences.PEDESTRIAN_MAX_VELOCITY*2);
+            targetedPlayer(null);
             isInsideInteraction = true;
 
             Bukkit.getScheduler().runTaskLater(Main.plugin(), () -> {
 
-                pedestrian.velocity(originalVel);
+                velocity(originalVel);
                 isInsideInteraction = false;
 
             }, 20*2);

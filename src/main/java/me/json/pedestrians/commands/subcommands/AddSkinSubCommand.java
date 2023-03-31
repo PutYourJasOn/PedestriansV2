@@ -37,9 +37,7 @@ public class AddSkinSubCommand implements ISubCommand<CommandSender>{
 
                 String name = args[0];
 
-                new ExportSkin(name, new Skin(name, base64, signature), v -> {
-                    Messages.sendMessage(sender, Messages.SKIN_ADDED);
-                }).start();
+                new ExportSkin(name, new Skin(name, base64, signature), v -> Messages.sendMessage(sender, Messages.SKIN_ADDED)).start();
 
                 reader.close();
 

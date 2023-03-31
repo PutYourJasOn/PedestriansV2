@@ -38,8 +38,9 @@ public class JunctionConnectionHandler implements ConnectionHandler {
     /*
     Credit to: rosettacode.org
      */
-    private class Line {
-        Vector3 s, e;
+    private static class Line {
+        final Vector3 s;
+        final Vector3 e;
 
         Line(Vector3 s, Vector3 e) {
             this.s = s;

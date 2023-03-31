@@ -81,7 +81,7 @@ public abstract class ClientEntity {
     }
 
     public void remove() {
-        viewers.forEach(v -> despawn(v));
+        viewers.forEach(this::despawn);
         viewers.clear();
         Registry.remove(entityID);
     }
