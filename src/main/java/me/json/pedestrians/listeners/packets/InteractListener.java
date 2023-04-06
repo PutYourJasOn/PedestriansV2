@@ -33,7 +33,7 @@ public class InteractListener implements PacketListener {
 
     @Override
     public ListeningWhitelist getSendingWhitelist() {
-        return null;
+        return ListeningWhitelist.EMPTY_WHITELIST;
     }
 
     @Override

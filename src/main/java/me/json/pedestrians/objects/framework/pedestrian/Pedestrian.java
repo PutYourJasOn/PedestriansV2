@@ -160,18 +160,23 @@ public abstract class Pedestrian {
         ConnectionHandler originToTarget1 = originNode.connection(targetNode1);
         ConnectionHandler target1ToTarget2 = targetNode1.connection(targetNode2);
 
-        if(target1ToTarget2.hasToPrepare()) {
+        if(target1ToTarget2 != null && target1ToTarget2.hasToPrepare()) {
             targetedPos = target1ToTarget2.targetPos(originNode, targetNode1, targetNode2, sideOffset);
             return;
         }
 
-        if(originToTarget1.hasToPrepare()) {
+        if(originToTarget1 != null && originToTarget1.hasToPrepare()) {
             ConnectionHandler directHandler = ConnectionHandlerType.DIRECT_CONNECTION_HANDLER.instance();
             targetedPos = directHandler.targetPos(originNode, targetNode1, targetNode2, sideOffset);
             return;
         }
 
-        targetedPos = originToTarget1.targetPos(originNode, targetNode1, targetNode2, sideOffset);
+        if(originToTarget1 != null) {
+            targetedPos = originToTarget1.targetPos(originNode, targetNode1, targetNode2, sideOffset);
+            return;
+        }
+
+        targetedPos = originNode.pos();
 
     }
 

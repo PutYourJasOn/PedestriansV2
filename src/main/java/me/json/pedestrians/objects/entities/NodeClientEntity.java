@@ -73,7 +73,7 @@ public class NodeClientEntity extends ClientEntity{
     @Override
     protected PacketContainer[] spawnPackets(Player player) {
 
-        PacketContainer[] packets = new PacketContainer[4];
+        PacketContainer[] packets = new PacketContainer[3];
 
         //0.
         packets[0] = new PacketContainer(PacketType.Play.Server.SPAWN_ENTITY);
@@ -83,8 +83,8 @@ public class NodeClientEntity extends ClientEntity{
         packets[0].getDoubles().write(0, location.getX());
         packets[0].getDoubles().write(1, location.getY()-1.4);
         packets[0].getDoubles().write(2, location.getZ());
-        packets[0].getBytes().write(0, RotationUtil.floatToByte(location.getYaw()));
-        packets[0].getBytes().write(1, RotationUtil.floatToByte(location.getPitch()));
+        packets[0].getBytes().write(0, RotationUtil.floatToByte(location.getPitch()));
+        packets[0].getBytes().write(1, RotationUtil.floatToByte(location.getYaw()));
 
         //1.
         packets[1] = metadataPacket();
@@ -99,6 +99,7 @@ public class NodeClientEntity extends ClientEntity{
         packets[2].getSlotStackPairLists().write(0, list);
 
         //3.
+        /*
         packets[3] = new PacketContainer(PacketType.Play.Server.ENTITY_TELEPORT);
         packets[3].getIntegers().write(0, entityID);
         packets[3].getDoubles().write(0, location.getX());
@@ -107,6 +108,7 @@ public class NodeClientEntity extends ClientEntity{
         packets[3].getBytes().write(0, RotationUtil.floatToByte(location.getYaw()));
         packets[3].getBytes().write(1, RotationUtil.floatToByte(location.getPitch()));
         packets[3].getBooleans().write(0, true);
+         */
 
         //
         return packets;

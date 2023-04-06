@@ -3,6 +3,7 @@ package me.json.pedestrians.objects.framework.path;
 import me.json.pedestrians.objects.framework.path.connection.ConnectionHandler;
 import me.json.pedestrians.utils.Vector3;
 
+import javax.annotation.Nullable;
 import java.util.*;
 
 public class Node {
@@ -33,6 +34,7 @@ public class Node {
         return new HashSet<>(connectedNodes.keySet());
     }
 
+    @Nullable
     public ConnectionHandler connection(Node node) {
         return connectedNodes.get(node);
     }

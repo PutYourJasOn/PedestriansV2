@@ -32,15 +32,17 @@ public class EditSubCommand implements ISubCommand<Player> {
             return;
         }
 
-        File path = new File(Main.plugin().getDataFolder(),"pathnetworks/"+args[0]+".json");
-        if(!path.exists()) {
-            Messages.sendMessage(sender, Messages.PATHNETWORK_DOESNT_EXIST);
-            return;
-        }
-
         PathNetwork pathNetwork = PathNetwork.Registry.pathNetwork(args[0]);
         if(pathNetwork == null) {
 
+            //Exists?
+            File path = new File(Main.plugin().getDataFolder(),"pathnetworks/"+args[0]+".json");
+            if(!path.exists()) {
+                Messages.sendMessage(sender, Messages.PATHNETWORK_DOESNT_EXIST);
+                return;
+            }
+
+            //Import
             players.add(sender);
 
             new ImportPathNetwork(args[0], (p) -> {
