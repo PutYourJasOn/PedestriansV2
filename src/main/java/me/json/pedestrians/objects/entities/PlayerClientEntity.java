@@ -8,6 +8,7 @@ import me.json.pedestrians.objects.PlayerPedestrian;
 import me.json.pedestrians.utils.RotationUtil;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.EntityType;
 
 import java.util.*;
 
@@ -49,8 +50,9 @@ public class PlayerClientEntity extends ClientEntity {
         packets[0].getPlayerInfoDataLists().write(1, Collections.singletonList(playerInfoData));
 
         //1.
-        packets[1] = new PacketContainer(PacketType.Play.Server.NAMED_ENTITY_SPAWN);
+        packets[1] = new PacketContainer(PacketType.Play.Server.SPAWN_ENTITY;
         packets[1].getIntegers().write(0, entityID);
+        packets[1].getEntityTypeModifier().write(0, EntityType.PLAYER);
         packets[1].getUUIDs().write(0, playerInfoData.getProfile().getUUID());
         packets[1].getDoubles().write(0, location.getX());
         packets[1].getDoubles().write(1, location.getY());
