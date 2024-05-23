@@ -74,10 +74,10 @@ public class NodeTextClientEntity extends ClientEntity {
         Object chat = WrappedChatComponent.fromLegacyText(text).getHandle();
 
         List<WrappedDataValue> wrappedDataValues = new ArrayList<>();
-        wrappedDataValues.add(new WrappedDataValue(14, WrappedDataWatcher.Registry.get(Byte.class), (byte) 3));
-        wrappedDataValues.add(new WrappedDataValue(22, WrappedDataWatcher.Registry.getChatComponentSerializer(), chat));
-        wrappedDataValues.add(new WrappedDataValue(24, WrappedDataWatcher.Registry.get(Integer.class), 0));
-        wrappedDataValues.add(new WrappedDataValue(26, WrappedDataWatcher.Registry.get(Byte.class), (byte) 0b11000));
+        wrappedDataValues.add(new WrappedDataValue(15, WrappedDataWatcher.Registry.get(Byte.class), (byte) 3));
+        wrappedDataValues.add(new WrappedDataValue(23, WrappedDataWatcher.Registry.getChatComponentSerializer(), chat));
+        wrappedDataValues.add(new WrappedDataValue(25, WrappedDataWatcher.Registry.get(Integer.class), 0));
+        wrappedDataValues.add(new WrappedDataValue(27, WrappedDataWatcher.Registry.get(Byte.class), (byte) 0b11000));
 
         packet.getIntegers().write(0, entityID);
         packet.getDataValueCollectionModifier().write(0, wrappedDataValues);
