@@ -3,14 +3,22 @@ package me.json.pedestrians.objects.framework.pedestrian;
 import com.comphenix.protocol.wrappers.WrappedEnumEntityUseAction;
 import me.json.pedestrians.Main;
 import me.json.pedestrians.Preferences;
+import me.json.pedestrians.objects.framework.events.NodeReachEvent;
 import me.json.pedestrians.objects.framework.path.Node;
 import me.json.pedestrians.objects.framework.path.connection.ConnectionHandler;
 import me.json.pedestrians.objects.framework.path.connection.ConnectionHandler.ConnectionHandlerType;
 import me.json.pedestrians.utils.InterpolationUtil;
 import me.json.pedestrians.utils.Vector3;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.Bisected;
+import org.bukkit.block.data.type.Fence;
+import org.bukkit.block.data.type.TrapDoor;
 import org.bukkit.entity.Player;
+
+import javax.annotation.Nullable;
+import java.util.Collection;
 
 public abstract class Pedestrian {
 
@@ -20,13 +28,16 @@ public abstract class Pedestrian {
     private Player targetedPlayer;
 
     private final float sideOffset = generateRandomSideOffset();
-    private float velocity = generateRandomVelocity();
+    private float defaultVelocity = generateRandomVelocity();
+    private @Nullable Float forcedVelocity = null;
 
     private Node targetNode1;
     private Node targetNode2;
 
+    private boolean collision = false;
+
     public Pedestrian(Node originNode) {
-        this.pos= ConnectionHandlerType.DIRECT_CONNECTION_HANDLER.instance().targetPos(null, originNode, null, sideOffset);
+        this.pos = ConnectionHandlerType.DIRECT_CONNECTION_HANDLER.instance().targetPos(null, originNode, null, sideOffset);
 
         Node targetNode1 = originNode.generateNextNode(originNode);
         updateNode(originNode, targetNode1, targetNode1.generateNextNode(originNode));
@@ -40,24 +51,46 @@ public abstract class Pedestrian {
         return location;
     }
 
-    protected float velocity() {
-        return velocity;
+    protected float defaultVelocity() {
+        return defaultVelocity;
     }
 
-    protected Vector3 pos() {
+    protected float velocity() {
+        return hasForcedVelocity() ? forcedVelocity : defaultVelocity;
+    }
+
+    public Vector3 pos() {
         return pos;
     }
 
-    //Setters
-    protected void velocity(float velocity) {
-        this.velocity = velocity;
+    //Getters
+    public boolean collision() {
+        return collision;
+    }
+
+    public boolean hasForcedVelocity() {
+        return this.forcedVelocity != null;
+    }
+
+    @Nullable
+    public Float forcedVelocity() {
+        return this.forcedVelocity;
     }
 
     protected void targetedPlayer(Player player) {
         this.targetedPlayer = player;
     }
 
+    public void collision(boolean canCollide) {
+        this.collision = canCollide;
+    }
+
+    public void forcedVelocity(@Nullable Float forcedVelocity) {
+        this.forcedVelocity = forcedVelocity;
+    }
+
     //Abstract
+    protected abstract double hitboxRadius();
     protected abstract void move(Location location);
     public abstract void remove();
     public abstract void interact(Player player, WrappedEnumEntityUseAction entityUseAction);
@@ -67,7 +100,7 @@ public abstract class Pedestrian {
 
         Location newLoc;
 
-        if(targetedPlayer != null && velocity == 0) {
+        if(targetedPlayer != null && velocity() == 0) {
             newLoc = updateTargetDirection();
         } else {
             newLoc = updatePosition();
@@ -78,12 +111,16 @@ public abstract class Pedestrian {
 
     private Location updatePosition() {
 
+        if(collision() && hasPedestriansInFront()) {
+            return location();
+        }
+
         Vector3 directionToTarget = targetedPos.clone().subtract(pos);
         float distance = directionToTarget.magnitude();
 
         if (distance <= Preferences.PEDESTRIAN_REACHING_DISTANCE) {
             //Node reached!
-            updateNode(targetNode1, targetNode2, targetNode2.generateNextNode(targetNode1));
+            handleNodeReach();
         }
 
         //
@@ -95,7 +132,7 @@ public abstract class Pedestrian {
         }
 
         targetLocation.setYaw(InterpolationUtil.floatAngleLerp((float) rot.x(), targetYaw, Preferences.PEDESTRIAN_ROTATION_VELOCITY));
-        Vector3 velocity = new Vector3(targetLocation.getDirection()).multiply(this.velocity);
+        Vector3 velocity = new Vector3(targetLocation.getDirection()).multiply(velocity());
 
         //
         pos.add(velocity);
@@ -105,6 +142,33 @@ public abstract class Pedestrian {
         Location loc = location();
         loc.setY(groundHeightLock(loc));
         return loc;
+    }
+
+    private void handleNodeReach() {
+
+        NodeReachEvent nodeReachEvent = new NodeReachEvent(this, targetNode1);
+        Bukkit.getPluginManager().callEvent(nodeReachEvent);
+
+        Node targetNode1 = nodeReachEvent.getFirstForcedTargetNode() != null ? nodeReachEvent.getFirstForcedTargetNode() : this.targetNode2;
+        Node targetNode2 = nodeReachEvent.getSecondForcedTargetNode() != null ? nodeReachEvent.getSecondForcedTargetNode() : this.targetNode2.generateNextNode(this.targetNode1);
+
+        updateNode(this.targetNode1, targetNode1, targetNode2);
+    }
+
+    private boolean hasPedestriansInFront() {
+
+        double radians = Math.toRadians(rot.x());
+        double xOffset = -Math.sin(radians);
+        double zOffset = Math.cos(radians);
+
+        Vector3 front = pos.clone();
+        front.add(new Vector3(xOffset * hitboxRadius(), 0 ,zOffset * hitboxRadius()));
+
+        //pos.toLocation().getWorld().spawnParticle(Particle.COMPOSTER, front.toLocation(), 1);
+
+        Collection<Pedestrian> closePedestrians = targetNode1.pathNetwork().getClosePedestrians(front, hitboxRadius());
+        closePedestrians.remove(this);
+        return !closePedestrians.isEmpty();
     }
 
     private Location updateTargetDirection() {
@@ -133,6 +197,8 @@ public abstract class Pedestrian {
 
             if(block.isPassable()) {
                 return blockY-1;
+            } else if(isTopTrapdoor(block)) {
+                return blockY;
             } else {
                 return blockY - (1-block.getBoundingBox().getHeight());
             }
@@ -141,7 +207,7 @@ public abstract class Pedestrian {
 
             Block block = loc.getWorld().getBlockAt(loc.getBlockX(), blockY+1, loc.getBlockZ());
 
-            if(block.isPassable()) {
+            if(block.isPassable() && !isFence(mainBlock)) {
                 return blockY + mainBlock.getBoundingBox().getHeight();
             } else {
                 return blockY;
@@ -149,6 +215,14 @@ public abstract class Pedestrian {
 
         }
 
+    }
+
+    private boolean isFence(Block block) {
+        return block.getBlockData() instanceof Fence;
+    }
+
+    private boolean isTopTrapdoor(Block block) {
+        return block.getBlockData() instanceof TrapDoor && ((TrapDoor)block.getBlockData()).getHalf() == Bisected.Half.TOP;
     }
 
     //When targetedNode gets reached

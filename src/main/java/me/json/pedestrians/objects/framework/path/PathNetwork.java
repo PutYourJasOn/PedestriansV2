@@ -3,6 +3,7 @@ package me.json.pedestrians.objects.framework.path;
 import me.json.pedestrians.Preferences;
 import me.json.pedestrians.objects.framework.pedestrian.Pedestrian;
 import me.json.pedestrians.objects.framework.pedestrian.PedestrianThread;
+import me.json.pedestrians.utils.Vector3;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nullable;
@@ -92,6 +93,26 @@ public class PathNetwork {
             threads.get(0).safeAdd(pedestrian);
         }
 
+    }
+
+    public Collection<Pedestrian> getClosePedestrians(Vector3 base, double radius) {
+
+        List<Pedestrian> pedestrians = new ArrayList<>();
+
+        for (PedestrianThread pedestrianThread : pedestrianThreads) {
+            for (Pedestrian pedestrian : pedestrianThread.pedestrians()) {
+
+                //System.out.println(pedestrian.pos() + " " + base + " " + radius);
+                //System.out.println(pedestrian.pos().distanceTo(base));
+
+                if(pedestrian.pos().distanceTo(base) <= radius) {
+                    pedestrians.add(pedestrian);
+                }
+
+            }
+        }
+
+        return pedestrians;
     }
 
     public void removePedestrian(Pedestrian pedestrian) {

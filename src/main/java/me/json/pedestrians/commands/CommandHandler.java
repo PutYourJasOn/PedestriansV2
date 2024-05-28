@@ -21,6 +21,8 @@ public class CommandHandler implements CommandExecutor {
         subCommands.add(new AutoSpawnSubCommand());
         subCommands.add(new AddSkinSubCommand());
         subCommands.add(new ThreadsSubCommand());
+        subCommands.add(new AddTagSubCommand());
+        subCommands.add(new GetTagsSubCommand());
     }
 
     @Override

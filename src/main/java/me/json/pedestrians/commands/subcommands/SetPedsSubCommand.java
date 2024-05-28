@@ -67,7 +67,7 @@ public class SetPedsSubCommand implements ISubCommand<CommandSender> {
             pathNetwork.pedestrians(Math.abs(delta)).forEach(pathNetwork::removePedestrian);
         }
 
-        //add
+        //Add
         if(delta > 0) {
 
             for (int i = 0; i < delta; i++) {

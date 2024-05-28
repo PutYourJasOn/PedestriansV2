@@ -61,7 +61,7 @@ public class ImportPathNetwork extends BukkitRunnable {
             JSONArray jsonNodes = (JSONArray) jsonObject.get("nodes");
             for (Object objectNode : jsonNodes) {
                 JSONObject jsonNode = (JSONObject) objectNode;
-                pathNetwork.addNode(createNode(jsonNode));
+                pathNetwork.addNode(createNode(pathNetwork, jsonNode));
             }
 
             //Init the Connections
@@ -100,14 +100,23 @@ public class ImportPathNetwork extends BukkitRunnable {
 
     }
 
-    private Node createNode(JSONObject jsonNode) {
+    private Node createNode(PathNetwork pathNetwork, JSONObject jsonNode) {
 
         int id = (int) (long) jsonNode.get("id");
         Vector3 position = new Vector3((String) jsonNode.get("position"));
-        float width = (float) (double) jsonNode.get("width");
+        double width = (double) jsonNode.get("width");
         Vector3 direction = new Vector3((String) jsonNode.get("direction"));
 
-        return new Node(id, position, width, direction);
+        Node node = new Node(pathNetwork, id, position, width, direction);
+
+        if (jsonNode.containsKey("tags")) {
+            JSONArray tags = (JSONArray) jsonNode.get("tags");
+            for (Object tag : tags) {
+                node.registerTag((String)tag);
+            }
+        }
+
+        return node;
     }
 
 }

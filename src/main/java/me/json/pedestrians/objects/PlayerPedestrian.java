@@ -35,6 +35,11 @@ public class PlayerPedestrian extends Pedestrian {
     }
 
     @Override
+    protected double hitboxRadius() {
+        return 0.5d;
+    }
+
+    @Override
     public void move(Location location) {
 
         if(npc != null) {
@@ -55,14 +60,13 @@ public class PlayerPedestrian extends Pedestrian {
         if(entityUseAction.getAction() == EnumWrappers.EntityUseAction.INTERACT_AT) {
 
             player.playSound(player, Sound.ENTITY_VILLAGER_CELEBRATE, 1, 1);
-            float originalVel = velocity();
-            velocity(0);
+            forcedVelocity(0f);
             targetedPlayer(player);
             isInsideInteraction = true;
 
             Bukkit.getScheduler().runTaskLater(Main.plugin(), () -> {
 
-                velocity(originalVel);
+                forcedVelocity(null);
                 targetedPlayer(null);
                 isInsideInteraction = false;
 
@@ -81,14 +85,13 @@ public class PlayerPedestrian extends Pedestrian {
             player.playSound(player, Sound.ENTITY_VILLAGER_HURT, 1, 1);
             player.spawnParticle(Particle.VILLAGER_ANGRY, pos().clone().add(new Vector3(0,1.5,0)).toLocation(), 1);
 
-            float originalVel = velocity();
-            velocity(Preferences.PEDESTRIAN_MAX_VELOCITY*2);
+            forcedVelocity(Preferences.PEDESTRIAN_MAX_VELOCITY*2);
             targetedPlayer(null);
             isInsideInteraction = true;
 
             Bukkit.getScheduler().runTaskLater(Main.plugin(), () -> {
 
-                velocity(originalVel);
+                forcedVelocity(null);
                 isInsideInteraction = false;
 
             }, 20*2);

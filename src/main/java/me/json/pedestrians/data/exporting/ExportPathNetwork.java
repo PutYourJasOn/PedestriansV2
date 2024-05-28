@@ -41,6 +41,10 @@ public class ExportPathNetwork extends BukkitRunnable {
             jsonNode.put("direction", node.direction().toString());
             jsonNode.put("width", node.width());
 
+            JSONArray tags = new JSONArray();
+            node.tags().forEach(t -> tags.add(t));
+            jsonNode.put("tags", tags);
+
             JSONArray jsonConnections = new JSONArray();
             for (Node connectedNode : node.connectedNodes()) {
                 ConnectionHandler connection = node.connection(connectedNode);

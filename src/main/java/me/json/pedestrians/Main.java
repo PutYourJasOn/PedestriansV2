@@ -5,6 +5,8 @@ import me.json.pedestrians.commands.CommandHandler;
 import me.json.pedestrians.data.importing.ImportConfig;
 import me.json.pedestrians.data.importing.ImportSkins;
 import me.json.pedestrians.listeners.JoinListener;
+import me.json.pedestrians.listeners.nodeactions.ForcedVelocityTagListener;
+import me.json.pedestrians.listeners.nodeactions.HitboxTagListener;
 import me.json.pedestrians.listeners.packets.InteractListener;
 import me.json.pedestrians.objects.Skin;
 import me.json.pedestrians.objects.framework.path.PathNetwork;
@@ -53,6 +55,9 @@ public class Main extends JavaPlugin {
     private void initListeners() {
         Bukkit.getPluginManager().registerEvents(new Listener(), this);
         Bukkit.getPluginManager().registerEvents(new JoinListener(), this);
+
+        Bukkit.getPluginManager().registerEvents(new ForcedVelocityTagListener(), this);
+        Bukkit.getPluginManager().registerEvents(new HitboxTagListener(), this);
 
         ProtocolLibrary.getProtocolManager().addPacketListener(new InteractListener());
         ProtocolLibrary.getProtocolManager().addPacketListener(new PacketListener());

@@ -41,6 +41,9 @@ public class Messages {
     public static final String THREADS                  = textComponent("%s Threads %s", C, true);
     public static final String THREAD_INFO              = textComponent("- Network: %s, peds: %s", C, true);
     public static final String AUTO_SPAWN_SET           = textComponent("This PathNetwork's autospawn has been set", C, true);
+    public static final String NODE_DOESNT_EXIST        = textComponent("This Node doesn't exist", B, true);
+    public static final String TAG_ADDED                = textComponent("Tag added", C, true);
+
 
     private static String textComponent(String string, ChatColor color, boolean italic) {
         TextComponent textComponent = new TextComponent(string);

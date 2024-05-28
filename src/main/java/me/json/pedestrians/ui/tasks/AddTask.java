@@ -99,7 +99,7 @@ public class AddTask implements ITask {
         }
 
         //Create
-        Node node = new Node(editorView.pathNetwork().nextNodeID(), pos, width, dir);
+        Node node = new Node(editorView.pathNetwork(), editorView.pathNetwork().nextNodeID(), pos, width, dir);
 
         editorView.pathNetwork().addNode(node);
         NodeClientEntity nodeClientEntity =  editorView.editorViewRenderer().spawnNodeEntity(node);
