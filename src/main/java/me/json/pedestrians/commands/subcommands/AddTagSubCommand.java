@@ -40,7 +40,7 @@ public class AddTagSubCommand implements ISubCommand<CommandSender> {
 
     @Override
     public String commandName() {
-        return "addTag";
+        return "addtag";
     }
 
     @Override

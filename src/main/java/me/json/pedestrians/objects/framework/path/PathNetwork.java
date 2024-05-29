@@ -60,10 +60,14 @@ public class PathNetwork {
 
     //Pedestrians
     public void createPedestrian(Class<? extends Pedestrian> pedestrianClass, Object... args) {
+        createPedestrian(pedestrianClass, randomNode(), args);
+    }
+
+    public void createPedestrian(Class<? extends Pedestrian> pedestrianClass, Node node, Object... args) {
 
         try {
 
-            Object[] completeArgs = new Object[]{randomNode()};
+            Object[] completeArgs = new Object[]{node};
             completeArgs = ArrayUtils.addAll(completeArgs, args);
 
             Pedestrian pedestrian = (Pedestrian) pedestrianClass.getConstructors()[0].newInstance(completeArgs);

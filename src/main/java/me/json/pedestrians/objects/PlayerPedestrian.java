@@ -14,6 +14,8 @@ import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nullable;
+
 public class PlayerPedestrian extends Pedestrian {
 
     private final Skin skin;
@@ -36,7 +38,7 @@ public class PlayerPedestrian extends Pedestrian {
 
     @Override
     protected double hitboxRadius() {
-        return 0.5d;
+        return 0.75d;
     }
 
     @Override
@@ -60,22 +62,28 @@ public class PlayerPedestrian extends Pedestrian {
         if(entityUseAction.getAction() == EnumWrappers.EntityUseAction.INTERACT_AT) {
 
             player.playSound(player, Sound.ENTITY_VILLAGER_CELEBRATE, 1, 1);
+
+            //Skin details
+            if(player.hasPermission(Preferences.MAIN_PERMISSION)) {
+                player.sendMessage("Skin: "+skin.name());
+                player.sendMessage("ForcedVelocity: "+forcedVelocity());
+                player.sendMessage("Collision: "+collision());
+            }
+
+            //Pause and target
+            @Nullable Float prevForcedVelocity = forcedVelocity();
+
             forcedVelocity(0f);
             targetedPlayer(player);
             isInsideInteraction = true;
 
             Bukkit.getScheduler().runTaskLater(Main.plugin(), () -> {
 
-                forcedVelocity(null);
+                forcedVelocity(prevForcedVelocity);
                 targetedPlayer(null);
                 isInsideInteraction = false;
 
             }, 20*2);
-
-            //Skin details
-            if(player.hasPermission(Preferences.MAIN_PERMISSION)) {
-                player.sendMessage("Skin: "+skin.name());
-            }
 
         }
 
@@ -85,13 +93,15 @@ public class PlayerPedestrian extends Pedestrian {
             player.playSound(player, Sound.ENTITY_VILLAGER_HURT, 1, 1);
             player.spawnParticle(Particle.VILLAGER_ANGRY, pos().clone().add(new Vector3(0,1.5,0)).toLocation(), 1);
 
+            @Nullable Float prevForcedVelocity = forcedVelocity();
+
             forcedVelocity(Preferences.PEDESTRIAN_MAX_VELOCITY*2);
             targetedPlayer(null);
             isInsideInteraction = true;
 
             Bukkit.getScheduler().runTaskLater(Main.plugin(), () -> {
 
-                forcedVelocity(null);
+                forcedVelocity(prevForcedVelocity);
                 isInsideInteraction = false;
 
             }, 20*2);

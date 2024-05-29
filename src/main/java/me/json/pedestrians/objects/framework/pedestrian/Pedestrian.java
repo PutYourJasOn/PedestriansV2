@@ -36,6 +36,9 @@ public abstract class Pedestrian {
 
     private boolean collision = false;
 
+    private boolean colliding = false;
+    private @Nullable Long pauseDelay;
+
     public Pedestrian(Node originNode) {
         this.pos = ConnectionHandlerType.DIRECT_CONNECTION_HANDLER.instance().targetPos(null, originNode, null, sideOffset);
 
@@ -112,7 +115,19 @@ public abstract class Pedestrian {
     private Location updatePosition() {
 
         if(collision() && hasPedestriansInFront()) {
+            colliding = true;
             return location();
+        } else if(colliding) {
+            colliding = false;
+            pauseDelay = System.currentTimeMillis() + 1000L;
+        }
+
+        if(pauseDelay != null) {
+            if(System.currentTimeMillis() < pauseDelay) {
+                return location();
+            } else {
+                pauseDelay = null;
+            }
         }
 
         Vector3 directionToTarget = targetedPos.clone().subtract(pos);
@@ -163,8 +178,6 @@ public abstract class Pedestrian {
 
         Vector3 front = pos.clone();
         front.add(new Vector3(xOffset * hitboxRadius(), 0 ,zOffset * hitboxRadius()));
-
-        //pos.toLocation().getWorld().spawnParticle(Particle.COMPOSTER, front.toLocation(), 1);
 
         Collection<Pedestrian> closePedestrians = targetNode1.pathNetwork().getClosePedestrians(front, hitboxRadius());
         closePedestrians.remove(this);

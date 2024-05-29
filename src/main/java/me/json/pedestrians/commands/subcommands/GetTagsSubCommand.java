@@ -59,7 +59,7 @@ public class GetTagsSubCommand implements ISubCommand<CommandSender> {
 
     @Override
     public String commandName() {
-        return "getTags";
+        return "gettags";
     }
 
     @Override

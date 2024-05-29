@@ -23,6 +23,7 @@ public class CommandHandler implements CommandExecutor {
         subCommands.add(new ThreadsSubCommand());
         subCommands.add(new AddTagSubCommand());
         subCommands.add(new GetTagsSubCommand());
+        subCommands.add(new SpawnPedsSubCommand());
     }
 
     @Override
